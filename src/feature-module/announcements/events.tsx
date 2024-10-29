@@ -466,7 +466,7 @@ const Events = () => {
         <form>
           <div className="modal-body">
             <div className="row">
-              <div className="col-md-12">
+              {/* <div className="col-md-12">
                 <div>
                   <label className="form-label">Event For</label>
                   <div className="d-flex align-items-center flex-wrap">
@@ -590,7 +590,7 @@ const Events = () => {
                     </select>
                   </div>
                 </div>
-              </div>
+              </div> */}
               <div className="mb-3">
                 <label className="form-label">Event Title</label>
                 <input

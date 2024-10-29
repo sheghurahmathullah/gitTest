@@ -199,8 +199,8 @@ const AdminDashboardModal = () => {
                 <div className="row">
                 <div className="col-md-12">
                     <div>
-                    <label className="form-label">Event For</label>
-                    <div className="d-flex align-items-center flex-wrap">
+                    <label className="form-label"></label>
+                    {/* <div className="d-flex align-items-center flex-wrap">
                         <div className="form-check me-3 mb-3">
                         <input
                             className="form-check-input"
@@ -241,7 +241,7 @@ const AdminDashboardModal = () => {
                             Staffs
                         </label>
                         </div>
-                    </div>
+                    </div> */}
                     </div>
                     <div className={`all-content ${activeContent === 'all-student' ? 'active' : ''}`} id="all-student">
                     <div className="mb-3">

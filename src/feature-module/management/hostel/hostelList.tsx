@@ -49,7 +49,7 @@ const HostelList = () => {
         a.hostelType.length - b.hostelType.length,
     },
     {
-      title: "Address",
+      title: "Gate",
       dataIndex: "address",
       sorter: (a: TableData, b: TableData) =>
         a.address.length - b.address.length,
@@ -60,12 +60,12 @@ const HostelList = () => {
       sorter: (a: TableData, b: TableData) =>
         a.inTake.length - b.inTake.length,
     },
-    {
-      title: "Description",
-      dataIndex: "description",
+    // {
+    //   title: "Description",
+    //   dataIndex: "description",
       
-      sorter: (a: TableData, b: TableData) => a.description.length - b.description.length,
-    },
+    //   sorter: (a: TableData, b: TableData) => a.description.length - b.description.length,
+    // },
     {
       title: "Action",
       dataIndex: "action",

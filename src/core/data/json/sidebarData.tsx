@@ -283,82 +283,82 @@ export const SidebarData = [
       // },
     ],
   },
-  // {
-  //   label: "MANAGEMENT",
-  //   submenuOpen: true,
-  //   submenuHdr: "Management",
-  //   submenu: false,
-  //   showSubRoute: false,
-  //   submenuItems: [
-  //     {
-  //       label: "Fees Collection",
-  //       icon: "ti ti-report-money",
-  //       submenu: true,
-  //       showSubRoute: false,
+  {
+    label: "MANAGEMENT",
+    submenuOpen: true,
+    submenuHdr: "Management",
+    submenu: false,
+    showSubRoute: false,
+    submenuItems: [
+      // {
+      //   label: "Fees Collection",
+      //   icon: "ti ti-report-money",
+      //   submenu: true,
+      //   showSubRoute: false,
 
-  //       submenuItems: [
-  //         { label: "Fees Group", link: routes.feesGroup },
-  //         { label: "Fees Type", link: routes.feesType },
-  //         { label: "Fees Master", link: routes.feesMaster },
-  //         { label: "Fees Assign", link: routes.feesAssign },
-  //         { label: "Collect Fees", link: routes.collectFees },
-  //       ],
-  //     },
-  //     {
-  //       label: "Library",
-  //       icon: "ti ti-notebook",
-  //       submenu: true,
-  //       showSubRoute: false,
+      //   submenuItems: [
+      //     { label: "Fees Group", link: routes.feesGroup },
+      //     { label: "Fees Type", link: routes.feesType },
+      //     { label: "Fees Master", link: routes.feesMaster },
+      //     { label: "Fees Assign", link: routes.feesAssign },
+      //     { label: "Collect Fees", link: routes.collectFees },
+      //   ],
+      // },
+      {
+        label: "Library",
+        icon: "ti ti-notebook",
+        submenu: true,
+        showSubRoute: false,
 
-  //       submenuItems: [
-  //         { label: "Library Members", link: routes.libraryMembers },
-  //         { label: "Books", link: routes.libraryBooks },
-  //         { label: "Issue Book", link: routes.libraryIssueBook },
-  //         { label: "Return", link: routes.libraryReturn },
-  //       ],
-  //     },
-  //     {
-  //       label: "Sports",
-  //       link: routes.sportsList,
-  //       icon: "ti ti-run",
-  //       showSubRoute: false,
-  //       submenu: false,
-  //     },
-  //     {
-  //       label: "Players",
-  //       link: routes.playerList,
-  //       icon: "ti ti-play-football",
-  //       showSubRoute: false,
-  //       submenu: false,
-  //     },
-  //     {
-  //       label: "Hostel",
-  //       icon: "ti ti-building-fortress",
-  //       submenu: true,
-  //       showSubRoute: false,
+        submenuItems: [
+          { label: "Library Members", link: routes.libraryMembers },
+          { label: "Books", link: routes.libraryBooks },
+          // { label: "Issue Book", link: routes.libraryIssueBook },
+          // { label: "Return", link: routes.libraryReturn },
+        ],
+      },
+      {
+        label: "Sports",
+        link: routes.sportsList,
+        icon: "ti ti-run",
+        showSubRoute: false,
+        submenu: false,
+      },
+      // {
+      //   label: "Players",
+      //   link: routes.playerList,
+      //   icon: "ti ti-play-football",
+      //   showSubRoute: false,
+      //   submenu: false,
+      // },
+      {
+        label: "Hostel",
+        icon: "ti ti-building-fortress",
+        submenu: true,
+        showSubRoute: false,
 
-  //       submenuItems: [
-  //         { label: "Hostel List", link: routes.hostelList },
-  //         { label: "Hostel Rooms", link: routes.hostelRoom },
-  //         { label: "Room Type", link: routes.hostelType },
-  //       ],
-  //     },
-  //     {
-  //       label: "Transport",
-  //       icon: "ti ti-bus",
-  //       submenu: true,
-  //       showSubRoute: false,
+        submenuItems: [
+          { label: "Hostel List", link: routes.hostelList },
+          // { label: "Hostel Rooms", link: routes.hostelRoom },
+          // { label: "Room Type", link: routes.hostelType },
+        ],
+      },
+      {
+        label: "Transport",
+        icon: "ti ti-bus",
+        submenu: true,
+        showSubRoute: false,
 
-  //       submenuItems: [
-  //         { label: "Routes", link: routes.transportRoutes },
-  //         { label: "Pickup Points", link: routes.transportPickupPoints },
-  //         { label: "Vehicle Drivers", link: routes.transportVehicleDrivers },
-  //         { label: "Vehicle", link: routes.transportVehicle },
-  //         { label: "Assign Vehicle", link: routes.transportAssignVehicle },
-  //       ],
-  //     },
-  //   ],
-  // },
+        submenuItems: [
+          { label: "Routes", link: routes.transportRoutes },
+          // { label: "Pickup Points", link: routes.transportPickupPoints },
+          { label: "Vehicle Drivers", link: routes.transportVehicleDrivers },
+          // { label: "Vehicle", link: routes.transportVehicle },
+          // { label: "Assign Vehicle", link: routes.transportAssignVehicle },
+        ],
+      },
+    ],
+  },
 
   // remaining works 
   // remaining works 
@@ -371,77 +371,77 @@ export const SidebarData = [
   // remaining works 
   // remaining works 
   // remaining works 
-  // {
-  //   label: "HRM",
-  //   submenuOpen: true,
-  //   submenuHdr: "HRM",
-  //   submenu: false,
-  //   showSubRoute: false,
-  //   submenuItems: [
-  //     {
-  //       label: "Staffs",
-  //       link: routes.staff,
-  //       subLink1: routes.addStaff,
-  //       subLink2: routes.editStaff,
-  //       icon: "ti ti-users-group",
-  //       showSubRoute: false,
-  //       submenu: false,
-  //     },
-  //     {
-  //       label: "Departments",
-  //       link: routes.departments,
-  //       icon: "ti ti-layout-distribute-horizontal",
-  //       showSubRoute: false,
-  //       submenu: false,
-  //     },
-  //     {
-  //       label: "Designation",
-  //       link: routes.designation,
-  //       icon: "ti ti-user-exclamation",
-  //       showSubRoute: false,
-  //       submenu: false,
-  //     },
-  //     {
-  //       label: "Attendance",
-  //       icon: "ti ti-calendar-share",
-  //       submenu: true,
-  //       showSubRoute: false,
+  {
+    label: "HRM",
+    submenuOpen: true,
+    submenuHdr: "HRM",
+    submenu: false,
+    showSubRoute: false,
+    submenuItems: [
+      // {
+      //   label: "Staffs",
+      //   link: routes.staff,
+      //   subLink1: routes.addStaff,
+      //   subLink2: routes.editStaff,
+      //   icon: "ti ti-users-group",
+      //   showSubRoute: false,
+      //   submenu: false,
+      // },
+      // {
+      //   label: "Departments",
+      //   link: routes.departments,
+      //   icon: "ti ti-layout-distribute-horizontal",
+      //   showSubRoute: false,
+      //   submenu: false,
+      // },
+      // {
+      //   label: "Designation",
+      //   link: routes.designation,
+      //   icon: "ti ti-user-exclamation",
+      //   showSubRoute: false,
+      //   submenu: false,
+      // },
+      // {
+      //   label: "Attendance",
+      //   icon: "ti ti-calendar-share",
+      //   submenu: true,
+      //   showSubRoute: false,
 
-  //       submenuItems: [
-  //         { label: "Student Attendance", link: routes.studentAttendance },
-  //         { label: "Teacher Attendance", link: routes.teacherAttendance },
-  //         { label: "Staff Attendance", link: routes.staffAttendance },
-  //       ],
+      //   submenuItems: [
+      //     { label: "Student Attendance", link: routes.studentAttendance },
+      //     { label: "Teacher Attendance", link: routes.teacherAttendance },
+      //     { label: "Staff Attendance", link: routes.staffAttendance },
+      //   ],
 
         
-  //     },
-  //     // {
-  //     //   label: "Leaves",
-  //     //   icon: "ti ti-calendar-stats",
-  //     //   submenu: true,
-  //     //   showSubRoute: false,
+      // },
+      {
+        label: "Leaves",
+        icon: "ti ti-calendar-stats",
+        submenu: true,
+        showSubRoute: false,
 
-  //     //   submenuItems: [
-  //     //     { label: "List of leaves", link: routes.listLeaves },
-  //     //     { label: "Approve Request", link: routes.approveRequest },
-  //     //   ],
-  //     // },
-  //     {
-  //       label: "Holidays",
-  //       link: routes.holidays,
-  //       icon: "ti ti-briefcase",
-  //       showSubRoute: false,
-  //       submenu: false,
-  //     },
-  //     // {
-  //     //   label: "Payroll",
-  //     //   link: routes.payroll,
-  //     //   icon: "ti ti-moneybag",
-  //     //   showSubRoute: false,
-  //     //   submenu: false,
-  //     // },
-  //   ],
-  // },
+        submenuItems: [
+          { label: "List of leaves", link: routes.listLeaves },
+          { label: "Approve Request", link: routes.approveRequest },
+        ],
+      },
+      {
+        label: "Holidays",
+        link: routes.holidays,
+        icon: "ti ti-briefcase",
+        showSubRoute: false,
+        submenu: false,
+      },
+      // {
+      //   label: "Payroll",
+      //   link: routes.payroll,
+      //   icon: "ti ti-moneybag",
+      //   showSubRoute: false,
+      //   submenu: false,
+      // },
+    ],
+  },
   // {
   //   label: "Finance & Accounts",
   //   submenuOpen: true,
@@ -1237,3 +1237,5 @@ export const SidebarData = [
   //   ],
   // },
 ];
+
+

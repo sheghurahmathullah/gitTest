@@ -952,9 +952,9 @@ export const hostelType = [
 export const moreFilterHostel = [
   { value: '1', label: 'Hostel Name' },
   { value: '2', label: 'Hostel Type' },
-  { value: '3', label: 'Address' },
+  { value: '3', label: 'Gate' },
   { value: '4', label: 'Intake' },
-  { value: '5', label: 'Description' },
+  // { value: '5', label: 'Description' },
 ];
 export const moreFilterRoom = [
   { value: '1', label: 'Room No' },

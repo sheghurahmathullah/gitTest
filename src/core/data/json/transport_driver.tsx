@@ -8,7 +8,7 @@ export const transportdriver = [
       address: "2233 Wood Street, Slidell, LA",
       status: "Active",
       statusClass: "badge badge-soft-success",
-      img: "assets/img/parents/parent-01.jpg",
+      img: "assets/img/parents/pa-1.jpg",
     },
     {
       key: "2",
@@ -19,7 +19,7 @@ export const transportdriver = [
       address: "2693 Parker Drive, Cleveland, OH",
       status: "Active",
       statusClass: "badge badge-soft-success",
-      img: "assets/img/parents/parent-02.jpg",
+      img: "assets/img/parents/pa-2.jpg",
     },
     {
       key: "3",
@@ -30,7 +30,7 @@ export const transportdriver = [
       address: "4650 Aviation Way, Los Angeles, CA",
       status: "Active",
       statusClass: "badge badge-soft-success",
-      img: "assets/img/parents/parent-03.jpg",
+      img: "assets/img/parents/pa-5.jpg",
     },
     {
       key: "4",
@@ -41,7 +41,7 @@ export const transportdriver = [
       address: "3167 Stadium Drive, Worcester, MA",
       status: "Active",
       statusClass: "badge badge-soft-success",
-      img: "assets/img/parents/parent-04.jpg",
+      img: "assets/img/parents/pa-7.jpg",
     },
     {
       key: "5",
@@ -52,7 +52,7 @@ export const transportdriver = [
       address: "1609 Smith Street, Worcester, MA",
       status: "Active",
       statusClass: "badge badge-soft-success",
-      img: "assets/img/parents/parent-05.jpg",
+      img: "assets/img/parents/pa-6.jpg",
     },
     {
       key: "6",
@@ -63,7 +63,7 @@ export const transportdriver = [
       address: "3341 Palmer Road, Columbus, OH",
       status: "Active",
       statusClass: "badge badge-soft-success",
-      img: "assets/img/parents/parent-06.jpg",
+      img: "assets/img/parents/pa-5.jpg",
     },
     {
       key: "7",
@@ -74,7 +74,7 @@ export const transportdriver = [
       address: "2261 Sweetwood Drive, Denver, CO",
       status: "Active",
       statusClass: "badge badge-soft-success",
-      img: "assets/img/parents/parent-07.jpg",
+      img: "assets/img/parents/pa-4.jpg",
     },
     {
       key: "8",
@@ -85,7 +85,7 @@ export const transportdriver = [
       address: "4025 Khale Street, Folly Beach, SC",
       status: "Inactive",
       statusClass: "badge badge-soft-danger",
-      img: "assets/img/parents/parent-08.jpg",
+      img: "assets/img/parents/pa-3.jpg",
     },
     {
       key: "9",
@@ -96,7 +96,7 @@ export const transportdriver = [
       address: "3521 Harvest Lane Kansas City, MO",
       status: "Active",
       statusClass: "badge badge-soft-success",
-      img: "assets/img/parents/parent-09.jpg",
+      img: "assets/img/parents/pa-2.jpg",
     },
     {
       key: "10",
@@ -107,6 +107,6 @@ export const transportdriver = [
       address: "2603 Wood Duck Drive Marquette, MI",
       status: "Active",
       statusClass: "badge badge-soft-success",
-      img: "assets/img/parents/parent-10.jpg",
+      img: "assets/img/parents/pa-1.jpg",
     },
   ];

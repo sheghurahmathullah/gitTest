@@ -30,6 +30,10 @@ const AdminDashboard = () => {
     activeSubjects: 0,
     inactiveSubjects: 0,
     percentageChangeSubjects: 0,
+    
+    eventHeading:"Event Heading",
+    eventDate:"Date",
+    eventTime:"Time",
   });
 
   // Mocked fetch function
@@ -52,6 +56,10 @@ const AdminDashboard = () => {
       activeSubjects: 0,
       inactiveSubjects: 0,
       percentageChangeSubjects: 0,
+
+      eventHeading:"Event Heading",
+      eventDate:"Date",
+      eventTime:"Time",
     };
 
     // Update state with mocked data
@@ -72,6 +80,10 @@ const AdminDashboard = () => {
       activeSubjects: mockData.activeSubjects,
       inactiveSubjects: mockData.inactiveSubjects,
       percentageChangeSubjects: mockData.percentageChangeSubjects,
+
+      eventHeading:mockData.eventHeading,
+      eventDate:mockData.eventDate,
+      eventTime:mockData.eventTime,
     });
   };
 
@@ -735,17 +747,17 @@ const AdminDashboard = () => {
                             <i className="ti ti-user-edit text-info fs-20" />
                           </span>
                           <div className="flex-fill">
-                            <h6 className="mb-1">Parents, Teacher Meet</h6>
+                            <h6 className="mb-1">{AdminHeaderData.eventHeading}</h6>
                             <p className="d-flex align-items-center">
                               <i className="ti ti-calendar me-1" />
-                              15 Oct 2024
+                              {AdminHeaderData.eventDate}
                             </p>
                           </div>
                         </div>
                         <div className="d-flex align-items-center justify-content-between">
                           <p className="mb-0">
                             <i className="ti ti-clock me-1" />
-                            09:10AM - 10:50PM
+                            {AdminHeaderData.eventTime}
                           </p>
                           <div className="avatar-list-stacked avatar-group-sm">
                             <span className="avatar border-0">
@@ -780,17 +792,17 @@ const AdminDashboard = () => {
                             <i className="ti ti-user-edit fs-20" />
                           </span>
                           <div className="flex-fill">
-                            <h6 className="mb-1">Health Awarness Meeting</h6>
+                            <h6 className="mb-1">{AdminHeaderData.eventHeading}</h6>
                             <p className="d-flex align-items-center">
                               <i className="ti ti-calendar me-1" />
-                              15 Nov 2024
+                              {AdminHeaderData.eventDate}
                             </p>
                           </div>
                         </div>
                         <div className="d-flex align-items-center justify-content-between">
                           <p className="mb-0">
                             <i className="ti ti-clock me-1" />
-                            09:10AM - 10:50PM
+                            {AdminHeaderData.eventTime}
                           </p>
                           <div className="avatar-list-stacked avatar-group-sm">
                             <span className="avatar border-0">
@@ -825,17 +837,17 @@ const AdminDashboard = () => {
                             <i className="ti ti-vacuum-cleaner fs-24" />
                           </span>
                           <div className="flex-fill">
-                            <h6 className="mb-1">Camping Event</h6>
+                            <h6 className="mb-1">{AdminHeaderData.eventHeading}</h6>
                             <p className="d-flex align-items-center">
                               <i className="ti ti-calendar me-1" />
-                              17 Nov 2024 - 20 Nov 2024
+                              {AdminHeaderData.eventDate}
                             </p>
                           </div>
                         </div>
                         <div className="d-flex align-items-center justify-content-between">
                           <p className="mb-0">
                             <i className="ti ti-clock me-1" />
-                            09:10 AM - 10:50 PM
+                            {AdminHeaderData.eventTime}
                           </p>
                           <div className="avatar-list-stacked avatar-group-sm">
                             <span className="avatar border-0">
@@ -1158,15 +1170,9 @@ const AdminDashboard = () => {
                 <div className="card flex-fill">
                   <div className="card-header d-flex align-items-center justify-content-between">
                     <h4 className="card-title">Class Routine</h4>
-                    <Link
-                      to="#"
-                      className="link-primary fw-medium"
-                      data-bs-toggle="modal"
-                      data-bs-target="#add_class_routine"
-                    >
-                      <i className="ti ti-square-plus me-1" />
-                      Add New
-                    </Link>
+                    <button onClick={() => window.location.href = "http://localhost:3000/react/template/academic/class-routine"}  className="bg-info" >
+  Add new
+</button>
                   </div>
                   <div className="card-body">
                     <div className="d-flex align-items-center rounded border p-3 mb-3">
@@ -2020,33 +2026,7 @@ const AdminDashboard = () => {
                 <div className="card flex-fill">
                   <div className="card-header  d-flex align-items-center justify-content-between">
                     <h4 className="card-title">Student Activity</h4>
-                    <div className="dropdown">
-                      <Link
-                        to="#"
-                        className="bg-white dropdown-toggle"
-                        data-bs-toggle="dropdown"
-                      >
-                        <i className="ti ti-calendar me-2" />
-                        This Month
-                      </Link>
-                      <ul className="dropdown-menu mt-2 p-3">
-                        <li>
-                          <Link to="#" className="dropdown-item rounded-1">
-                            This Month
-                          </Link>
-                        </li>
-                        <li>
-                          <Link to="#" className="dropdown-item rounded-1">
-                            This Year
-                          </Link>
-                        </li>
-                        <li>
-                          <Link to="#" className="dropdown-item rounded-1">
-                            Last Week
-                          </Link>
-                        </li>
-                      </ul>
-                    </div>
+                 
                   </div>
                   <div className="card-body">
                     <div className="d-flex align-items-center overflow-hidden p-3 mb-3 border rounded">
@@ -2116,33 +2096,9 @@ const AdminDashboard = () => {
                 <div className="card flex-fill">
                   <div className="card-header  d-flex align-items-center justify-content-between">
                     <h4 className="card-title">Todo</h4>
-                    <div className="dropdown">
-                      <Link
-                        to="#"
-                        className="bg-white dropdown-toggle"
-                        data-bs-toggle="dropdown"
-                      >
-                        <i className="ti ti-calendar me-2" />
-                        Today
-                      </Link>
-                      <ul className="dropdown-menu mt-2 p-3">
-                        <li>
-                          <Link to="#" className="dropdown-item rounded-1">
-                            This Month
-                          </Link>
-                        </li>
-                        <li>
-                          <Link to="#" className="dropdown-item rounded-1">
-                            This Year
-                          </Link>
-                        </li>
-                        <li>
-                          <Link to="#" className="dropdown-item rounded-1">
-                            Last Week
-                          </Link>
-                        </li>
-                      </ul>
-                    </div>
+                    <button onClick={() => window.location.href = "http://localhost:3000/react/template/application/todo"}  className="bg-info" >
+  Add Task
+</button>
                   </div>
                   <div className="card-body">
                     <ul className="list-group list-group-flush todo-list">
