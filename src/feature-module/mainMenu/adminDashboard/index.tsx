@@ -457,6 +457,15 @@ const AdminDashboard = () => {
                 </div>
                 <div className="mb-2">
                   <Link
+                    to={routes.addStudent}
+                    className="btn btn-primary d-flex align-items-center me-3"
+                  >
+                    <i className="ti ti-square-rounded-plus me-2" />
+                    Add New Teacher
+                  </Link>
+                </div>
+                <div className="mb-2">
+                  <Link
                     to={routes.collectFees}
                     className="btn btn-light d-flex align-items-center"
                   >
