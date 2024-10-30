@@ -879,14 +879,8 @@ const AdminDashboard = () => {
                   <div className="card-header d-flex align-items-center justify-content-between">
                     <h4 className="card-title">Attendance</h4>
                     <div className="dropdown">
-                      <Link
-                        to="#"
-                        className="bg-white dropdown-toggle"
-                        data-bs-toggle="dropdown"
-                      >
                         <i className="ti ti-calendar-due me-1" />
                         Today
-                      </Link>
                       <ul className="dropdown-menu mt-2 p-3">
                         <li>
                           <Link to="#" className="dropdown-item rounded-1">
