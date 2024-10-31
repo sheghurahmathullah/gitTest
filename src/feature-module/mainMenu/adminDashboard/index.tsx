@@ -12,6 +12,10 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import AdminDashboardModal from "./adminDashboardModal";
 
+import { Modal } from "react-bootstrap";
+import ParentModal from "./parentModal";
+
+
 const AdminDashboard = () => {
   const [AdminHeaderData, setAdminHeaderData] = useState({
     totalStaff: 0,
@@ -457,11 +461,22 @@ const AdminDashboard = () => {
                 </div>
                 <div className="mb-2">
                   <Link
-                    to={routes.addStudent}
+                    to={routes.addTeacher}
                     className="btn btn-primary d-flex align-items-center me-3"
                   >
                     <i className="ti ti-square-rounded-plus me-2" />
                     Add New Teacher
+                  </Link>
+                </div>
+                <div className="mb-2">
+                  <Link
+                  to="#"
+                  data-bs-toggle="modal"
+                  data-bs-target="#add_parent"
+                  className="btn btn-primary d-flex align-items-center me-3"
+                  >
+                    <i className="ti ti-square-rounded-plus me-2" />
+                    Add New Parent
                   </Link>
                 </div>
                 <div className="mb-2">
@@ -2222,6 +2237,7 @@ const AdminDashboard = () => {
       </div>
       {/* /Page Wrapper */}
       <AdminDashboardModal />
+      <ParentModal />
     </>
   );
 };
