@@ -1,11 +1,20 @@
 import React, { useEffect, useState } from "react";
-import ImageWithBasePath from "../../../core/common/imageWithBasePath";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { api_path } from "../../../environment";
 import { all_routes } from "../../router/all_routes";
 
 const Login = () => {
+
   const routes = all_routes;
+  const navigation = useNavigate();
+
+  const navigationPath = () => {
+    setTimeout(() => {
+      navigation(routes.adminDashboard);
+    }, 1000);
+  };
   const [isPasswordVisible, setPasswordVisible] = useState(false);
+
 
   const togglePasswordVisibility = () => {
     setPasswordVisible((prevState) => !prevState);
@@ -13,6 +22,52 @@ const Login = () => {
   useEffect(() => {
     localStorage.setItem("menuOpened", "Dashboard");
   }, []);
+
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const validateForm = () => {
+    const { email, password } = formData;
+    if (!email || !password) {
+      // setErrorMessage("All fields are mandatory.");
+      return false;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      // setErrorMessage("Please enter a valid email address.");
+      return false;
+    }
+    return true;
+  };
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+
+    if (!validateForm()) return;
+
+    try {
+      const response = await fetch(
+        `${api_path}/users/logIn?username=${encodeURIComponent(formData.email)}&password=${encodeURIComponent(formData.password)}`,
+        { method: "GET" }
+      );
+      const data = await response.text();
+    if (response.ok) {
+      console.log(data);
+      navigationPath();
+    } else {
+      console.log(data);
+    }
+  } catch (error) {
+    console.error('Error signing in:', error);
+  }
+};
 
 
   return (
@@ -111,7 +166,7 @@ const Login = () => {
                             Please enter your details to sign in
                           </p>
                         </div>
-                        <div className="mt-4">
+                        {/* <div className="mt-4">
                           <div className="d-flex align-items-center justify-content-center flex-wrap">
                             <div className="text-center me-2 flex-fill">
                               <Link
@@ -153,7 +208,7 @@ const Login = () => {
                         </div>
                         <div className="login-or">
                           <span className="span-or">Or</span>
-                        </div>
+                        </div> */}
                         <div className="mb-3 ">
                           <label className="form-label">Email Address</label>
                           <div className="input-icon mb-3 position-relative">
@@ -161,17 +216,26 @@ const Login = () => {
                               <i className="ti ti-mail" />
                             </span>
                             <input
-                              type="text"
-                              defaultValue=""
-                              className="form-control"
-                            />
+                                  type="email"
+                                  id="email"
+                                  name="email"
+                                  placeholder="Enter the Email"
+                                  className="form-control"
+                                  value={formData.email}
+                                  onChange={handleChange}
+                                />
                           </div>
                           <label className="form-label">Password</label>
                           <div className="pass-group">
-                            <input
-                              type={isPasswordVisible ? "text" : "password"}
-                              className="pass-input form-control"
-                            />
+                          <input
+                                  type={isPasswordVisible ? "text" : "password"}
+                                  id="password"
+                                  name="password"
+                                  placeholder="Enter the password"
+                                  className="pass-input form-control"
+                                  value={formData.password}
+                                  onChange={handleChange}
+                                />
                             <span
                               className={`ti toggle-password ${
                                 isPasswordVisible ? "ti-eye" : "ti-eye-off"
@@ -199,12 +263,13 @@ const Login = () => {
                       </div>
                       <div className="p-4 pt-0">
                         <div className="mb-3">
-                          <Link
-                            to={routes.adminDashboard}
+                          <button
+                            // to={routes.adminDashboard}
+                            onClick={handleSubmit}
                             className="btn btn-primary w-100"
                           >
                             Sign In
-                          </Link>
+                          </button>
                         </div>
                         <div className="text-center">
                           <h6 className="fw-normal text-dark mb-0">

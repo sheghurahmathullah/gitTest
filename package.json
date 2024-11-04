@@ -27,6 +27,7 @@
     "feather-icons-react": "^0.7.0",
     "jquery": "^3.7.1",
     "moment": "^2.30.1",
+    "my-app": "file:",
     "primeicons": "^6.0.1",
     "primereact": "^10.5.1",
     "quill": "^2.0.2",

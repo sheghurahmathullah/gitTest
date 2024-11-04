@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { all_routes } from "../../router/all_routes";
 import ImageWithBasePath from "../../../core/common/imageWithBasePath";
+import { api_path } from "../../../environment";
+import { all_routes } from "../../router/all_routes";
 type PasswordField = "password" | "confirmPassword";
 
 const Register = () => {
@@ -9,8 +10,18 @@ const Register = () => {
   const navigation = useNavigate();
 
   const navigationPath = () => {
-    navigation(routes.login);
+    setTimeout(() => {
+      navigation(routes.login);
+    }, 1000);
   };
+
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
   const [passwordVisibility, setPasswordVisibility] = useState({
     password: false,
     confirmPassword: false,
@@ -22,6 +33,57 @@ const Register = () => {
       [field]: !prevState[field],
     }));
   };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const validateForm = () => {
+    const { name, email, password, confirmPassword } = formData;
+    if (!name || !email || !password || !confirmPassword) {
+      // setErrorMessage("All fields are mandatory.");
+      return false;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      // setErrorMessage("Please enter a valid email address.");
+      return false;
+    }
+    if (password !== confirmPassword) {
+      // setErrorMessage("Passwords do not match.");
+      return false;
+    }
+    return true;
+  };
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+
+    if (!validateForm()) return;
+
+    try {
+      const response = await fetch(`${api_path}/users/signIn`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+        }),
+      });
+      const data = await response.text();
+    if (response.ok) {
+      console.log(data);
+      navigationPath(); // Redirect immediately
+    } else {
+      console.log(data);
+    }
+  } catch (error) {
+    console.error('Error signing in:', error);
+  }
+};
+
   return (
     <>
       <div className="container-fuild">
@@ -117,7 +179,7 @@ const Register = () => {
                         <div className="card-body p-4">
                           <div className=" mb-4">
                             <h2 className="mb-2">Register</h2>
-                            <p className="mb-0">
+                            {/* <p className="mb-0">
                               Please enter your details to sign up
                             </p>
                           </div>
@@ -162,14 +224,22 @@ const Register = () => {
                             </div>
                             <div className="login-or">
                               <span className="span-or">Or</span>
-                            </div>
+                            </div> */}
                             <div className="mb-3 ">
                               <label className="form-label">Name</label>
                               <div className="input-icon mb-3 position-relative">
                                 <span className="input-icon-addon">
                                   <i className="ti ti-user" />
                                 </span>
-                                <input type="text" className="form-control" />
+                                <input
+                                  type="text"
+                                  id="name"
+                                  name="name"
+                                  placeholder="Enter the Name"
+                                  className="form-control"
+                                  value={formData.name}
+                                  onChange={handleChange}
+                                />
                               </div>
                               <label className="form-label">
                                 Email Address
@@ -178,17 +248,26 @@ const Register = () => {
                                 <span className="input-icon-addon">
                                   <i className="ti ti-mail" />
                                 </span>
-                                <input type="text" className="form-control" />
+                                <input
+                                  type="email"
+                                  id="email"
+                                  name="email"
+                                  placeholder="Enter the Email"
+                                  className="form-control"
+                                  value={formData.email}
+                                  onChange={handleChange}
+                                />
                               </div>
                               <label className="form-label">Password</label>
                               <div className="pass-group mb-3">
                                 <input
-                                  type={
-                                    passwordVisibility.password
-                                      ? "text"
-                                      : "password"
-                                  }
+                                  type={passwordVisibility.password ? "text" : "password"}
+                                  id="password"
+                                  name="password"
+                                  placeholder="Enter the password"
                                   className="pass-input form-control"
+                                  value={formData.password}
+                                  onChange={handleChange}
                                 />
                                 <span
                                   className={`ti toggle-passwords ${
@@ -206,12 +285,13 @@ const Register = () => {
                               </label>
                               <div className="pass-group">
                                 <input
-                                  type={
-                                    passwordVisibility.confirmPassword
-                                      ? "text"
-                                      : "password"
-                                  }
+                                  type={passwordVisibility.confirmPassword ? "text" : "password"}
+                                  id="confirmPassword"
+                                  name="confirmPassword"
+                                  placeholder="Enter the confirm password"
                                   className="pass-input form-control"
+                                  value={formData.confirmPassword}
+                                  onChange={handleChange}
                                 />
                                 <span
                                   className={`ti toggle-passwords ${
@@ -245,7 +325,7 @@ const Register = () => {
                           </div>
                           <div className="mb-3">
                             <button
-                              onClick={navigationPath}
+                              onClick={handleSubmit}
                               type="submit"
                               className="btn btn-primary w-100"
                             >
