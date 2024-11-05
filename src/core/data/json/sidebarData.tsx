@@ -15,10 +15,10 @@ export const SidebarData = [
         showSubRoute: false,
 
         submenuItems: [
-          { label: "Admin Dashboard", link: routes.adminDashboard },
-          { label: "Teacher Dashboard", link: routes.teacherDashboard },
-          { label: "Student Dashboard", link: routes.studentDashboard },
-          { label: "Parent Dashboard", link: routes.parentDashboard },
+          { label: "Admin Dashboard", link: routes.adminDashboard }//,
+          // { label: "Teacher Dashboard", link: routes.teacherDashboard },
+          // { label: "Student Dashboard", link: routes.studentDashboard },
+          // { label: "Parent Dashboard", link: routes.parentDashboard },
         ],
       },
       {
@@ -331,32 +331,32 @@ export const SidebarData = [
       //   showSubRoute: false,
       //   submenu: false,
       // },
-      {
-        label: "Hostel",
-        icon: "ti ti-building-fortress",
-        submenu: true,
-        showSubRoute: false,
+      // {
+      //   label: "Hostel",
+      //   icon: "ti ti-building-fortress",
+      //   submenu: true,
+      //   showSubRoute: false,
 
-        submenuItems: [
-          { label: "Hostel List", link: routes.hostelList },
-          // { label: "Hostel Rooms", link: routes.hostelRoom },
-          // { label: "Room Type", link: routes.hostelType },
-        ],
-      },
-      {
-        label: "Transport",
-        icon: "ti ti-bus",
-        submenu: true,
-        showSubRoute: false,
+      //   submenuItems: [
+      //     { label: "Hostel List", link: routes.hostelList },
+      //     // { label: "Hostel Rooms", link: routes.hostelRoom },
+      //     // { label: "Room Type", link: routes.hostelType },
+      //   ],
+      // },
+      // {
+      //   label: "Transport",
+      //   icon: "ti ti-bus",
+      //   submenu: true,
+      //   showSubRoute: false,
 
-        submenuItems: [
-          { label: "Routes", link: routes.transportRoutes },
-          // { label: "Pickup Points", link: routes.transportPickupPoints },
-          { label: "Vehicle Drivers", link: routes.transportVehicleDrivers },
-          // { label: "Vehicle", link: routes.transportVehicle },
-          // { label: "Assign Vehicle", link: routes.transportAssignVehicle },
-        ],
-      },
+      //   submenuItems: [
+      //     { label: "Routes", link: routes.transportRoutes },
+      //     // { label: "Pickup Points", link: routes.transportPickupPoints },
+      //     { label: "Vehicle Drivers", link: routes.transportVehicleDrivers },
+      //     // { label: "Vehicle", link: routes.transportVehicle },
+      //     // { label: "Assign Vehicle", link: routes.transportAssignVehicle },
+      //   ],
+      // },
     ],
   },
 
