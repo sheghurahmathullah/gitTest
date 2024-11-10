@@ -14,8 +14,18 @@ import { TableData } from "../../../core/data/interface";
 import { Link } from "react-router-dom";
 import TooltipOption from "../../../core/common/tooltipOption";
 import { all_routes } from "../../router/all_routes";
+import { useState } from "react";
 
 const ClassSubject = () => {
+
+  const [subjectData, setSubjectData] = useState({
+    name : "",
+    code:"",
+    type:"",
+    status:"",
+  
+   
+    });
   const routes = all_routes;
 
   const data = classSubject;
@@ -304,25 +314,17 @@ const ClassSubject = () => {
                     <div className="col-md-12">
                       <div className="mb-3">
                         <label className="form-label">Name</label>
-                        <input type="text" className="form-control" />
+                        <input type="text" className="form-control" value={subjectData.name}  />
                       </div>
                       <div className="mb-3">
                         <label className="form-label">Code</label>
-                        <CommonSelect
-                          className="select"
-                          options={count}
-                          defaultValue={count[0]}
-                           
-                        />
+                        <input type="text" className="form-control"
+                            value={subjectData.code} />
                       </div>
                       <div className="mb-3">
                         <label className="form-label">Type</label>
-                        <CommonSelect
-                          className="select"
-                          options={typetheory}
-                          defaultValue={typetheory[0]}
-                          
-                        />
+                        <input type="text" className="form-control"
+                            value={subjectData.type} />
                       </div>
                       <div className="d-flex align-items-center justify-content-between">
                         <div className="status-title">
@@ -330,12 +332,8 @@ const ClassSubject = () => {
                           <p>Change the Status by toggle </p>
                         </div>
                         <div className="form-check form-switch">
-                          <input
-                            className="form-check-input"
-                            type="checkbox"
-                            role="switch"
-                            id="switch-sm"
-                          />
+                        <input type="text" className="form-control"
+                            value={subjectData.status} />
                         </div>
                       </div>
                     </div>

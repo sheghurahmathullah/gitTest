@@ -763,7 +763,7 @@ const AdminDashboard = () => {
                         <div className="d-flex align-items-center mb-3 pb-3 border-bottom">
                           <span className="avatar p-1 me-2 bg-teal-transparent flex-shrink-0">
                             <i className="ti ti-user-edit text-info fs-20" />
-                          </span>
+                          </span> 
                           <div className="flex-fill">
                             <h6 className="mb-1">{AdminHeaderData.eventHeading}</h6>
                             <p className="d-flex align-items-center">
