@@ -4,8 +4,16 @@ import { Select } from "antd";
 import { Link } from "react-router-dom";
 import ImageWithBasePath from "../../../core/common/imageWithBasePath";
 import { all_routes } from "../../router/all_routes";
+import { useState } from "react";
 
 const ParentModal = () => {
+  const [parentData, setParentData] = useState({
+    name : "",
+    email:"",
+    phoneNumber:"",
+    childName:""
+    
+    });
     const routes = all_routes
   const getModalContainer = () => {
     const modalElement = document.getElementById("modal-tag");
@@ -63,29 +71,21 @@ const ParentModal = () => {
                     </div>
                     <div className="mb-3">
                       <label className="form-label">Name</label>
-                      <input type="text" className="form-control" />
+                      <input type="text" className="form-control" value={parentData.name} />
                     </div>
                     <div className="mb-3">
                       <label className="form-label">Phone Number</label>
-                      <input type="text" className="form-control" />
+                      <input type="text" className="form-control" value={parentData.phoneNumber} />
                     </div>
                     <div className="mb-3">
                       <label className="form-label">Email Address</label>
-                      <input type="text" className="form-control" />
+                      <input type="text" className="form-control" value={parentData.email} />
                     </div>
                     <div className="mb-0">
-                      <label className="form-label">Child</label>
+                      <label className="form-label">Child Name</label>
                      
-                       <Select
-                        mode="multiple"
-                        allowClear
-                        className="select"
-                        getPopupContainer={getModalContainer2}
-                        style={{ width: "100%" }}
-                        placeholder="Please select"
-                        defaultValue={[]}
-                        options={names}
-                      />
+                      <input type="text" className="form-control"
+                            value={parentData.childName} />
                     </div>
                   </div>
                 </div>

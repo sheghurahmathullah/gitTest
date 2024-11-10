@@ -589,9 +589,7 @@ const AdminDashboard = () => {
                           <h2 className="counter">
                             <CountUp end={AdminHeaderData.totalStudents} />
                           </h2>
-                          <span className="badge bg-danger">
-                            {AdminHeaderData.percentageChangeStudents}%
-                          </span>
+                         
                         </div>
                         <p>Total Student</p>
                       </div>
@@ -631,9 +629,7 @@ const AdminDashboard = () => {
                           <h2 className="counter">
                             <CountUp end={AdminHeaderData.totalTeacher} />
                           </h2>
-                          <span className="badge bg-pending">
-                            {AdminHeaderData.percentageChangeTeacher}%
-                          </span>
+                         
                         </div>
                         <p>Total Teachers</p>
                       </div>
@@ -673,11 +669,9 @@ const AdminDashboard = () => {
                           <h2 className="counter">
                             <CountUp end={AdminHeaderData.totalStaff} />
                           </h2>
-                          <span className="badge bg-warning">
-                            {AdminHeaderData.percentageChangeStaff}%
-                          </span>
+                         
                         </div>
-                        <p>Total Students</p>
+                        <p>Total Parents</p>
                       </div>
                     </div>
                     <div className="d-flex align-items-center justify-content-between border-top mt-3 pt-3">
@@ -715,7 +709,7 @@ const AdminDashboard = () => {
                           <h2 className="counter">
                             <CountUp end={AdminHeaderData.totalSubjects} />
                           </h2>
-                          <span className="badge bg-success">{AdminHeaderData.percentageChangeSubjects}%</span>
+                         
                         </div>
                         <p>Total Subjects</p>
                       </div>

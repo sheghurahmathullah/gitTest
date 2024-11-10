@@ -25,6 +25,26 @@ import CommonSelect from "../../../../core/common/commonSelect";
 import { useLocation } from "react-router-dom";
 
 const TeacherForm = () => {
+
+  const [teacherData, setTeacherData] = useState({
+    teacherId : "",
+    firstName: "",
+    lastName: "",
+    class :"",
+    subject: "",
+    gender: "",
+    contactNumber:0,
+    email:"",
+    bloodGroup:"",
+    fatherName:"",
+    motherName:"",
+    martialStatus:"",
+    languageKnown:"",
+    qualification:"",
+    workExperience:"",
+    address:"",
+    panNumber:"",
+    });
   const routes = all_routes;
 
   const [isEdit, setIsEdit] = useState<boolean>(false);
@@ -138,6 +158,7 @@ const TeacherForm = () => {
                               type="text"
                               className="form-control"
                               defaultValue={isEdit ? "T849126" : undefined}
+                              value={teacherData.teacherId}
                             />
                           </div>
                         </div>
@@ -148,43 +169,36 @@ const TeacherForm = () => {
                               type="text"
                               className="form-control"
                               defaultValue={isEdit ? "Teresa" : undefined}
+                              value={teacherData.firstName}
                             />
                           </div>
                         </div>
                         <div className="col-xxl col-xl-3 col-md-6">
                           <div className="mb-3">
                             <label className="form-label">Last Name</label>
-                            <input type="text" className="form-control" />
+                            <input type="text" className="form-control"
+                            value={teacherData.lastName} />
                           </div>
                         </div>
                         <div className="col-xxl col-xl-3 col-md-6">
                           <div className="mb-3">
                             <label className="form-label">Class</label>
-                            <CommonSelect
-                              className="select"
-                              options={allClass}
-                              defaultValue={isEdit ? allClass[0] : undefined}
-                            />
+                            <input type="text" className="form-control"
+                            value={teacherData.class} />
                           </div>
                         </div>
                         <div className="col-xxl col-xl-3 col-md-6">
                           <div className="mb-3">
                             <label className="form-label">Subject</label>
-                            <CommonSelect
-                              className="select"
-                              options={allSubject}
-                              defaultValue={isEdit ? allSubject[0] : undefined}
-                            />
+                            <input type="text" className="form-control"
+                            value={teacherData.subject} />
                           </div>
                         </div>
                         <div className="col-xxl col-xl-3 col-md-6">
                           <div className="mb-3">
                             <label className="form-label">Gender</label>
-                            <CommonSelect
-                              className="select"
-                              options={gender}
-                              defaultValue={isEdit ? gender[0] : undefined}
-                            />
+                            <input type="text" className="form-control"
+                            value={teacherData.gender} />
                           </div>
                         </div>
                         <div className="col-xxl col-xl-3 col-md-6">
@@ -195,9 +209,8 @@ const TeacherForm = () => {
                             <input
                               type="text"
                               className="form-control"
-                              defaultValue={
-                                isEdit ? "+1 46548 84498" : undefined
-                              }
+                            
+                              value={teacherData.contactNumber} 
                             />
                           </div>
                         </div>
@@ -207,20 +220,16 @@ const TeacherForm = () => {
                             <input
                               type="email"
                               className="form-control"
-                              defaultValue={
-                                isEdit ? "jan@example.com" : undefined
-                              }
+                              
+                              value={teacherData.email} 
                             />
                           </div>
                         </div>
                         <div className="col-xxl col-xl-3 col-md-6">
                           <div className="mb-3">
                             <label className="form-label">Blood Group</label>
-                            <CommonSelect
-                              className="select"
-                              options={bloodGroup}
-                              defaultValue={isEdit ? bloodGroup[0] : undefined}
-                            />
+                            <input type="text" className="form-control"
+                            value={teacherData.bloodGroup} />
                           </div>
                         </div>
                         <div className="col-xxl col-xl-3 col-md-6">
@@ -245,9 +254,8 @@ const TeacherForm = () => {
                             <input
                               type="text"
                               className="form-control"
-                              defaultValue={
-                                isEdit ? "Francis Saviour" : undefined
-                              }
+                              value={teacherData.fatherName} 
+                             
                             />
                           </div>
                         </div>
@@ -257,7 +265,7 @@ const TeacherForm = () => {
                             <input
                               type="text"
                               className="form-control"
-                              defaultValue={isEdit ? "Stella Bruce" : undefined}
+                              value={teacherData.motherName} 
                             />
                           </div>
                         </div>
@@ -292,21 +300,15 @@ const TeacherForm = () => {
                         <div className="col-xxl col-xl-3 col-md-6">
                           <div className="mb-3">
                             <label className="form-label">Marital Status</label>
-                            <CommonSelect
-                              className="select"
-                              options={Marital}
-                              defaultValue={isEdit ? Marital[0] : undefined}
-                            />
+                            <input type="text" className="form-control"
+                            value={teacherData.martialStatus} />
                           </div>
                         </div>
                         <div className="col-xxl col-xl-3 col-md-6">
                           <div className="mb-3">
                             <label className="form-label">Language Known</label>
-                            <TagsInput
-                              // className="input-tags form-control"
-                              value={owner}
-                              onChange={setOwner}
-                            />
+                            <input type="text" className="form-control"
+                            value={teacherData.languageKnown} />
                           </div>
                         </div>
                         <div className="col-xxl col-xl-3 col-md-6">
@@ -315,7 +317,7 @@ const TeacherForm = () => {
                             <input
                               type="text"
                               className="form-control"
-                              defaultValue={isEdit ? "MBA" : undefined}
+                              value={teacherData.qualification} 
                             />
                           </div>
                         </div>
@@ -327,84 +329,24 @@ const TeacherForm = () => {
                             <input
                               type="text"
                               className="form-control"
-                              defaultValue={isEdit ? "2  Years" : undefined}
+                              value={teacherData.workExperience} 
                             />
                           </div>
                         </div>
-                        <div className="col-xxl col-xl-3 col-md-6">
-                          <div className="mb-3">
-                            <label className="form-label">
-                              Previous School if Any
-                            </label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              defaultValue={
-                                isEdit ? "Oxford Matriculation, USA" : undefined
-                              }
-                            />
-                          </div>
-                        </div>
-                        <div className="col-xxl col-xl-3 col-md-6">
-                          <div className="mb-3">
-                            <label className="form-label">
-                              Previous School Address
-                            </label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              defaultValue={
-                                isEdit
-                                  ? "1852 Barnes Avenue, Cincinnati, OH 45202"
-                                  : undefined
-                              }
-                            />
-                          </div>
-                        </div>
-                        <div className="col-xxl col-xl-3 col-md-6">
-                          <div className="mb-3">
-                            <label className="form-label">
-                              Previous School Phone No
-                            </label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              defaultValue={
-                                isEdit ? "+1 35676 45556" : undefined
-                              }
-                            />
-                          </div>
-                        </div>
+                      
+                       
+                     
                         <div className="col-xxl-3 col-xl-3 col-md-6">
                           <div className="mb-3">
                             <label className="form-label">Address</label>
                             <input
                               type="text"
                               className="form-control"
-                              defaultValue={
-                                isEdit
-                                  ? "3495 Red Hawk Road, Buffalo Lake, MN 55314"
-                                  : undefined
-                              }
+                              value={teacherData.address} 
                             />
                           </div>
                         </div>
-                        <div className="col-xxl-3 col-xl-3 col-md-6">
-                          <div className="mb-3">
-                            <label className="form-label">
-                              Permanent Address
-                            </label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              defaultValue={
-                                isEdit
-                                  ? "3495 Red Hawk Road, Buffalo Lake, MN 55314"
-                                  : undefined
-                              }
-                            />
-                          </div>
-                        </div>
+                       
                         <div className="col-xxl-3 col-xl-3 col-md-6">
                           <div className="mb-3">
                             <label className="form-label">
@@ -413,35 +355,12 @@ const TeacherForm = () => {
                             <input
                               type="text"
                               className="form-control"
-                              defaultValue={isEdit ? "343445954908" : undefined}
+                              value={teacherData.panNumber} 
                             />
                           </div>
                         </div>
-                        <div className="col-xxl-3 col-xl-3 col-md-6">
-                          <div className="mb-3">
-                            <label className="form-label">Status</label>
-                            <CommonSelect
-                              className="select"
-                              options={status}
-                              defaultValue={isEdit ? status[0] : undefined}
-                            />
-                          </div>
-                        </div>
-                        <div className="col-xxl-12 col-xl-12">
-                          <div className="mb-3">
-                            <label className="form-label">Notes</label>
-                            <textarea
-                              className="form-control"
-                              placeholder="Other Information"
-                              rows={4}
-                              defaultValue={
-                                isEdit
-                                  ? "Depending on the specific needs of your organization or system, additional information may be collected or tracked. Its important to ensure that any data collected complies with privacy regulations and policies to protect students sensitive information"
-                                  : undefined
-                              }
-                            />
-                          </div>
-                        </div>
+                      
+                     
                       </div>
                     </div>
                   </div>
