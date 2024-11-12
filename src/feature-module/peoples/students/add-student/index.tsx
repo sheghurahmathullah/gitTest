@@ -1,40 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 // import { feeGroup, feesTypes, paymentType } from '../../../core/common/selectoption/selectoption'
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
-import { all_routes } from "../../../router/all_routes";
-import {
-  AdmissionNo,
-  Hostel,
-  PickupPoint,
-  VehicleNumber,
-  academicYear,
-  allClass,
-  allSection,
-  bloodGroup,
-  cast,
-  gender,
-  house,
-  language,
-  mothertongue,
-  names,
-  religion,
-  rollno,
-  roomNO,
-  route,
-  status,
-} from "../../../../core/common/selectoption/selectoption";
-import { TagsInput } from "react-tag-input-component";
-import CommonSelect from "../../../../core/common/commonSelect";
 import { useLocation } from "react-router-dom";
+import { all_routes } from "../../../router/all_routes";
+
+import { api_path } from "../../../../environment";
+
 
 const AddStudent = () => {
+
+  // const routes = all_routes;
+  const navigation = useNavigate();
+
+  const navigationPath = () => {
+    setTimeout(() => {
+      navigation(routes.studentList);
+    }, 1000);
+  };
 
   const [studentData, setStudentData] = useState({
     academicYear : "",
     admissionNumber: "",
-    rollNo: "",
+    rollNumber: "",
     status :"",
     firstName: "",
     lastName: "",
@@ -71,12 +60,6 @@ const AddStudent = () => {
     bankName:"",
     bankBranch:"",
     bankIfsc:"",
-   
-
-
-
-    
-
   
     });
 
@@ -116,6 +99,78 @@ const AddStudent = () => {
     }
   }, [location.pathname])
   
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setStudentData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+
+  const handleSubmit = async (event: React.FormEvent) => {
+
+    event.preventDefault();
+
+    // if (!validateForm()) return;
+
+    try {
+      const response = await fetch(`${api_path}/students/createStudent`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          academicYear : studentData.academicYear,
+          admissionNumber: studentData.admissionNumber,
+          rollNumber: studentData.rollNumber,
+          status :studentData.status,
+          firstName: studentData.firstName,
+          lastName: studentData.lastName,
+          class:studentData.class,
+          section:studentData.section,
+          gender:studentData.gender,
+          bloodGroup:studentData.bloodGroup,
+          religion:studentData.religion,
+          caste:studentData.caste,
+          contactNumber:studentData.contactNumber,
+          email:studentData.email,
+          motherTongue:studentData.motherTongue,
+          address:studentData.address,
+          languageKnown:studentData.languageKnown,
+          fatherName:studentData.fatherName,
+          fatherEmail:studentData.fatherEmail,
+          fatherNumber:studentData.fatherNumber,
+          fatherOccupation:studentData.fatherOccupation,
+          motherName:studentData.motherName,
+          motherEmail:studentData.motherEmail,
+          motherNumber:studentData.motherNumber,
+          motherOccupation:studentData.motherOccupation,
+          siblingName:studentData.siblingName,
+          siblingRollno:studentData.siblingRollno,
+          siblingAdno:studentData.siblingAdno,
+          siblingSection:studentData.siblingSection,
+          currentAddress:studentData.currentAddress,
+          permanentAddress:studentData.permanentAddress,
+          route:studentData.route,
+          vehicleNumber:studentData.vehicleNumber,
+          pickupPoint:studentData.pickupPoint,
+          hostel:studentData.hostel,
+          hostelRoomNo:studentData.hostelRoomNo,
+          bankName:studentData.bankName,
+          bankBranch:studentData.bankBranch,
+          bankIfsc:studentData.bankIfsc,
+        }),
+      });
+      const data = await response.text();
+    if (response.ok) {
+      console.log(data);
+      alert("Student Created Successfully");
+      navigationPath(); // Redirect immediately
+    } else {
+      console.log(data);
+    }
+  } catch (error) {
+    console.error('Error Creating User:', error);
+  }
+};
+
+
   return (
     <>
       {/* Page Wrapper */}
@@ -186,14 +241,16 @@ const AddStudent = () => {
                       <div className="col-xxl col-xl-3 col-md-6">
                         <div className="mb-3">
                           <label className="form-label">Academic Year</label>
-                          <input type="text" className="form-control"
-                            value={studentData.academicYear} />
+                          <input type="text"
+                                  id="academicYear"
+                                  name="academicYear" className="form-control"
+                            value={studentData.academicYear} onChange={handleChange} />
                         </div>
                       </div>
                       <div className="col-xxl col-xl-3 col-md-6">
                         <div className="mb-3">
                           <label className="form-label">Admission Number</label>
-                          <input type="text" className="form-control" value={studentData.admissionNumber}/>
+                          <input type="text" id="admissionNumber" name="admissionNumber" className="form-control" value={studentData.admissionNumber} onChange={handleChange}/>
                         </div>
                       </div>
                       <div className="col-xxl col-xl-3 col-md-6">
@@ -201,12 +258,12 @@ const AddStudent = () => {
                           <label className="form-label">Admission Date</label>
                           <div className="input-icon position-relative">
                           {isEdit? <DatePicker
-                                className="form-control datetimepicker"
+                                className="form-control datetimepicker"  id="" name=""
                                 format={{
                                   format: "DD-MM-YYYY",
                                   type: "mask",
                                 }}
-                                value={defaultDate}
+                                value={defaultDate} 
                                 placeholder="Select Date"
                               /> : <DatePicker
                               className="form-control datetimepicker"
@@ -226,46 +283,46 @@ const AddStudent = () => {
                       <div className="col-xxl col-xl-3 col-md-6">
                         <div className="mb-3">
                           <label className="form-label">Roll Number</label>
-                          <input type="text" className="form-control" value={studentData.rollNo} />
+                          <input type="text" id="rollNumber" name="rollNumber" className="form-control" value={studentData.rollNumber} onChange={handleChange} />
                         </div>
                       </div>
                       <div className="col-xxl col-xl-3 col-md-6">
                         <div className="mb-3">
                           <label className="form-label">Status</label>
-                          value={studentData.status}
+                          <input type="text" id="status" name="status" className="form-control" value={studentData.status}  onChange={handleChange} />
                         </div>
                       </div>
                       <div className="col-xxl col-xl-3 col-md-6">
                         <div className="mb-3">
                           <label className="form-label">First Name</label>
-                          <input type="text" className="form-control" value={studentData.firstName}/>
+                          <input type="text" id="firstName" name="firstName" className="form-control" value={studentData.firstName} onChange={handleChange} />
                         </div>
                       </div>
                       <div className="col-xxl col-xl-3 col-md-6">
                         <div className="mb-3">
                           <label className="form-label">Last Name</label>
-                          <input type="text" className="form-control" value={studentData.lastName}/>
+                          <input type="text" id="lastName" name="lastName" className="form-control" value={studentData.lastName} onChange={handleChange} />
                         </div>
                       </div>
                       <div className="col-xxl col-xl-3 col-md-6">
                         <div className="mb-3">
                           <label className="form-label">Class</label>
-                          <input type="text" className="form-control"
-                            value={studentData.class} />
+                          <input type="text" id="class" name="class" className="form-control"
+                            value={studentData.class} onChange={handleChange} />
                         </div>
                       </div>
                       <div className="col-xxl col-xl-3 col-md-6">
                         <div className="mb-3">
                           <label className="form-label">Section</label>
-                          <input type="text" className="form-control"
-                            value={studentData.section} />
+                          <input type="text" id="section" name="section" className="form-control"
+                            value={studentData.section} onChange={handleChange} />
                         </div>
                       </div>
                       <div className="col-xxl col-xl-3 col-md-6">
                         <div className="mb-3">
                           <label className="form-label">Gender</label>
-                          <input type="text" className="form-control"
-                            value={studentData.gender} />
+                          <input type="text" id="gender" name="gender" className="form-control"
+                            value={studentData.gender} onChange={handleChange} />
                         </div>
                       </div>
                       <div className="col-xxl col-xl-3 col-md-6">
@@ -298,16 +355,16 @@ const AddStudent = () => {
                       <div className="col-xxl col-xl-3 col-md-6">
                         <div className="mb-3">
                           <label className="form-label">Blood Group</label>
-                          <input type="text" className="form-control"
-                            value={studentData.bloodGroup} />
+                          <input type="text" id="bloodGroup" name="bloodGroup" className="form-control"
+                            value={studentData.bloodGroup} onChange={handleChange} />
                         </div>
                       </div>
                      
                       <div className="col-xxl col-xl-3 col-md-6">
                         <div className="mb-3">
                           <label className="form-label">Religion</label>
-                          <input type="text" className="form-control"
-                            value={studentData.religion} />
+                          <input type="text" id="religion" name="religion" className="form-control"
+                            value={studentData.religion} onChange={handleChange} />
                         </div>
                       </div>
                      
@@ -316,33 +373,33 @@ const AddStudent = () => {
                           <label className="form-label">
                             Primary Contact Number
                           </label>
-                          <input type="text" className="form-control" value={studentData.contactNumber}/>
+                          <input type="text" id="contactNumber" name="contactNumber" className="form-control" value={studentData.contactNumber} onChange={handleChange} />
                         </div>
                       </div>
                       <div className="col-xxl col-xl-3 col-md-6">
                         <div className="mb-3">
                           <label className="form-label">Email Address</label>
-                          <input type="email" className="form-control" value={studentData.email}/>
+                          <input type="email" id="email" name="email" className="form-control" value={studentData.email} onChange={handleChange} />
                         </div>
                       </div>
                       <div className="col-xxl col-xl-3 col-md-6">
                         <div className="mb-3">
                           <label className="form-label">Caste</label>
-                          <input type="text" className="form-control" value={studentData.caste}/>
+                          <input type="text" id="caste" name="caste" className="form-control" value={studentData.caste} onChange={handleChange} />
                         </div>
                       </div>
                       <div className="col-xxl col-xl-3 col-md-6">
                         <div className="mb-3">
                           <label className="form-label">Mother Tongue</label>
-                          <input type="text" className="form-control"
-                            value={studentData.motherTongue} />
+                          <input type="text" id="motherTongue" name="motherTongue" className="form-control"
+                            value={studentData.motherTongue} onChange={handleChange} />
                         </div>
                       </div>
                       <div className="col-xxl col-xl-3 col-md-6">
                         <div className="mb-3">
                           <label className="form-label">Language Known</label>
-                          <input type="text" className="form-control"
-                            value={studentData.languageKnown} />
+                          <input type="text" id="languageKnown" name="languageKnown" className="form-control"
+                            value={studentData.languageKnown} onChange={handleChange} />
                         </div>
                       </div>
                     </div>
@@ -393,19 +450,19 @@ const AddStudent = () => {
                         <div className="col-lg-3 col-md-6">
                           <div className="mb-3">
                             <label className="form-label">Father Name</label>
-                            <input type="text" className="form-control" value={studentData.fatherName}/>
+                            <input type="text" id="fatherName" name="fatherName" className="form-control" value={studentData.fatherName} onChange={handleChange} />
                           </div>
                         </div>
                         <div className="col-lg-3 col-md-6">
                           <div className="mb-3">
                             <label className="form-label">Email</label>
-                            <input type="text" className="form-control" value={studentData.fatherEmail}/>
+                            <input type="text" id="fatherEmail" name="fatherEmail" className="form-control" value={studentData.fatherEmail} onChange={handleChange} />
                           </div>
                         </div>
                         <div className="col-lg-3 col-md-6">
                           <div className="mb-3">
                             <label className="form-label">Phone Number</label>
-                            <input type="text" className="form-control" value={studentData.fatherNumber}/>
+                            <input type="text" id="fatherNumber" name="fatherNumber" className="form-control" value={studentData.fatherNumber} onChange={handleChange} />
                           </div>
                         </div>
                         <div className="col-lg-3 col-md-6">
@@ -413,7 +470,7 @@ const AddStudent = () => {
                             <label className="form-label">
                               Father Occupation
                             </label>
-                            <input type="text" className="form-control" value={studentData.fatherOccupation}/>
+                            <input type="text" id="fatherOccupation" name="fatherOccupation" className="form-control" value={studentData.fatherOccupation} onChange={handleChange} />
                           </div>
                         </div>
                       </div>
@@ -449,19 +506,19 @@ const AddStudent = () => {
                         <div className="col-lg-3 col-md-6">
                           <div className="mb-3">
                             <label className="form-label">Mother Name</label>
-                            <input type="text" className="form-control" value={studentData.motherName}/>
+                            <input type="text" id="motherName" name="motherName" className="form-control" value={studentData.motherName} onChange={handleChange} />
                           </div>
                         </div>
                         <div className="col-lg-3 col-md-6">
                           <div className="mb-3">
                             <label className="form-label">Email</label>
-                            <input type="text" className="form-control" value={studentData.motherEmail}/>
+                            <input type="text" id="motherEmail" name="motherEmail" className="form-control" value={studentData.motherEmail} onChange={handleChange} />
                           </div>
                         </div>
                         <div className="col-lg-3 col-md-6">
                           <div className="mb-3">
                             <label className="form-label">Phone Number</label>
-                            <input type="text" className="form-control" value={studentData.motherNumber}/>
+                            <input type="text" id="motherNumber" name="motherNumber" className="form-control" value={studentData.motherNumber} onChange={handleChange} />
                           </div>
                         </div>
                         <div className="col-lg-3 col-md-6">
@@ -469,7 +526,7 @@ const AddStudent = () => {
                             <label className="form-label">
                               Mother Occupation
                             </label>
-                            <input type="text" className="form-control" value={studentData.motherOccupation}/>
+                            <input type="text" id="motherOccupation" name="motherOccupation" className="form-control" value={studentData.motherOccupation} onChange={handleChange} />
                           </div>
                         </div>
                       </div>
@@ -530,22 +587,22 @@ const AddStudent = () => {
                 <div className="col-lg-3 col-md-6">
                   <div className="mb-3">
                     <label className="form-label">Name</label>
-                    <input type="text" className="form-control"
-                            value={studentData.siblingName} />
+                    <input type="text" id="siblingName" name="siblingName" className="form-control"
+                            value={studentData.siblingName} onChange={handleChange} />
                   </div>
                 </div>
                 <div className="col-lg-3 col-md-6">
                   <div className="mb-3">
                     <label className="form-label">Roll No</label>
-                    <input type="text" className="form-control"
-                            value={studentData.siblingRollno} />
+                    <input type="text" id="siblingRollno" name="siblingRollno" className="form-control"
+                            value={studentData.siblingRollno} onChange={handleChange} />
                   </div>
                 </div>
                 <div className="col-lg-3 col-md-6">
                   <div className="mb-3">
                     <label className="form-label">Admission No</label>
-                    <input type="text" className="form-control"
-                            value={studentData.siblingAdno} />
+                    <input type="text" id="siblingAdno" name="siblingAdno" className="form-control"
+                            value={studentData.siblingAdno} onChange={handleChange} />
                   </div>
                 </div>
                 <div className="col-lg-3 col-md-6">
@@ -553,8 +610,8 @@ const AddStudent = () => {
                     <div className="d-flex align-items-center">
                       <div className="w-100">
                         <label className="form-label">Class</label>
-                        <input type="text" className="form-control"
-                            value={studentData.siblingSection} />
+                        <input type="text" id="siblingSection" name="siblingSection" className="form-control"
+                            value={studentData.siblingSection} onChange={handleChange} />
                       </div>
                      
                     </div>
@@ -593,7 +650,7 @@ const AddStudent = () => {
                       <div className="col-md-6">
                         <div className="mb-3">
                           <label className="form-label">Current Address</label>
-                          <input type="text" className="form-control" defaultValue={isEdit? '3495 Red Hawk Road, Buffalo Lake, MN 55314': undefined}/>
+                          <input type="text" id="" name="" className="form-control" defaultValue={isEdit? '3495 Red Hawk Road, Buffalo Lake, MN 55314': undefined}/>
                         </div>
                       </div>
                       <div className="col-md-6">
@@ -601,7 +658,7 @@ const AddStudent = () => {
                           <label className="form-label">
                             Permanent Address
                           </label>
-                          <input type="text" className="form-control" defaultValue={isEdit? '3495 Red Hawk Road, Buffalo Lake, MN 55314': undefined}/>
+                          <input type="text" id="" name="" className="form-control" defaultValue={isEdit? '3495 Red Hawk Road, Buffalo Lake, MN 55314': undefined}/>
                         </div>
                       </div>
                     </div>
@@ -630,22 +687,22 @@ const AddStudent = () => {
                       <div className="col-lg-4 col-md-6">
                         <div className="mb-3">
                           <label className="form-label">Route</label>
-                          <input type="text" className="form-control"
-                            value={studentData.route} />
+                          <input type="text" id="route" name="route" className="form-control"
+                            value={studentData.route} onChange={handleChange} />
                         </div>
                       </div>
                       <div className="col-lg-4 col-md-6">
                         <div className="mb-3">
                           <label className="form-label">Vehicle Number</label>
-                          <input type="text" className="form-control"
-                            value={studentData.vehicleNumber} />
+                          <input type="text" id="vehicleNumber" name="vehicleNumber" className="form-control"
+                            value={studentData.vehicleNumber} onChange={handleChange} />
                         </div>
                       </div>
                       <div className="col-lg-4 col-md-6">
                         <div className="mb-3">
                           <label className="form-label">Pickup Point</label>
-                          <input type="text" className="form-control"
-                            value={studentData.pickupPoint} />
+                          <input type="text" id="pickupPoint" name="pickupPoint" className="form-control"
+                            value={studentData.pickupPoint} onChange={handleChange} />
                         </div>
                       </div>
                     </div>
@@ -674,15 +731,15 @@ const AddStudent = () => {
                       <div className="col-md-6">
                         <div className="mb-3">
                           <label className="form-label">Hostel</label>
-                          <input type="text" className="form-control"
-                            value={studentData.hostel} />
+                          <input type="text" id="hostel" name="hostel" className="form-control"
+                            value={studentData.hostel} onChange={handleChange} />
                         </div>
                       </div>
                       <div className="col-md-6">
                         <div className="mb-3">
                           <label className="form-label">Room No</label>
-                          <input type="text" className="form-control"
-                            value={studentData.hostelRoomNo} />
+                          <input type="text" id="hostelRoomNo" name="hostelRoomNo" className="form-control"
+                            value={studentData.hostelRoomNo} onChange={handleChange} />
                         </div>
                       </div>
                     </div>
@@ -849,13 +906,13 @@ const AddStudent = () => {
                       <div className="col-md-6">
                         <div className="mb-3">
                           <label className="form-label">School Name</label>
-                          <input type="text" className="form-control" defaultValue={isEdit? 'Oxford Matriculation, USA': undefined}/>
+                          <input type="text" id="" name="" className="form-control" defaultValue={isEdit? 'Oxford Matriculation, USA': undefined}/>
                         </div>
                       </div>
                       <div className="col-md-6">
                         <div className="mb-3">
                           <label className="form-label">Address</label>
-                          <input type="text" className="form-control" defaultValue={isEdit? '1852 Barnes Avenue, Cincinnati, OH 45202': undefined}/>
+                          <input type="text" id="" name="" className="form-control" defaultValue={isEdit? '1852 Barnes Avenue, Cincinnati, OH 45202': undefined}/>
                         </div>
                       </div>
                     </div>
@@ -877,19 +934,19 @@ const AddStudent = () => {
                       <div className="col-md-5">
                         <div className="mb-3">
                           <label className="form-label">Bank Name</label>
-                          <input type="text" className="form-control" value={studentData.bankName}/>
+                          <input type="text" id="bankName" name="bankName" className="form-control" value={studentData.bankName} onChange={handleChange} />
                         </div>
                       </div>
                       <div className="col-md-2">
                         <div className="mb-3">
                           <label className="form-label">Branch</label>
-                          <input type="text" className="form-control" value={studentData.bankBranch}/>
+                          <input type="text" id="bankBranch" name="bankBranch" className="form-control" value={studentData.bankBranch} onChange={handleChange} />
                         </div>
                       </div>
                       <div className="col-md-5">
                         <div className="mb-3">
                           <label className="form-label">IFSC Number</label>
-                          <input type="text" className="form-control" value={studentData.bankIfsc}/>
+                          <input type="text" id="bankIfsc" name="bankIfsc" className="form-control" value={studentData.bankIfsc} onChange={handleChange} />
                         </div>
                       </div>
                       {/* <div className="col-md-12">
@@ -908,14 +965,14 @@ const AddStudent = () => {
                   </div>
                 </div>
                 {/* /Other Details */}
-                {/* <div className="text-end">
-                  <button type="button" className="btn btn-light me-3">
+                <div className="text-end">
+                  <Link type="button" to={routes.adminDashboard} className="btn btn-light me-3">
                     Cancel
-                  </button>
-                  <Link to={routes.studentList} className="btn btn-primary">
-                    Add Student
                   </Link>
-                </div> */}
+                  <button onClick={handleSubmit} type="submit" className="btn btn-primary">
+                    Add Student
+                  </button>
+                </div>
               </form>
             </div>
           </div>

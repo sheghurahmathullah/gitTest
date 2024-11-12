@@ -62,6 +62,7 @@ const Login = () => {
       console.log(data);
       navigationPath();
     } else {
+      alert('username or password is wrong !');
       console.log(data);
     }
   } catch (error) {
