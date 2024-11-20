@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState} from "react";
+import { Link, useNavigate } from "react-router-dom";
 // import { feeGroup, feesTypes, paymentType } from '../../../core/common/selectoption/selectoption'
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
 import { all_routes } from "../../../router/all_routes";
+import { api_path } from "../../../../environment";
 import {
  
   Contract,
@@ -24,7 +25,17 @@ import { TagsInput } from "react-tag-input-component";
 import CommonSelect from "../../../../core/common/commonSelect";
 import { useLocation } from "react-router-dom";
 
+
+
 const TeacherForm = () => {
+
+  // const routes = all_routes;
+  const navigation = useNavigate();
+  const navigationPath = () => {
+    setTimeout(() => {
+      navigation(routes.teacherList);
+    }, 1000);
+  };
 
   const [teacherData, setTeacherData] = useState({
     teacherId : "",
@@ -79,6 +90,50 @@ const TeacherForm = () => {
       setDefaultDate(null);
     }
   }, [location.pathname]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setTeacherData((prevData) => ({ ...prevData, [name]: value }));
+  };
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    // if (!validateForm()) return;
+    try {
+      const response = await fetch(`${api_path}/students/createStudent`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          teacherId: teacherData.teacherId,
+          firstName: teacherData.firstName,
+          lastName: teacherData.lastName,
+          class: teacherData.class,
+          subject: teacherData.subject,
+          gender: teacherData.gender,
+          contactNumber: teacherData.contactNumber,
+          email: teacherData.email,
+          bloodGroup: teacherData.bloodGroup,
+          fatherName: teacherData.fatherName,
+          motherName: teacherData.motherName,
+          martialStatus: teacherData.martialStatus,
+          languageKnown: teacherData.languageKnown,
+          qualification: teacherData.qualification,
+          workExperience: teacherData.workExperience,
+          address: teacherData.address,
+          panNumber: teacherData.panNumber
+      }),
+      });
+      const data = await response.text();
+    if (response.ok) {
+      console.log(data);
+      alert("Teacher Created Successfully");
+      navigationPath(); // Redirect immediately
+    } else {
+      console.log(data);
+    }
+  } catch (error) {
+    console.error('Error Creating User:', error);
+  }
+};
 
   return (
     <>
@@ -157,6 +212,9 @@ const TeacherForm = () => {
                             <input
                               type="text"
                               className="form-control"
+                              id="teacherId"
+                              name="teacherId"
+                              onChange={handleChange}
                               defaultValue={isEdit ? "T849126" : undefined}
                               value={teacherData.teacherId}
                             />
@@ -169,6 +227,9 @@ const TeacherForm = () => {
                               type="text"
                               className="form-control"
                               defaultValue={isEdit ? "Teresa" : undefined}
+                              id="firstName"
+                              name="firstName"
+                              onChange={handleChange}
                               value={teacherData.firstName}
                             />
                           </div>
@@ -177,13 +238,20 @@ const TeacherForm = () => {
                           <div className="mb-3">
                             <label className="form-label">Last Name</label>
                             <input type="text" className="form-control"
+                            id="lastName"
+                            name="lastName"
+                            onChange={handleChange}
                             value={teacherData.lastName} />
+                            
                           </div>
                         </div>
                         <div className="col-xxl col-xl-3 col-md-6">
                           <div className="mb-3">
                             <label className="form-label">Class</label>
                             <input type="text" className="form-control"
+                            id="class"
+                            name="class"
+                            onChange={handleChange}
                             value={teacherData.class} />
                           </div>
                         </div>
@@ -191,6 +259,9 @@ const TeacherForm = () => {
                           <div className="mb-3">
                             <label className="form-label">Subject</label>
                             <input type="text" className="form-control"
+                            id="subject"
+                            name="subject"
+                            onChange={handleChange}
                             value={teacherData.subject} />
                           </div>
                         </div>
@@ -198,6 +269,9 @@ const TeacherForm = () => {
                           <div className="mb-3">
                             <label className="form-label">Gender</label>
                             <input type="text" className="form-control"
+                            id="gender"
+                            name="gender"
+                            onChange={handleChange}
                             value={teacherData.gender} />
                           </div>
                         </div>
@@ -209,6 +283,9 @@ const TeacherForm = () => {
                             <input
                               type="text"
                               className="form-control"
+                              id="contactNumber"
+                              name="contactNumber"
+                              onChange={handleChange}
                             
                               value={teacherData.contactNumber} 
                             />
@@ -220,7 +297,9 @@ const TeacherForm = () => {
                             <input
                               type="email"
                               className="form-control"
-                              
+                              id="email"
+                              name="email"
+                              onChange={handleChange}
                               value={teacherData.email} 
                             />
                           </div>
@@ -229,6 +308,9 @@ const TeacherForm = () => {
                           <div className="mb-3">
                             <label className="form-label">Blood Group</label>
                             <input type="text" className="form-control"
+                            id="bloodGroup"
+                            name="bloodGroup"
+                            onChange={handleChange}
                             value={teacherData.bloodGroup} />
                           </div>
                         </div>
@@ -254,6 +336,9 @@ const TeacherForm = () => {
                             <input
                               type="text"
                               className="form-control"
+                              id="fatherName"
+                              name="fatherName"
+                              onChange={handleChange}
                               value={teacherData.fatherName} 
                              
                             />
@@ -265,6 +350,9 @@ const TeacherForm = () => {
                             <input
                               type="text"
                               className="form-control"
+                              id="motherName"
+                              name="motherName"
+                              onChange={handleChange}
                               value={teacherData.motherName} 
                             />
                           </div>
@@ -301,6 +389,9 @@ const TeacherForm = () => {
                           <div className="mb-3">
                             <label className="form-label">Marital Status</label>
                             <input type="text" className="form-control"
+                            id="martialStatus"
+                            name="martialStatus"
+                            onChange={handleChange}
                             value={teacherData.martialStatus} />
                           </div>
                         </div>
@@ -308,6 +399,9 @@ const TeacherForm = () => {
                           <div className="mb-3">
                             <label className="form-label">Language Known</label>
                             <input type="text" className="form-control"
+                            id="languageKnown"
+                            name="languageKnown"
+                            onChange={handleChange}
                             value={teacherData.languageKnown} />
                           </div>
                         </div>
@@ -317,6 +411,9 @@ const TeacherForm = () => {
                             <input
                               type="text"
                               className="form-control"
+                              id="qualification"
+                              name="qualification"
+                              onChange={handleChange}
                               value={teacherData.qualification} 
                             />
                           </div>
@@ -329,6 +426,9 @@ const TeacherForm = () => {
                             <input
                               type="text"
                               className="form-control"
+                              id="workExperience"
+                              name="workExperience"
+                              onChange={handleChange}
                               value={teacherData.workExperience} 
                             />
                           </div>
@@ -342,6 +442,9 @@ const TeacherForm = () => {
                             <input
                               type="text"
                               className="form-control"
+                              id="address"
+                              name="address"
+                              onChange={handleChange}
                               value={teacherData.address} 
                             />
                           </div>
@@ -355,6 +458,9 @@ const TeacherForm = () => {
                             <input
                               type="text"
                               className="form-control"
+                              id="panNumber"
+                              name="panNumber"
+                              onChange={handleChange}
                               value={teacherData.panNumber} 
                             />
                           </div>
