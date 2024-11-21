@@ -1,12 +1,21 @@
 import React from "react";
 import { names } from "../../../core/common/selectoption/selectoption";
 import { Select } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ImageWithBasePath from "../../../core/common/imageWithBasePath";
 import { all_routes } from "../../router/all_routes";
-import { useState } from "react";
+import { api_path } from "../../../environment";
+import { useState, useEffect } from "react";
 
 const ParentModal = () => {
+
+  const navigation = useNavigate();
+  const navigationPath = () => {
+    setTimeout(() => {
+      navigation(routes.parentList);
+    }, 1000);
+  };
+
   const [parentData, setParentData] = useState({
     name : "",
     email:"",
@@ -24,6 +33,38 @@ const ParentModal = () => {
     return modalElement ? modalElement : document.body; // Fallback to document.body if modalElement is null
   };
   
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setParentData((prevData) => ({ ...prevData, [name]: value }));
+  };
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    // if (!validateForm()) return;
+    try {
+      const response = await fetch(`${api_path}/students/createStudent`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name :parentData.name,
+          email:parentData.email,
+          phoneNumber:parentData.phoneNumber,
+          childName:parentData.childName,
+         
+      }),
+      });
+      const data = await response.text();
+    if (response.ok) {
+      console.log(data);
+      alert("Parent Created Successfully");
+      navigationPath(); // Redirect immediately
+    } else {
+      console.log(data);
+    }
+  } catch (error) {
+    console.error('Error Creating User:', error);
+  }
+};
+
   return (
     <>
       {/* Add Parent */}
@@ -71,20 +112,28 @@ const ParentModal = () => {
                     </div>
                     <div className="mb-3">
                       <label className="form-label">Name</label>
-                      <input type="text" className="form-control" value={parentData.name} />
+                      <input type="text" className="form-control" id="name"
+                              name="name"
+                              onChange={handleChange}  value={parentData.name} />
                     </div>
                     <div className="mb-3">
                       <label className="form-label">Phone Number</label>
-                      <input type="text" className="form-control" value={parentData.phoneNumber} />
+                      <input type="text" className="form-control" id="phoneNumber"
+                              name="phoneNumber"
+                              onChange={handleChange} value={parentData.phoneNumber} />
                     </div>
                     <div className="mb-3">
                       <label className="form-label">Email Address</label>
-                      <input type="text" className="form-control" value={parentData.email} />
+                      <input type="text" className="form-control" id="email"
+                              name="email"
+                              onChange={handleChange} value={parentData.email} />
                     </div>
                     <div className="mb-0">
                       <label className="form-label">Child Name</label>
                      
-                      <input type="text" className="form-control"
+                      <input type="text" className="form-control" id="childName"
+                              name="childName"
+                              onChange={handleChange}
                             value={parentData.childName} />
                     </div>
                   </div>
