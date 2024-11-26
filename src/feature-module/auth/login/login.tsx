@@ -8,11 +8,25 @@ const Login = () => {
   const routes = all_routes;
   const navigation = useNavigate();
 
-  const navigationPath = () => {
+  const navigationPath = (role: String) => {
     setTimeout(() => {
-      navigation(routes.adminDashboard);
+      switch (role) {
+        case 'STUDENT':
+          navigation(routes.studentDashboard);
+          break;
+        case 'PARENT':
+          navigation(routes.parentDashboard);
+          break;
+        case 'TEACHER':
+          navigation(routes.teacherDashboard);
+          break;
+        default:
+          navigation(routes.adminDashboard);
+          break;
+      }
     }, 1000);
   };
+
   const [isPasswordVisible, setPasswordVisible] = useState(false);
 
 
@@ -57,14 +71,21 @@ const Login = () => {
         `${api_path}/users/logIn?username=${encodeURIComponent(formData.email)}&password=${encodeURIComponent(formData.password)}`,
         { method: "GET" }
       );
-      const data = await response.text();
-    if (response.ok) {
-      console.log(data);
-      navigationPath();
-    } else {
-      alert('username or password is wrong !');
-      console.log(data);
-    }
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log(data);
+        const { isValid, role, message } = data;
+        navigationPath(role);
+        // Use isValid, role, and message as needed
+        console.log(isValid, role, message);
+      } else {
+        const errorMessage = response.status === 401
+          ? "Invalid username or password"
+          : "An error occurred: " + data.error;
+        alert(errorMessage);
+        console.log(data);
+      }
   } catch (error) {
     console.error('Error signing in:', error);
   }
@@ -248,7 +269,7 @@ const Login = () => {
                         <div className="form-wrap form-wrap-checkbox">
                           <div className="d-flex align-items-center">
                             <div className="form-check form-check-md mb-0">
-                              <input
+                              <input placeholder=""
                                 className="form-check-input mt-0"
                                 type="checkbox"
                               />
