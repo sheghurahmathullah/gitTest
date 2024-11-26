@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from "react";
-import ReactApexChart from "react-apexcharts";
-import { Link } from "react-router-dom";
-import CountUp from "react-countup";
+import "bootstrap-daterangepicker/daterangepicker.css";
 import { Calendar } from "primereact/calendar";
 import { Nullable } from "primereact/ts-helpers";
-import "bootstrap-daterangepicker/daterangepicker.css";
+import { useEffect, useState } from "react";
+import ReactApexChart from "react-apexcharts";
+import CountUp from "react-countup";
+import { Link } from "react-router-dom";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick-theme.css";
+import "slick-carousel/slick/slick.css";
 import ImageWithBasePath from "../../../core/common/imageWithBasePath";
 import { all_routes } from "../../router/all_routes";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import AdminDashboardModal from "./adminDashboardModal";
 
-import { Modal } from "react-bootstrap";
+import { api_path } from "../../../environment";
 import ParentModal from "./parentModal";
 
 
@@ -41,22 +41,29 @@ const AdminDashboard = () => {
   });
 
   // Mocked fetch function
-  const fetchData = () => {
+  const fetchData = async () => {
     // Simulating data you might get from an API
+    const response = await fetch(
+      `${api_path}/dashboard/getAdminDashboardCount`,
+      { method: "GET" }
+    ).then(response => response.json())
+    .then(data => {return data})
+    .catch(error => console.error(error));
+    console.log(response);
     const mockData = {
-      totalstaffs: 0,
+      totalstaffs: response.parent || 0,
       activestaffs: 0,
       inactivestaffs: 0,
       percentageChangeStaff: 0,
-      totalTeacher: 0,
+      totalTeacher: response.teacher || 0,
       activeTeacher: 0,
       inactiveTeacher: 0,
       percentageChangeTeacher: 0,
-      totalStudents: 0,
+      totalStudents: response.student || 0,
       activeStudents: 0,
       inactiveStudents: 0,
       percentageChangeStudents: 0,
-      totalSubjects: 0,
+      totalSubjects: response.subject|| 0,
       activeSubjects: 0,
       inactiveSubjects: 0,
       percentageChangeSubjects: 0,
