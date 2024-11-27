@@ -664,7 +664,7 @@ const AdminDashboard = () => {
                         <p>Total Student</p>
                       </div>
                     </div>
-                    <div className="d-flex align-items-center justify-content-between border-top mt-3 pt-3">
+                    {/* <div className="d-flex align-items-center justify-content-between border-top mt-3 pt-3">
                       <p className="mb-0">
                         Active :{" "}
                         <span className="text-dark fw-semibold">
@@ -678,7 +678,7 @@ const AdminDashboard = () => {
                           {AdminHeaderData.inactiveStudents}
                         </span>
                       </p>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>
@@ -704,7 +704,7 @@ const AdminDashboard = () => {
                         <p>Total Teachers</p>
                       </div>
                     </div>
-                    <div className="d-flex align-items-center justify-content-between border-top mt-3 pt-3">
+                    {/* <div className="d-flex align-items-center justify-content-between border-top mt-3 pt-3">
                       <p className="mb-0">
                         Active :{" "}
                         <span className="text-dark fw-semibold">
@@ -718,7 +718,7 @@ const AdminDashboard = () => {
                           {AdminHeaderData.inactiveTeacher}
                         </span>
                       </p>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>
@@ -744,7 +744,7 @@ const AdminDashboard = () => {
                         <p>Total Parents</p>
                       </div>
                     </div>
-                    <div className="d-flex align-items-center justify-content-between border-top mt-3 pt-3">
+                    {/* <div className="d-flex align-items-center justify-content-between border-top mt-3 pt-3">
                       <p className="mb-0">
                         Active :{" "}
                         <span className="text-dark fw-semibold">
@@ -758,7 +758,7 @@ const AdminDashboard = () => {
                           {AdminHeaderData.inactiveStaff}
                         </span>
                       </p>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>
@@ -784,7 +784,7 @@ const AdminDashboard = () => {
                         <p>Total Subjects</p>
                       </div>
                     </div>
-                    <div className="d-flex align-items-center justify-content-between border-top mt-3 pt-3">
+                    {/* <div className="d-flex align-items-center justify-content-between border-top mt-3 pt-3">
                       <p className="mb-0">
                         Active :{" "}
                         <span className="text-dark fw-semibold">{AdminHeaderData.activeSubjects}</span>
@@ -794,7 +794,7 @@ const AdminDashboard = () => {
                         Inactive :{" "}
                         <span className="text-dark fw-semibold">{AdminHeaderData.inactiveSubjects}</span>
                       </p>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>
