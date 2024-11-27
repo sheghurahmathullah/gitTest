@@ -549,14 +549,7 @@ const AdminDashboard = () => {
                     Add New Parent
                   </Link>
                 </div>
-                <div className="mb-2">
-                  <Link
-                    to={routes.collectFees}
-                    className="btn btn-light d-flex align-items-center"
-                  >
-                    Fees Details
-                  </Link>
-                </div>
+
               </div>
             </div>
             {/* /Page Header */}
