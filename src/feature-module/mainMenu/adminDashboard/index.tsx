@@ -4,7 +4,7 @@ import { Nullable } from "primereact/ts-helpers";
 import { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 import CountUp from "react-countup";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
@@ -17,6 +17,58 @@ import ParentModal from "./parentModal";
 
 
 const AdminDashboard = () => {
+
+  const navigation = useNavigate();
+  const navigationPath = () => {
+    setTimeout(() => {
+      navigation(routes.classSubject);
+    }, 1000);
+  };
+
+// subject json 
+
+  const [subjectData, setSubjectData] = useState({
+    name : "",
+    code:"",
+    type:"",
+    status:""
+    
+    });
+
+  
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setSubjectData((prevData) => ({ ...prevData, [name]: value }));
+  };
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    // if (!validateForm()) return;
+    try {
+      const response = await fetch(`${api_path}/students/createStudent`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name :subjectData.name,
+          code:subjectData.code,
+        type:subjectData.type,
+          status:subjectData.status,
+         
+      }),
+      });
+      const data = await response.text();
+    if (response.ok) {
+      console.log(data);
+      alert("Parent Created Successfully");
+      navigationPath(); // Redirect immediately
+    } else {
+      console.log(data);
+    }
+  } catch (error) {
+    console.error('Error Creating User:', error);
+  }
+};
+
+
   const [AdminHeaderData, setAdminHeaderData] = useState({
     totalStaff: 0,
     activeStaff: 0,
@@ -473,6 +525,17 @@ const AdminDashboard = () => {
                   >
                     <i className="ti ti-square-rounded-plus me-2" />
                     Add New Teacher
+                  </Link>
+                </div>
+                <div className="mb-2">
+                  <Link
+                    to="#"
+                    data-bs-toggle="modal"
+                    data-bs-target="#add_subject"
+                    className="btn btn-primary d-flex align-items-center me-3"
+                  >
+                    <i className="ti ti-square-rounded-plus me-2" />
+                    Add New Subject
                   </Link>
                 </div>
                 <div className="mb-2">
@@ -2239,6 +2302,78 @@ const AdminDashboard = () => {
       {/* /Page Wrapper */}
       <AdminDashboardModal />
       <ParentModal />
+
+      <div className="modal fade" id="add_subject">
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h4 className="modal-title">Add Subject</h4>
+                <button
+                  type="button"
+                  className="btn-close custom-btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <i className="ti ti-x" />
+                </button>
+              </div>
+              <form >
+                <div className="modal-body">
+                  <div className="row">
+                    <div className="col-md-12">
+                      <div className="mb-3">
+                        <label className="form-label">Name</label>
+                        <input type="text" className="form-control" id="name"
+                           name="name"
+                           onChange={handleChange}  value={subjectData.name}/>
+                      </div>
+                      <div className="mb-3">
+                        <label className="form-label">Code</label>
+                        <input type="text" className="form-control"
+                            id="code"
+                            name="code"
+                            onChange={handleChange}  value={subjectData.code} />
+                      </div>
+                      <div className="mb-3">
+                        <label className="form-label">Type</label>
+                        <input type="text" className="form-control"
+                           id="type"
+                           name="type"
+                           onChange={handleChange}  value={subjectData.type} />
+                      </div>
+                      <div className="d-flex align-items-center justify-content-between">
+                        <div className="status-title">
+                          <h5>Status</h5>
+                          <p>Change the Status by toggle </p>
+                        </div>
+                        <div className="form-check form-switch">
+                        <input type="text" className="form-control"
+                           id="status"
+                           name="status"
+                           onChange={handleChange}  value={subjectData.status} />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="modal-footer">
+                  <Link
+                    to="#"
+                    className="btn btn-light me-2"
+                    data-bs-dismiss="modal"
+                  >
+                    Cancel
+                  </Link>
+                  <Link to="#" data-bs-dismiss="modal" className="btn btn-primary">
+                    Add Subject
+                  </Link>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        {/* /Add Subject */}
+
     </>
   );
 };
