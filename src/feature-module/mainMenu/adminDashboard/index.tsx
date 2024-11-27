@@ -44,7 +44,7 @@ const AdminDashboard = () => {
     event.preventDefault();
     // if (!validateForm()) return;
     try {
-      const response = await fetch(`${api_path}/students/createStudent`, {
+      const response = await fetch(`${api_path}/subjects/createSubject`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -58,13 +58,13 @@ const AdminDashboard = () => {
       const data = await response.text();
     if (response.ok) {
       console.log(data);
-      alert("Parent Created Successfully");
+      alert("Subject Created Successfully");
       navigationPath(); // Redirect immediately
     } else {
       console.log(data);
     }
   } catch (error) {
-    console.error('Error Creating User:', error);
+    console.error('Error Creating Subject:', error);
   }
 };
 
@@ -2364,9 +2364,9 @@ const AdminDashboard = () => {
                   >
                     Cancel
                   </Link>
-                  <Link to="#" data-bs-dismiss="modal" className="btn btn-primary">
+                  <button onClick={handleSubmit} type="submit" data-bs-dismiss="modal" className="btn btn-primary">
                     Add Subject
-                  </Link>
+                  </button>
                 </div>
               </form>
             </div>
