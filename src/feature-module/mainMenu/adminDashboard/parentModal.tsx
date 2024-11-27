@@ -10,7 +10,7 @@ const ParentModal = () => {
   const navigation = useNavigate();
   const navigationPath = () => {
     setTimeout(() => {
-      navigation(routes.parentList);
+      navigation(routes.adminDashboard);
     }, 1000);
   };
 
