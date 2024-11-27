@@ -27,7 +27,7 @@ const AddStudent = () => {
     status :"",
     firstName: "",
     lastName: "",
-    class:"",
+    studentDAOClass:"",
     section:"",
     gender:"",
     bloodGroup:"",
@@ -122,7 +122,7 @@ const AddStudent = () => {
           status :studentData.status,
           firstName: studentData.firstName,
           lastName: studentData.lastName,
-          class:studentData.class,
+          studentDAOClass:studentData.studentDAOClass,
           section:studentData.section,
           gender:studentData.gender,
           bloodGroup:studentData.bloodGroup,
@@ -308,7 +308,7 @@ const AddStudent = () => {
                         <div className="mb-3">
                           <label className="form-label">Class</label>
                           <input type="text" id="class" name="class" className="form-control"
-                            value={studentData.class} onChange={handleChange} />
+                            value={studentData.studentDAOClass} onChange={handleChange} />
                         </div>
                       </div>
                       <div className="col-xxl col-xl-3 col-md-6">

@@ -1,22 +1,30 @@
-import React, { useRef } from "react";
-import { classSubject } from "../../../core/data/json/class-subject";
+import { useRef } from "react";
 import Table from "../../../core/common/dataTable/index";
+import { classSubject } from "../../../core/data/json/class-subject";
 
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import CommonSelect from "../../../core/common/commonSelect";
+import PredefinedDateRanges from "../../../core/common/datePicker";
 import {
   count,
- 
+
   language,
   typetheory,
 } from "../../../core/common/selectoption/selectoption";
-import PredefinedDateRanges from "../../../core/common/datePicker";
-import CommonSelect from "../../../core/common/commonSelect";
-import { TableData } from "../../../core/data/interface";
-import { Link } from "react-router-dom";
 import TooltipOption from "../../../core/common/tooltipOption";
+import { TableData } from "../../../core/data/interface";
 import { all_routes } from "../../router/all_routes";
-import { useState } from "react";
 
 const ClassSubject = () => {
+
+  const navigation = useNavigate();
+
+  const navigationPath = () => {
+    setTimeout(() => {
+      navigation(routes.studentList);
+    }, 1000);
+  };
 
   const [subjectData, setSubjectData] = useState({
     name : "",

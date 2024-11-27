@@ -1,11 +1,9 @@
-import React from "react";
-import { names } from "../../../core/common/selectoption/selectoption";
 import { Select } from "antd";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import ImageWithBasePath from "../../../core/common/imageWithBasePath";
-import { all_routes } from "../../router/all_routes";
+import { names } from "../../../core/common/selectoption/selectoption";
 import { api_path } from "../../../environment";
-import { useState, useEffect } from "react";
+import { all_routes } from "../../router/all_routes";
 
 const ParentModal = () => {
 
@@ -20,8 +18,8 @@ const ParentModal = () => {
     name : "",
     email:"",
     phoneNumber:"",
-    childName:""
-    
+    childName:"",
+    uploadImage:""
     });
     const routes = all_routes
   const getModalContainer = () => {
@@ -41,20 +39,22 @@ const ParentModal = () => {
     event.preventDefault();
     // if (!validateForm()) return;
     try {
-      const response = await fetch(`${api_path}/students/createStudent`, {
+      const response = await fetch(`${api_path}/parents/createParent`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name :parentData.name,
-          email:parentData.email,
+          emailAddress:parentData.email,
           phoneNumber:parentData.phoneNumber,
-          childName:parentData.childName,
+          child:parentData.childName,
+          uploadImage:parentData.uploadImage,
          
       }),
       });
       const data = await response.text();
     if (response.ok) {
       console.log(data);
+      console.log("Parent Created Successfully");
       alert("Parent Created Successfully");
       navigationPath(); // Redirect immediately
     } else {
@@ -147,9 +147,9 @@ const ParentModal = () => {
                 >
                   Cancel
                 </Link>
-                <Link to="#"  data-bs-dismiss="modal" className="btn btn-primary">
-                  Add Parent
-                </Link>
+                <button onClick={handleSubmit} data-bs-dismiss="modal" type="submit" className="btn btn-primary">
+                    Add Parent
+                  </button>
               </div>
             </form>
           </div>

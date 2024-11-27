@@ -1,29 +1,21 @@
-import React, { useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 // import { feeGroup, feesTypes, paymentType } from '../../../core/common/selectoption/selectoption'
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
-import { all_routes } from "../../../router/all_routes";
-import { api_path } from "../../../../environment";
+import { useLocation } from "react-router-dom";
+import CommonSelect from "../../../../core/common/commonSelect";
 import {
- 
   Contract,
   Hostel,
-  Marital,
   PickupPoint,
   Shift,
   VehicleNumber,
-  allClass,
-  allSubject,
-  bloodGroup,
-  gender,
   roomNO,
-  route,
-  status,
+  route
 } from "../../../../core/common/selectoption/selectoption";
-import { TagsInput } from "react-tag-input-component";
-import CommonSelect from "../../../../core/common/commonSelect";
-import { useLocation } from "react-router-dom";
+import { api_path } from "../../../../environment";
+import { all_routes } from "../../../router/all_routes";
 
 
 
@@ -44,7 +36,7 @@ const TeacherForm = () => {
     class :"",
     subject: "",
     gender: "",
-    contactNumber:0,
+    contactNumber:"",
     email:"",
     bloodGroup:"",
     fatherName:"",
@@ -99,7 +91,7 @@ const TeacherForm = () => {
     event.preventDefault();
     // if (!validateForm()) return;
     try {
-      const response = await fetch(`${api_path}/students/createStudent`, {
+      const response = await fetch(`${api_path}/teachers/createTeacher`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -970,9 +962,9 @@ const TeacherForm = () => {
                   <button type="button" className="btn btn-light me-3">
                     Cancel
                   </button>
-                  <Link to={routes.teacherList} className="btn btn-primary">
+                  <button onClick={handleSubmit} type="submit" className="btn btn-primary">
                     Add Teacher
-                  </Link>
+                  </button>
                 </div>
               </form>
             </div>
