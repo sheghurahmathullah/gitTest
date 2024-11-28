@@ -1,18 +1,26 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { all_routes } from "../../router/all_routes";
-import ImageWithBasePath from "../../../core/common/imageWithBasePath";
-import CircleProgress from "./circleProgress";
-import ReactApexChart from "react-apexcharts";
+import { DatePicker } from "antd";
+import dayjs from "dayjs";
 import { Calendar } from "primereact/calendar";
 import { Nullable } from "primereact/ts-helpers";
+import { useEffect, useState } from "react";
+import ReactApexChart from "react-apexcharts";
+import { Link } from "react-router-dom";
 import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import dayjs from "dayjs";
-import { DatePicker } from "antd";
+import "slick-carousel/slick/slick.css";
+import ImageWithBasePath from "../../../core/common/imageWithBasePath";
+import { api_path } from "../../../environment";
+import { useAuth } from "../../hooks/useAuth";
+import { all_routes } from "../../router/all_routes";
+
+import CircleProgress from "./circleProgress";
 
 const StudentDasboard = () => {
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   const routes = all_routes;
   const today = new Date();
   const year = today.getFullYear();
@@ -21,6 +29,8 @@ const StudentDasboard = () => {
   const formattedDate = `${month}-${day}-${year}`;
   const defaultValue = dayjs(formattedDate);
   const [date, setDate] = useState<Nullable<Date>>(null);
+
+  const {userData} = useAuth();
 
   const [attendance_chart] = useState<any>({
     chart: {
@@ -222,6 +232,16 @@ const StudentDasboard = () => {
       </div>
     );
   }
+
+  const fetchData = async () => {
+    const response = await fetch(
+      `${api_path}/students/getStudentById?rollNo=${encodeURIComponent(userData.userId)}`,
+      { method: "GET" }
+    ).then(response => response.json())
+    .then(data => {return data})
+    .catch(error => console.error(error));
+    console.log(response);
+  };
   const profile = {
     dots: false,
     autoplay: false,

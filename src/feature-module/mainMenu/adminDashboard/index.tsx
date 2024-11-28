@@ -12,6 +12,8 @@ import ImageWithBasePath from "../../../core/common/imageWithBasePath";
 import { all_routes } from "../../router/all_routes";
 import AdminDashboardModal from "./adminDashboardModal";
 
+import { useAuth } from "../../hooks/useAuth";
+
 import { api_path } from "../../../environment";
 import ParentModal from "./parentModal";
 
@@ -34,6 +36,8 @@ const AdminDashboard = () => {
     status:""
     
     });
+
+  const {userData} = useAuth();
 
   
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -614,7 +618,7 @@ const AdminDashboard = () => {
                       <div className="mb-3 mb-xl-0">
                         <div className="d-flex align-items-center flex-wrap mb-2">
                           <h1 className="text-white me-2">
-                            Welcome Back, Mr. Herald
+                            Welcome Back, {userData?.name || "Admin"}
                           </h1>
                           <Link
                             to="profile"
