@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 import Scrollbars from "react-custom-scrollbars-2";
-import { SidebarData } from "../../data/json/sidebarData";
-import ImageWithBasePath from "../imageWithBasePath";
-import "../../../style/icon/tabler-icons/webfont/tabler-icons.css";
-import { setExpandMenu } from "../../data/redux/sidebarSlice";
 import { useDispatch } from "react-redux";
+import { Link, useLocation } from "react-router-dom";
+import "../../../style/icon/tabler-icons/webfont/tabler-icons.css";
+import { SidebarData } from "../../data/json/sidebarData";
+import { setExpandMenu } from "../../data/redux/sidebarSlice";
 import {
   resetAllMode,
   setDataLayout,
 } from "../../data/redux/themeSettingSlice";
+import ImageWithBasePath from "../imageWithBasePath";
 import usePreviousRoute from "./usePreviousRoute";
 
 const Sidebar = () => {

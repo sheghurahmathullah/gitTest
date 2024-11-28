@@ -1,12 +1,9 @@
-import React, { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { all_routes } from "../../../router/all_routes";
-import { Studentlist } from "../../../../core/data/json/studentList";
-import { TableData } from "../../../../core/data/interface";
-import ImageWithBasePath from "../../../../core/common/imageWithBasePath";
-import StudentModals from "../studentModals";
+import CommonSelect from "../../../../core/common/commonSelect";
 import Table from "../../../../core/common/dataTable/index";
 import PredefinedDateRanges from "../../../../core/common/datePicker";
+import ImageWithBasePath from "../../../../core/common/imageWithBasePath";
 import {
   allClass,
   allSection,
@@ -14,14 +11,31 @@ import {
   names,
   status,
 } from "../../../../core/common/selectoption/selectoption";
-import CommonSelect from "../../../../core/common/commonSelect";
 import TooltipOption from "../../../../core/common/tooltipOption";
+import { TableData } from "../../../../core/data/interface";
+import { api_path } from "../../../../environment";
+import { all_routes } from "../../../router/all_routes";
+import StudentModals from "../studentModals";
 
 const StudentList = () => {
   const routes = all_routes;
-  const data = Studentlist;
+  const [dataSource, setDataSource] = useState([]);
   const dropdownMenuRef = useRef<HTMLDivElement | null>(null);
 
+  const fetchData = async () => {
+    const response = await fetch(
+      `${api_path}/students/getAllStudent`,
+      { method: "GET" }
+    );
+    const data1 = await response.json();
+    debugger;
+    setDataSource(data1);
+    console.table(dataSource);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
   const handleApplyClick = () => {
     if (dropdownMenuRef.current) {
       dropdownMenuRef.current.classList.remove("show");
@@ -41,8 +55,8 @@ const StudentList = () => {
     },
     {
       title: "Roll No",
-      dataIndex: "RollNo",
-      sorter: (a: TableData, b: TableData) => a.RollNo.length - b.RollNo.length,
+      dataIndex: "rollNumber",
+      sorter: (a: TableData, b: TableData) => a.rollNumber.length - b.rollNumber.length,
     },
     {
       title: "Name",
@@ -217,6 +231,8 @@ const StudentList = () => {
       ),
     },
   ];
+
+  
   return (
     <>
       {/* Page Wrapper */}
@@ -398,7 +414,7 @@ const StudentList = () => {
             </div>
             <div className="card-body p-0 py-3">
               {/* Student List */}
-              <Table dataSource={data} columns={columns} Selection={true} />
+              <Table dataSource={dataSource} columns={columns} Selection={true} />
               {/* /Student List */}
             </div>
           </div>

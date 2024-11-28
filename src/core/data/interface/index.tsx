@@ -77,6 +77,7 @@ export interface TableData {
   notes: any;
   classe: any;
   rollNo: any;
+  rollNumber: any;
   admissionNo: any;
   authority: any;
   noofDays: any;
