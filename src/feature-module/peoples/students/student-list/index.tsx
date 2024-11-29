@@ -1,46 +1,63 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import CommonSelect from "../../../../core/common/commonSelect";
 import Table from "../../../../core/common/dataTable/index";
-import PredefinedDateRanges from "../../../../core/common/datePicker";
-import ImageWithBasePath from "../../../../core/common/imageWithBasePath";
-import {
-  allClass,
-  allSection,
-  gender,
-  names,
-  status,
-} from "../../../../core/common/selectoption/selectoption";
 import TooltipOption from "../../../../core/common/tooltipOption";
-import { TableData } from "../../../../core/data/interface";
 import { api_path } from "../../../../environment";
 import { all_routes } from "../../../router/all_routes";
 import StudentModals from "../studentModals";
 
 const StudentList = () => {
   const routes = all_routes;
-  const [dataSource, setDataSource] = useState([]);
   const dropdownMenuRef = useRef<HTMLDivElement | null>(null);
 
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Fetch Data from API
   const fetchData = async () => {
-    const response = await fetch(
-      `${api_path}/students/getAllStudent`,
-      { method: "GET" }
-    );
-    const data1 = await response.json();
-    debugger;
-    setDataSource(data1);
-    console.table(dataSource);
+    try {
+      setLoading(true);
+      const response = await fetch(`${api_path}/students/getAllStudent`, {
+        method: "GET",
+      });
+      if (!response.ok) {
+        throw new Error("Failed to fetch students");
+      }
+      const result = await response.json();
+
+      // Transform API data to fit table structure
+      const transformedData = result.map((item: any) => ({
+        key: item.key || "",
+        AdmissionNo: item.admissionNumber || "N/A",
+        RollNo: item.rollNumber || "N/A",
+        name: `${item.firstName || ""} ${item.lastName || ""}`.trim(),
+        class: item.studentDAOClass || "N/A",
+        section: item.section || "N/A",
+        gender: item.gender || "N/A",
+        status: item.status || "N/A",
+        DateofJoin: item.admissionDate || "N/A",
+        DOB: item.dateOfBirth || "N/A",
+        imgSrc: item.uploadImage || "assets/img/default-student.jpg",
+      }));
+      setData(transformedData);
+    } catch (err:any) {
+      setError((err as Error).message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     fetchData();
   }, []);
+
   const handleApplyClick = () => {
     if (dropdownMenuRef.current) {
       dropdownMenuRef.current.classList.remove("show");
     }
-  };
+  }; 
+
   const columns = [
     {
       title: "Admission No",
@@ -50,26 +67,18 @@ const StudentList = () => {
           {text}
         </Link>
       ),
-      sorter: (a: TableData, b: TableData) =>
-        a.AdmissionNo.length - b.AdmissionNo.length,
+      sorter: (a: any, b: any) => a.AdmissionNo.localeCompare(b.AdmissionNo),
     },
     {
       title: "Roll No",
-      dataIndex: "rollNumber",
-      sorter: (a: TableData, b: TableData) => a.rollNumber.length - b.rollNumber.length,
+      dataIndex: "RollNo",
+      sorter: (a: any, b: any) => a.RollNo.localeCompare(b.RollNo),
     },
     {
       title: "Name",
       dataIndex: "name",
       render: (text: string, record: any) => (
         <div className="d-flex align-items-center">
-          <Link to="#" className="avatar avatar-md">
-            <ImageWithBasePath
-              src={record.imgSrc}
-              className="img-fluid rounded-circle"
-              alt="img"
-            />
-          </Link>
           <div className="ms-2">
             <p className="text-dark mb-0">
               <Link to="#">{text}</Link>
@@ -77,25 +86,23 @@ const StudentList = () => {
           </div>
         </div>
       ),
-      sorter: (a: TableData, b: TableData) => a.name.length - b.name.length,
+      sorter: (a: any, b: any) => a.name.localeCompare(b.name),
     },
     {
       title: "Class",
       dataIndex: "class",
-      sorter: (a: TableData, b: TableData) => a.class.length - b.class.length,
+      sorter: (a: any, b: any) => a.class.localeCompare(b.class),
     },
     {
       title: "Section",
       dataIndex: "section",
-      sorter: (a: TableData, b: TableData) =>
-        a.section.length - b.section.length,
+      sorter: (a: any, b: any) => a.section.localeCompare(b.section),
     },
     {
       title: "Gender",
       dataIndex: "gender",
-      sorter: (a: TableData, b: TableData) => a.gender.length - b.gender.length,
+      sorter: (a: any, b: any) => a.gender.localeCompare(b.gender),
     },
-
     {
       title: "Status",
       dataIndex: "status",
@@ -114,316 +121,66 @@ const StudentList = () => {
           )}
         </>
       ),
-      sorter: (a: TableData, b: TableData) => a.status.length - b.status.length,
+      sorter: (a: any, b: any) => a.status.localeCompare(b.status),
     },
     {
       title: "Date of Join",
       dataIndex: "DateofJoin",
-      sorter: (a: TableData, b: TableData) =>
-        a.DateofJoin.length - b.DateofJoin.length,
+      sorter: (a: any, b: any) => a.DateofJoin.localeCompare(b.DateofJoin),
     },
     {
       title: "DOB",
       dataIndex: "DOB",
-      sorter: (a: TableData, b: TableData) => a.DOB.length - b.DOB.length,
-    },
-    {
-      title: "Action",
-      dataIndex: "action",
-      render: () => (
-        <>
-          <div className="d-flex align-items-center">
-            <Link
-              to="#"
-              className="btn btn-outline-light bg-white btn-icon d-flex align-items-center justify-content-center rounded-circle  p-0 me-2"
-            >
-              <i className="ti ti-brand-hipchat" />
-            </Link>
-            <Link
-              to="#"
-              className="btn btn-outline-light bg-white btn-icon d-flex align-items-center justify-content-center rounded-circle  p-0 me-2"
-            >
-              <i className="ti ti-phone" />
-            </Link>
-            <Link
-              to="#"
-              className="btn btn-outline-light bg-white btn-icon d-flex align-items-center justify-content-center rounded-circle p-0 me-3"
-            >
-              <i className="ti ti-mail" />
-            </Link>
-            <Link
-              to="#"
-              data-bs-toggle="modal"
-              data-bs-target="#add_fees_collect"
-              className="btn btn-light fs-12 fw-semibold me-3"
-            >
-              Collect Fees
-            </Link>
-            <div className="dropdown">
-              <Link
-                to="#"
-                className="btn btn-white btn-icon btn-sm d-flex align-items-center justify-content-center rounded-circle p-0"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <i className="ti ti-dots-vertical fs-14" />
-              </Link>
-              <ul className="dropdown-menu dropdown-menu-right p-3">
-                <li>
-                  <Link
-                    className="dropdown-item rounded-1"
-                    to="student-details"
-                  >
-                    <i className="ti ti-menu me-2" />
-                    View Student
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="dropdown-item rounded-1"
-                    to={routes.editStudent}
-                  >
-                    <i className="ti ti-edit-circle me-2" />
-                    Edit
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="dropdown-item rounded-1"
-                    to="#"
-                    data-bs-toggle="modal"
-                    data-bs-target="#login_detail"
-                  >
-                    <i className="ti ti-lock me-2" />
-                    Login Details
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item rounded-1" to="#">
-                    <i className="ti ti-toggle-right me-2" />
-                    Disable
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="dropdown-item rounded-1"
-                    to="student-promotion"
-                  >
-                    <i className="ti ti-arrow-ramp-right-2 me-2" />
-                    Promote Student
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="dropdown-item rounded-1"
-                    to="#"
-                    data-bs-toggle="modal"
-                    data-bs-target="#delete-modal"
-                  >
-                    <i className="ti ti-trash-x me-2" />
-                    Delete
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </>
-      ),
+      sorter: (a: any, b: any) => a.DOB.localeCompare(b.DOB),
     },
   ];
 
-  
   return (
-    <>
-      {/* Page Wrapper */}
-      <div className="page-wrapper">
-        <div className="content">
-          {/* Page Header */}
-          <div className="d-md-flex d-block align-items-center justify-content-between mb-3">
-            <div className="my-auto mb-2">
-              <h3 className="page-title mb-1">Students List</h3>
-              <nav>
-                <ol className="breadcrumb mb-0">
-                  <li className="breadcrumb-item">
-                    <Link to={routes.adminDashboard}>Dashboard</Link>
-                  </li>
-                  <li className="breadcrumb-item">Students</li>
-                  <li className="breadcrumb-item active" aria-current="page">
-                    All Students
-                  </li>
-                </ol>
-              </nav>
-            </div>
-            <div className="d-flex my-xl-auto right-content align-items-center flex-wrap">
-              <TooltipOption />
-
-              <div className="mb-2">
-                <Link
-                  to={routes.addStudent}
-                  className="btn btn-primary d-flex align-items-center"
-                >
-                  <i className="ti ti-square-rounded-plus me-2" />
-                  Add Student
-                </Link>
-              </div>
-            </div>
+    <div className="page-wrapper">
+      <div className="content">
+        <div className="d-md-flex d-block align-items-center justify-content-between mb-3">
+          <div className="my-auto mb-2">
+            <h3 className="page-title mb-1">Students List</h3>
+            <nav>
+              <ol className="breadcrumb mb-0">
+                <li className="breadcrumb-item">
+                  <Link to={routes.adminDashboard}>Dashboard</Link>
+                </li>
+                <li className="breadcrumb-item">Students</li>
+                <li className="breadcrumb-item active" aria-current="page">
+                  All Students
+                </li>
+              </ol>
+            </nav>
           </div>
-          {/* /Page Header */}
-          {/* Students List */}
-          <div className="card">
-            <div className="card-header d-flex align-items-center justify-content-between flex-wrap pb-0">
-              <h4 className="mb-3">Students List</h4>
-              <div className="d-flex align-items-center flex-wrap">
-                <div className="input-icon-start mb-3 me-2 position-relative">
-                  <PredefinedDateRanges />
-                </div>
-                <div className="dropdown mb-3 me-2">
-                  <Link
-                    to="#"
-                    className="btn btn-outline-light bg-white dropdown-toggle"
-                    data-bs-toggle="dropdown"
-                    data-bs-auto-close="outside"
-                  >
-                    <i className="ti ti-filter me-2" />
-                    Filter
-                  </Link>
-                  <div
-                    className="dropdown-menu drop-width"
-                    ref={dropdownMenuRef}
-                  >
-                    <form>
-                      <div className="d-flex align-items-center border-bottom p-3">
-                        <h4>Filter</h4>
-                      </div>
-                      <div className="p-3 pb-0 border-bottom">
-                        <div className="row">
-                          <div className="col-md-6">
-                            <div className="mb-3">
-                              <label className="form-label">Class</label>
-                              <CommonSelect
-                                className="select"
-                                options={allClass}
-                                defaultValue={allClass[0]}
-                              />
-                            </div>
-                          </div>
-                          <div className="col-md-6">
-                            <div className="mb-3">
-                              <label className="form-label">Section</label>
-                              <CommonSelect
-                                className="select"
-                                options={allSection}
-                                defaultValue={allSection[0]}
-                              />
-                            </div>
-                          </div>
-                          <div className="col-md-12">
-                            <div className="mb-3">
-                              <label className="form-label">Name</label>
-                              <CommonSelect
-                                className="select"
-                                options={names}
-                                defaultValue={names[0]}
-                              />
-                            </div>
-                          </div>
-                          <div className="col-md-6">
-                            <div className="mb-3">
-                              <label className="form-label">Gender</label>
-                              <CommonSelect
-                                className="select"
-                                options={gender}
-                                defaultValue={gender[0]}
-                              />
-                            </div>
-                          </div>
-                          <div className="col-md-6">
-                            <div className="mb-3">
-                              <label className="form-label">Status</label>
-                              <CommonSelect
-                                className="select"
-                                options={status}
-                                defaultValue={status[0]}
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="p-3 d-flex align-items-center justify-content-end">
-                        <Link to="#" className="btn btn-light me-3">
-                          Reset
-                        </Link>
-                        <Link
-                          to={routes.studentGrid}
-                          className="btn btn-primary"
-                          onClick={handleApplyClick}
-                        >
-                          Apply
-                        </Link>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-                <div className="d-flex align-items-center bg-white border rounded-2 p-1 mb-3 me-2">
-                  <Link
-                    to={routes.studentList}
-                    className="active btn btn-icon btn-sm me-1 primary-hover"
-                  >
-                    <i className="ti ti-list-tree" />
-                  </Link>
-                  <Link
-                    to={routes.studentGrid}
-                    className="btn btn-icon btn-sm bg-light primary-hover"
-                  >
-                    <i className="ti ti-grid-dots" />
-                  </Link>
-                </div>
-                <div className="dropdown mb-3">
-                  <Link
-                    to="#"
-                    className="btn btn-outline-light bg-white dropdown-toggle"
-                    data-bs-toggle="dropdown"
-                  >
-                    <i className="ti ti-sort-ascending-2 me-2" />
-                    Sort by A-Z
-                  </Link>
-                  <ul className="dropdown-menu p-3">
-                    <li>
-                      <Link to="#" className="dropdown-item rounded-1 active">
-                        Ascending
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="#" className="dropdown-item rounded-1">
-                        Descending
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="#" className="dropdown-item rounded-1">
-                        Recently Viewed
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="#" className="dropdown-item rounded-1">
-                        Recently Added
-                      </Link>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <div className="card-body p-0 py-3">
-              {/* Student List */}
-              <Table dataSource={dataSource} columns={columns} Selection={true} />
-              {/* /Student List */}
-            </div>
+          <div className="d-flex my-xl-auto right-content align-items-center flex-wrap">
+            <TooltipOption />
+            <Link
+              to={routes.addStudent}
+              className="btn btn-primary d-flex align-items-center"
+            >
+              <i className="ti ti-square-rounded-plus me-2" />
+              Add Student
+            </Link>
           </div>
-          {/* /Students List */}
+        </div>
+        <div className="card">
+          <div className="card-header d-flex align-items-center justify-content-between flex-wrap pb-0">
+            <h4 className="mb-3">Students List</h4>
+          </div>
+          <div className="card-body p-0 py-3">
+            {loading ? (
+              <p>Loading...</p>
+            ) : error ? (
+              <p className="text-danger">{error}</p>
+            ) : (
+              <Table dataSource={data} columns={columns} Selection={true} />
+            )}
+          </div>
         </div>
       </div>
-      {/* /Page Wrapper */}
       <StudentModals />
-    </>
+    </div>
   );
 };
 

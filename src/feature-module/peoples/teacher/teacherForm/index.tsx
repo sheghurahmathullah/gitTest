@@ -33,7 +33,7 @@ const TeacherForm = () => {
     teacherId : "",
     firstName: "",
     lastName: "",
-    class :"",
+    teacherClass :"",
     subject: "",
     gender: "",
     contactNumber:"",
@@ -98,7 +98,7 @@ const TeacherForm = () => {
           teacherId: teacherData.teacherId,
           firstName: teacherData.firstName,
           lastName: teacherData.lastName,
-          class: teacherData.class,
+          teacherClass: teacherData.teacherClass,
           subject: teacherData.subject,
           gender: teacherData.gender,
           contactNumber: teacherData.contactNumber,
@@ -241,10 +241,10 @@ const TeacherForm = () => {
                           <div className="mb-3">
                             <label className="form-label">Class</label>
                             <input type="text" className="form-control"
-                            id="class"
-                            name="class"
+                            id="teacherClass"
+                            name="teacherClass"
                             onChange={handleChange}
-                            value={teacherData.class} />
+                            value={teacherData.teacherClass} />
                           </div>
                         </div>
                         <div className="col-xxl col-xl-3 col-md-6">
