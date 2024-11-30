@@ -1,9 +1,14 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import { all_routes } from '../../../router/all_routes'
+import { Link, useLocation } from 'react-router-dom';
+import { all_routes } from '../../../router/all_routes';
 
 const TeacherBreadcrumb = () => {
     const routes = all_routes;
+
+
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const teacherId = queryParams.get("teacherId");
+
   return (
     <div className="col-md-12">
           <div className="d-md-flex d-block align-items-center justify-content-between mb-3">
@@ -34,7 +39,7 @@ const TeacherBreadcrumb = () => {
                 Login Details
               </Link>
               <Link
-                to={routes.editTeacher}
+                to={`${routes.editTeacher}?teacherId=${teacherId}`}
                 className="btn btn-primary d-flex align-items-center mb-2"
               >
                 <i className="ti ti-edit-circle me-2" />

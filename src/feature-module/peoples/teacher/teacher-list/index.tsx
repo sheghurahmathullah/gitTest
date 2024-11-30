@@ -26,9 +26,9 @@ const TeacherList = () => {
 
       // Transform API data to fit table structure
       const transformedData = result.map((item: any, index: number) => ({
-        key: item.id || index, // Unique key
+        key: item.key || index, // Unique key
         img: item.uploadImage || "assets/img/teachers/teacher-default.jpg",
-        id: item.id || "T849127", // Fallback for missing `id`
+        id: item.teacherId || "T849127", // Fallback for missing `id`
         name: `${item.firstName || ""} ${item.lastName || ""}`.trim(), // Full name
         class: item.teacherClass || "CS-CS",
         subject: item.subject || "C Programming",
@@ -62,7 +62,7 @@ const TeacherList = () => {
       title: "ID",
       dataIndex: "id",
       render: (text: string) => (
-        <Link to={routes.teacherDetails} className="link-primary">
+        <Link to={`${routes.teacherDetails}?teacherId=${text}`}  className="link-primary">
           {text}
         </Link>
       ),

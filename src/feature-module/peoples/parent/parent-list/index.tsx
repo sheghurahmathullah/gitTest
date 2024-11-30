@@ -65,7 +65,7 @@ const ParentList = () => {
       title: "ID",
       dataIndex: "id",
       render: (text: string) => (
-        <Link to="#" onClick={() => setShow(true)} className="link-primary">
+        <Link to="#" className="link-primary">
           {text}
         </Link>
       ),

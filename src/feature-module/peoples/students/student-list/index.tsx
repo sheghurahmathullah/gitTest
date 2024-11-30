@@ -60,19 +60,20 @@ const StudentList = () => {
 
   const columns = [
     {
-      title: "Admission No",
-      dataIndex: "AdmissionNo",
+      title: "Roll No",
+      dataIndex: "RollNo",
       render: (text: string) => (
-        <Link to={routes.studentDetail} className="link-primary">
+        <Link to={`${routes.studentDetail}?rollNo=${text}`} className="link-primary">
           {text}
         </Link>
       ),
-      sorter: (a: any, b: any) => a.AdmissionNo.localeCompare(b.AdmissionNo),
+      sorter: (a: any, b: any) => a.RollNo.localeCompare(b.RollNo),
     },
     {
-      title: "Roll No",
-      dataIndex: "RollNo",
-      sorter: (a: any, b: any) => a.RollNo.localeCompare(b.RollNo),
+      title: "Admission No",
+      dataIndex: "AdmissionNo",
+
+      sorter: (a: any, b: any) => a.AdmissionNo.localeCompare(b.AdmissionNo),
     },
     {
       title: "Name",

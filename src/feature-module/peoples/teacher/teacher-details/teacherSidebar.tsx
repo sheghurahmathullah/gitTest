@@ -1,8 +1,56 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import ImageWithBasePath from "../../../../core/common/imageWithBasePath";
+import { api_path } from "../../../../environment";
 
 const TeacherSidebar = () => {
+
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const teacherId = queryParams.get("teacherId");
+
+  const [teacherData, setTeacherData] = useState({
+    teacherId : "",
+    firstName: "",
+    lastName: "",
+    teacherClass :"",
+    subject: "",
+    gender: "",
+    contactNumber:"",
+    email:"",
+    bloodGroup:"",
+    fatherName:"",
+    motherName:"",
+    martialStatus:"",
+    languageKnown:"",
+    qualification:"",
+    workExperience:"",
+    address:"",
+    panNumber:"",
+    });
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch(`${api_path}/teachers/getTeachersById?teacherId=${teacherId}`, { method: "GET" });
+      if (!response.ok) {
+        throw new Error(`Failed to fetch data: ${response.status}`);
+      }
+      const teacherData = await response.json();
+  console.table(teacherData);
+  setTeacherData(prevState => ({
+        ...prevState,
+        ...teacherData,
+      }));
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  
+  
+    useEffect(() => {
+      fetchData();
+    }, []);
+
   return (
     <div className="col-xxl-3 col-xl-4 theiaStickySidebar">
       <div className="stickytopbar pb-4">
@@ -11,15 +59,15 @@ const TeacherSidebar = () => {
             <div className="d-flex align-items-center flex-wrap row-gap-3">
               <div className="d-flex align-items-center justify-content-center avatar avatar-xxl border border-dashed me-2 flex-shrink-0 text-dark frames">
                 <ImageWithBasePath
-                  src="assets/img/parents/pa-6.jpg"
+                  src="assets/img/parents/pa-3.jpg"
                   className="img-fluid"
                   alt="img"
                 />
               </div>
               <div>
-                <h5 className="mb-1 mb-1 text-truncate">Teresa</h5>
-                <p className="text-primary mb-1">T849126</p>
-                <p>Joined : 25 May 22</p>
+                <h5 className="mb-1 mb-1 text-truncate">{teacherData.firstName} {teacherData.lastName}</h5>
+                <p className="text-primary mb-1">{teacherData.teacherId}</p>
+                <p>Experience : {teacherData.workExperience}</p>
               </div>
             </div>
           </div>
@@ -29,17 +77,17 @@ const TeacherSidebar = () => {
               <dt className="col-6 fw-medium text-dark mb-3">
                 Class &amp; Section
               </dt>
-              <dd className="col-6  mb-3">CS-CS, Batch A</dd>
+              <dd className="col-6  mb-3">{teacherData.teacherClass}</dd>
               <dt className="col-6 fw-medium text-dark mb-3">Subject</dt>
-              <dd className="col-6  mb-3">Computer Science</dd>
+              <dd className="col-6  mb-3">{teacherData.subject}</dd>
               <dt className="col-6 fw-medium text-dark mb-3">Gender</dt>
-              <dd className="col-6  mb-3">Female</dd>
+              <dd className="col-6  mb-3">{teacherData.gender}</dd>
               <dt className="col-6 fw-medium text-dark mb-3">Blood Group</dt>
-              <dd className="col-6  mb-3">O +ve</dd>
+              <dd className="col-6  mb-3">{teacherData.bloodGroup}</dd>
               <dt className="col-6 fw-medium text-dark mb-3">House</dt>
-              <dd className="col-6  mb-3">Red</dd>
+              <dd className="col-6  mb-3">{teacherData.address}</dd>
               <dt className="col-6 fw-medium text-dark mb-3">Language Known</dt>
-              <dd className="col-6  mb-3">English</dd>
+              <dd className="col-6  mb-3">{teacherData.languageKnown}</dd>
               <dt className="col-6 fw-medium text-dark mb-0">Language</dt>
               <dd className="col-6  mb-0">
                 <span className="badge badge-light text-dark me-2">
@@ -59,7 +107,7 @@ const TeacherSidebar = () => {
               </span>
               <div>
                 <span className=" text-dark fw-medium mb-1">Phone Number</span>
-                <p>+1 46548 84498</p>
+                <p>{teacherData.contactNumber}</p>
               </div>
             </div>
             <div className="d-flex align-items-center">
@@ -68,7 +116,7 @@ const TeacherSidebar = () => {
               </span>
               <div>
                 <span className="text-dark fw-medium mb-1">Email Address</span>
-                <p>jan@example.com</p>
+                <p>{teacherData.email}</p>
               </div>
             </div>
           </div>
@@ -82,7 +130,7 @@ const TeacherSidebar = () => {
                   <i className="ti ti-id" />
                 </span>
                 <div>
-                  <p className="text-dark">343445954908</p>
+                  <p className="text-dark">{teacherData.panNumber}</p>
                 </div>
               </div>
               <Link to="#" className="btn btn-primary btn-icon btn-sm mb-3">

@@ -59,6 +59,7 @@ const AdminDashboard = () => {
          
       }),
       });
+
       const data = await response.text();
     if (response.ok) {
       console.log(data);
@@ -618,7 +619,7 @@ const AdminDashboard = () => {
                       <div className="mb-3 mb-xl-0">
                         <div className="d-flex align-items-center flex-wrap mb-2">
                           <h1 className="text-white me-2">
-                            Welcome Back, {userData?.name || "Admin"}
+                            Welcome Back, {userData?.name || "Admin1"}
                           </h1>
                           <Link
                             to="profile"

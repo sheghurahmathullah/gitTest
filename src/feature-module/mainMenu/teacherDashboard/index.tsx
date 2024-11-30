@@ -1,22 +1,24 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { all_routes } from "../../router/all_routes";
-import ImageWithBasePath from "../../../core/common/imageWithBasePath";
-import AdminDashboardModal from "../adminDashboard/adminDashboardModal";
-import ReactApexChart from "react-apexcharts";
+import { DatePicker } from "antd";
+import dayjs from "dayjs";
 import { Calendar } from "primereact/calendar";
 import { Nullable } from "primereact/ts-helpers";
+import { useEffect, useState } from "react";
+import ReactApexChart from "react-apexcharts";
+import { Link } from "react-router-dom";
 import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import dayjs from "dayjs";
-import { DatePicker } from "antd";
+import "slick-carousel/slick/slick.css";
+import ImageWithBasePath from "../../../core/common/imageWithBasePath";
+import { api_path } from "../../../environment";
+import { useAuth } from "../../hooks/useAuth";
+import { all_routes } from "../../router/all_routes";
+import AdminDashboardModal from "../adminDashboard/adminDashboardModal";
 
 const TeacherDashboard = () => {
 
 // teachers datas 
 
-
+const {userData} = useAuth();
 
 
 
@@ -232,6 +234,52 @@ const TeacherDashboard = () => {
   const formattedDate = `${month}-${day}-${year}`;
   const defaultValue = dayjs(formattedDate);
 
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+
+  const [teacherDashboardData, setTeacherDashboardData] = useState({
+    key: "",
+    teacherId: "",
+    firstName: "",
+    lastName: "",
+    teacherClass: "",
+    subject: "",
+    gender: "",
+    contactNumber: "",
+    email: "",
+    bloodGroup:"" ,
+    fatherName:"" ,
+    motherName:"" ,
+    martialStatus:"" ,
+    languageKnown:"" ,
+    qualification:"" ,
+    workExperience: "",
+    address: "",
+    panNumber: "",
+  });
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch(`${api_path}/teachers/getTeachersById?teacherId=${encodeURIComponent(userData.userId)}`,
+      { method: "GET" });
+      if (!response.ok) {
+        throw new Error(`Failed to fetch data: ${response.status}`);
+      }
+      const teacherData = await response.json();
+  console.table(teacherData);
+  setTeacherDashboardData(prevState => ({
+        ...prevState,
+        ...teacherData,
+      }));
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+
   return (
     <>
       {/* Page Wrapper */}
@@ -260,7 +308,7 @@ const TeacherDashboard = () => {
             <div className="col-md-12 d-flex">
               <div className="card flex-fill bg-info bg-03">
                 <div className="card-body">
-                  <h1 className="text-white mb-1"> Good Morning Ms.Teena</h1>
+                  <h1 className="text-white mb-1"> Good Morning {teacherDashboardData.firstName}</h1>
                   <p className="text-white mb-3">Have a Good day at work</p>
                   <p className="text-light">
                     Notice : There is a staff meeting at 9AM today, Dont forget
@@ -288,22 +336,22 @@ const TeacherDashboard = () => {
                           </div>
                           <div className="overflow-hidden">
                             <span className="badge bg-transparent-primary text-primary mb-1">
-                              #T594651
+                              #{teacherDashboardData.teacherId}
                             </span>
                             <h3 className="text-white mb-1 text-truncate">
-                              Henriques Morgan{" "}
+                              {teacherDashboardData.firstName} {teacherDashboardData.lastName}{" "}
                             </h3>
                             <div className="d-flex align-items-center flex-wrap text-light row-gap-2">
-                              <span className="me-2">Classes : CS, B</span>
+                              <span className="me-2">Classes : {teacherDashboardData.teacherClass}</span>
                               <span className="d-flex align-items-center">
                                 <i className="ti ti-circle-filled text-warning fs-7 me-1" />
-                               Computer Science
+                               {teacherDashboardData.subject}
                               </span>
                             </div>
                           </div>
                         </div>
                         <Link
-                          to={routes.editTeacher}
+                          to={`${routes.editTeacher}?teacherId=${encodeURIComponent(userData.userId)}`}
                           className="btn btn-primary flex-shrink-0 mb-3"
                         >
                           Edit Profile

@@ -1,10 +1,9 @@
-import React from 'react'
 import { Link } from 'react-router-dom'
 import ImageWithBasePath from '../../../../core/common/imageWithBasePath'
 import { all_routes } from '../../../router/all_routes'
 import StudentModals from '../studentModals'
-import StudentSidebar from './studentSidebar'
 import StudentBreadcrumb from './studentBreadcrumb'
+import StudentSidebar from './studentSidebar'
 
 const StudentDetails = () => {
     const routes = all_routes

@@ -233,14 +233,85 @@ const StudentDasboard = () => {
     );
   }
 
+  const [studentDashboardData, setStudentDashboardData] = useState({
+    key:"",
+    academicYear:"",
+    address:"",
+    admissionDate:"",
+    admissionNumber:"",
+    allergies:"",
+    bankName:"",
+    bloodGroup:"",
+    branch:"",
+    caste:"",
+    category:"",
+    studentDAOClass:"",
+    currentAddress:"",
+    dateOfBirth:"",
+    email:"",
+    emailAddress:"",
+    fatherImage:"",
+    fatherName:"",
+    fatherOccupation:"",
+    firstName:"",
+    gender:"",
+    guardianImage:"",
+    guardianName:"",
+    guardianRelation:"",
+    hostel:"",
+    house:"",
+    ifscNumber:"",
+    languageKnown:"",
+    lastName:"",
+    medicalCondition:"",
+    medicalConditionUpload:"",
+    medications:"",
+    motherImage:"",
+    motherName:"",
+    motherOccupation:"",
+    motherTongue:"",
+    occupation:"",
+    otherInformation:"",
+    permanentAddress:"",
+    phoneNumber:"",
+    phoneNumberEmail:"",
+    pickupPoint:"",
+    previousSchoolAddress:"",
+    previousSchoolName:"",
+    contactNumber:"",
+    religion:"",
+    rollNumber:"",
+    roomNo:"",
+    route:"",
+    section:"",
+    siblingAdmissionNo:"",
+    siblingClass:"",
+    siblingInfo:"",
+    siblingName:"",
+    siblingRollNo:"",
+    status:"",
+    uploadImage:"",
+    uploadTransferCertificate:"",
+    vehicleNumber:""
+  });
+  
+  
   const fetchData = async () => {
-    const response = await fetch(
-      `${api_path}/students/getStudentById?rollNo=${encodeURIComponent(userData.userId)}`,
-      { method: "GET" }
-    ).then(response => response.json())
-    .then(data => {return data})
-    .catch(error => console.error(error));
-    console.log(response);
+    try {
+      const response = await fetch(`${api_path}/students/getStudentById?rollNo=${encodeURIComponent(userData.userId)}`,
+      { method: "GET" });
+      if (!response.ok) {
+        throw new Error(`Failed to fetch data: ${response.status}`);
+      }
+      const studentData = await response.json();
+  console.table(studentData);
+  setStudentDashboardData(prevState => ({
+        ...prevState,
+        ...studentData,
+      }));
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
   const profile = {
     dots: false,
@@ -328,29 +399,29 @@ const StudentDasboard = () => {
                           </div>
                           <div className="d-block">
                             <span className="badge bg-transparent-primary text-primary mb-1">
-                              #ST1234546
+                              #{studentDashboardData.admissionNumber}
                             </span>
                             <h3 className="text-truncate text-white mb-1">
-                              Sainath Reddy Vennapusa
+                              {studentDashboardData.firstName} {studentDashboardData.lastName}
                             </h3>
                             <div className="d-flex align-items-center flex-wrap row-gap-2 text-gray-2">
                               <span className="border-end me-2 pe-2">
-                                CS : IV, A
+                                Class : {studentDashboardData.studentDAOClass}
                               </span>
-                              <span>Roll No : 36545</span>
+                              <span>Roll No : {studentDashboardData.rollNumber}</span>
                             </div>
                           </div>
                         </div>
                         <div className="d-flex align-items-center justify-content-between profile-footer flex-wrap row-gap-3 pt-4">
                           <div className="d-flex align-items-center">
-                            <h6 className="text-white">1st Quarterly</h6>
+                            <h6 className="text-white">{studentDashboardData.email}</h6>
                             <span className="badge bg-success d-inline-flex align-items-center ms-2">
                               <i className="ti ti-circle-filled fs-5 me-1" />
-                              Pass
+                              Active
                             </span>
                           </div>
                           <Link
-                            to={routes.editStudent}
+                          to={`${routes.editStudent}?rollNo=${encodeURIComponent(userData.userId)}`}
                             className="btn btn-primary"
                           >
                             Edit Profile
