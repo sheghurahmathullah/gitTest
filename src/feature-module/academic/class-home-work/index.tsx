@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef,useState } from "react";
 import { classhomework } from "../../../core/data/json/class_home_work";
 import Table from "../../../core/common/dataTable/index";
 import {
@@ -11,12 +11,67 @@ import {
 import { TableData } from "../../../core/data/interface";
 import CommonSelect from "../../../core/common/commonSelect";
 import PredefinedDateRanges from "../../../core/common/datePicker";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import ImageWithBasePath from "../../../core/common/imageWithBasePath";
 import { all_routes } from "../../router/all_routes";
+import { api_path } from "../../../environment";
 import TooltipOption from "../../../core/common/tooltipOption";
 
 const ClassHomeWork = () => {
+
+  const navigation = useNavigate();
+  const navigationPath = () => {
+    setTimeout(() => {
+      navigation(routes.classHomeWork);
+    }, 1000);
+  };
+
+  const [assignmentData, setAssignmentData] = useState({
+    attachments: "",
+    class: "",
+    homeworkDate: "",
+    section: "",
+    status: "",
+    subject: "",
+    submissionDate: "",
+    });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setAssignmentData((prevData) => ({ ...prevData, [name]: value }));
+  };
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    // if (!validateForm()) return;
+    try {
+      const response = await fetch(`${api_path}/assignment/createAssignment`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          attachments: assignmentData.attachments,
+          className: assignmentData.class,
+          homeworkDate: assignmentData.homeworkDate,
+          section: assignmentData.section,
+          status: assignmentData.status,
+          subject: assignmentData.subject,
+          submissionDate: assignmentData.submissionDate,
+      }),
+      });
+      const data = await response.text();
+    if (response.ok) {
+      console.log(data);
+      console.log("Assignment Created Successfully");
+      alert("Assignment Created Successfully");
+      navigationPath(); // Redirect immediately
+    } else {
+      console.log(data);
+    }
+  } catch (error) {
+    console.error('Error Creating User:', error);
+  }
+};
+
+
   const routes = all_routes;
 
   const data = classhomework;
@@ -321,26 +376,41 @@ const ClassHomeWork = () => {
                     <div className="col-md-12">
                       <div className="mb-3">
                         <label className="form-label">Class</label>
-                        <input type="text" className="form-control" />
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter Class Name"
+                          id="class"
+                              name="class"
+                              onChange={handleChange}  value={assignmentData.class}
+                        />
                       </div>
                       <div className="row">
                         <div className="col-md-6">
                           <div className="mb-3">
                             <label className="form-label">Section</label>
-                            <CommonSelect
-                              className="select"
-                              options={classSection}
-                            />
+                            <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter section"
+                          id="section"
+                              name="section"
+                              onChange={handleChange}  value={assignmentData.section}
+                        />
                           </div>
                         </div>
                         <div className="col-md-6">
                           <div className="mb-3">
                             <label className="form-label">Subject</label>
 
-                            <CommonSelect
-                              className="select"
-                              options={language}
-                            />
+                            <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter subject"
+                          id="subject"
+                              name="subject"
+                              onChange={handleChange}  value={assignmentData.subject}
+                        />
                           </div>
                         </div>
                       </div>
@@ -348,7 +418,14 @@ const ClassHomeWork = () => {
                         <div className="col-md-6">
                           <div className="mb-3">
                             <label className="form-label">Homework Date</label>
-                            <input type="text" className="form-control" />
+                            <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter homework date"
+                          id="homeworkDate"
+                              name="homeworkDate"
+                              onChange={handleChange}  value={assignmentData.homeworkDate}
+                        />
                           </div>
                         </div>
                         <div className="col-md-6">
@@ -356,20 +433,27 @@ const ClassHomeWork = () => {
                             <label className="form-label">
                               Submission Date
                             </label>
-                            <input type="text" className="form-control" />
+                            <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter Submission Date"
+                          id="submissionDate"
+                              name="submissionDate"
+                              onChange={handleChange}  value={assignmentData.submissionDate}
+                        />
                           </div>
                         </div>
                       </div>
+                     
                       <div className="mb-3">
                         <label className="form-label">Attachments</label>
-                        <input type="text" className="form-control" />
-                      </div>
-                      <div className="mb-3">
-                        <label className="form-label">Attachments</label>
-                        <textarea
+                        <input
+                          type="text"
                           className="form-control"
-                          rows={4}
-                          defaultValue={""}
+                          placeholder="Enter Attachments"
+                          id="attachments"
+                              name="attachments"
+                              onChange={handleChange}  value={assignmentData.attachments}
                         />
                       </div>
                       <div className="d-flex align-items-center justify-content-between">
@@ -378,12 +462,14 @@ const ClassHomeWork = () => {
                           <p>Change the Status by toggle </p>
                         </div>
                         <div className="form-check form-switch">
-                          <input
-                            className="form-check-input"
-                            type="checkbox"
-                            role="switch"
-                            id="switch-sm"
-                          />
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Status"
+                          id="status"
+                              name="status"
+                              onChange={handleChange}  value={assignmentData.status}
+                        />
                         </div>
                       </div>
                     </div>

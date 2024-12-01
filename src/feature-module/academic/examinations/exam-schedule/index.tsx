@@ -14,15 +14,79 @@ import {
   startTimeOne,
 } from "../../../../core/common/selectoption/selectoption";
 import Select from "react-select";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import Table from "../../../../core/common/dataTable/index";
 import { examSchedule } from "../../../../core/data/json/exam_schedule";
 import { TableData } from "../../../../core/data/interface";
 import CommonSelect from "../../../../core/common/commonSelect";
 import { all_routes } from "../../../router/all_routes";
+import { api_path } from "../../../../environment";
 import TooltipOption from "../../../../core/common/tooltipOption";
 
 const ExamSchedule = () => {
+  const navigation = useNavigate();
+  const navigationPath = () => {
+    setTimeout(() => {
+      navigation(routes.examSchedule);
+    }, 1000);
+  };
+
+  const [examScheduleData, setExamScheduleData] = useState({
+    class: "",
+    durationMin: "",
+    endTime: "",
+    examDate: "",
+    examName: "",
+    maxMarks: "",
+    minMarks: "",
+    roomNo: "",
+    section: "",
+    startTime: "",
+    subject: "",
+    });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setExamScheduleData((prevData) => ({ ...prevData, [name]: value }));
+  };
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    // if (!validateForm()) return;
+    try {
+      const response = await fetch(`${api_path}/examSchedules/createExamSchedule`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          class: examScheduleData.class,
+          durationMin: examScheduleData.durationMin,
+          endTime: examScheduleData.endTime,
+          examDate: examScheduleData.examDate,
+          examName: examScheduleData.examName,
+          maxMarks: examScheduleData.maxMarks,
+          minMarks: examScheduleData.minMarks,
+          roomNo: examScheduleData.roomNo,
+          section: examScheduleData.section,
+          startTime: examScheduleData.startTime,
+          subject: examScheduleData.subject,
+         
+      }),
+      });
+      const data = await response.text();
+    if (response.ok) {
+      console.log(data);
+      console.log("Exam Schedule Created Successfully");
+      alert("Exam Schedule Created Successfully");
+      navigationPath(); // Redirect immediately
+    } else {
+      console.log(data);
+    }
+  } catch (error) {
+    console.error('Error Creating User:', error);
+  }
+};
+
+
+
   const routes = all_routes;
   const data = examSchedule;
   const dropdownMenuRef = useRef<HTMLDivElement | null>(null);
@@ -304,52 +368,79 @@ const ExamSchedule = () => {
                         <div className="col-md-4">
                           <div className="mb-3">
                             <label className="form-label">Class</label>
-                            <input type="text" className="form-control" />
+                            <input
+                          type="text"
+                          className="form-control"
+                          
+                          id="class"
+                              name="class"
+                              onChange={handleChange}  value={examScheduleData.class}
+                        />
                           </div>
                         </div>
                         <div className="col-md-4">
                           <div className="mb-3">
                             <label className="form-label">Section</label>
-                            <CommonSelect
-                              className="select"
-                              options={classSection}
-                            />
+                            <input
+                          type="text"
+                          className="form-control"
+                          
+                          id="section"
+                              name="section"
+                              onChange={handleChange}  value={examScheduleData.section}
+                        />
                           </div>
                         </div>
                         <div className="col-md-4">
                           <div className="mb-3">
                             <label className="form-label">Exam Name</label>
-                            <CommonSelect
-                              className="select"
-                              options={examtwo}
-                            />
+                            <input
+                          type="text"
+                          className="form-control"
+                          
+                          id="examName"
+                              name="examName"
+                              onChange={handleChange}  value={examScheduleData.examName}
+                        />
                           </div>
                         </div>
                         <div className="col-md-4">
                           <div className="mb-3">
                             <label className="form-label">Start Time</label>
-                            <CommonSelect
-                              className="select"
-                              options={startTime}
-                            />
+                            <input
+                          type="text"
+                          className="form-control"
+                          
+                          id="startTime"
+                              name="startTime"
+                              onChange={handleChange}  value={examScheduleData.startTime}
+                        />
                           </div>
                         </div>
                         <div className="col-md-4">
                           <div className="mb-3">
                             <label className="form-label">End Time</label>
-                            <CommonSelect
-                              className="select"
-                              options={startTimeOne}
-                            />
+                            <input
+                          type="text"
+                          className="form-control"
+                          
+                          id="endTime"
+                              name="endTime"
+                              onChange={handleChange}  value={examScheduleData.endTime}
+                        />
                           </div>
                         </div>
                         <div className="col-md-4">
                           <div className="mb-3">
                             <label className="form-label">Duration(min)</label>
-                            <CommonSelect
-                              className="select"
-                              options={durationOne}
-                            />
+                            <input
+                          type="text"
+                          className="form-control"
+                          
+                          id="durationMin"
+                              name="durationMin"
+                              onChange={handleChange}  value={examScheduleData.durationMin}
+                        />
                           </div>
                         </div>
                       </div>
@@ -361,38 +452,67 @@ const ExamSchedule = () => {
                       <div className="shedule-info flex-fill">
                         <div className="mb-3">
                           <label className="form-label">Exam Date</label>
-                          <CommonSelect className="select" options={examOne} />
+                          <input
+                          type="text"
+                          className="form-control"
+                          
+                          id="class"
+                              name="class"
+                              onChange={handleChange}  value={examScheduleData.class}
+                        />
                         </div>
                       </div>
                       <div className="shedule-info flex-fill">
                         <div className="mb-3">
                           <label className="form-label">Subject</label>
-                          <CommonSelect
-                            className="select"
-                            options={mothertongue}
-                          />
+                          <input
+                          type="text"
+                          className="form-control"
+                          
+                          id="subject"
+                              name="subject"
+                              onChange={handleChange}  value={examScheduleData.subject}
+                        />
                         </div>
                       </div>
                       <div className="shedule-info flex-fill">
                         <div className="mb-3">
                           <label className="form-label">Room No</label>
-                          <CommonSelect className="select" options={count} />
+                          <input
+                          type="text"
+                          className="form-control"
+                          
+                          id="roomNo"
+                              name="roomNo"
+                              onChange={handleChange}  value={examScheduleData.roomNo}
+                        />
                         </div>
                       </div>
                       <div className="shedule-info flex-fill">
                         <div className="mb-3">
                           <label className="form-label">Max Marks</label>
-                          <CommonSelect className="select" options={maxMark} />
+                          <input
+                          type="text"
+                          className="form-control"
+                          
+                          id="maxMarks"
+                              name="maxMarks"
+                              onChange={handleChange}  value={examScheduleData.maxMarks}
+                        />
                         </div>
                       </div>
                       <div className="shedule-info flex-fill">
                         <div className="d-flex align-items-end">
                           <div className="mb-3 flex-fill">
                             <label className="form-label">Min Marks</label>
-                            <CommonSelect
-                              className="select"
-                              options={minMark}
-                            />
+                            <input
+                          type="text"
+                          className="form-control"
+                          
+                          id="minMarks"
+                              name="minMarks"
+                              onChange={handleChange}  value={examScheduleData.minMarks}
+                        />
                           </div>
                           {newContents.length > 1 && (
                           <div className="mb-3 ms-2">
@@ -406,12 +526,12 @@ const ExamSchedule = () => {
                     </div>
                   </div>
                    ))}
-                  <div>
+                  {/* <div>
                     <Link to="#" onClick={addNewContent} className="btn btn-primary add-new-schedule">
                       <i className="ti ti-square-rounded-plus-filled me-2" />
                       Add New
                     </Link>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="modal-footer">
                   <Link

@@ -1,7 +1,9 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { classes } from "../../../core/data/json/classes";
 import Table from "../../../core/common/dataTable/index";
 import PredefinedDateRanges from "../../../core/common/datePicker";
+import { api_path } from "../../../environment";
+import { all_routes } from "../../router/all_routes";
 import {
   activeList,
   classSection,
@@ -9,11 +11,28 @@ import {
 } from "../../../core/common/selectoption/selectoption";
 import CommonSelect from "../../../core/common/commonSelect";
 import { TableData } from "../../../core/data/interface";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import TooltipOption from "../../../core/common/tooltipOption";
-import { all_routes } from "../../router/all_routes";
+
 
 const Classes = () => {
+
+  const navigation = useNavigate();
+  const navigationPath = () => {
+    setTimeout(() => {
+      navigation(routes.classes);
+    }, 1000);
+  };
+
+  const [classData, setClassData] = useState({
+    className: "",
+noOfStudents: "",
+noOfSubjects: "",
+section: "",
+status: "",
+    });
+
+
   const routes = all_routes;
 
   const data = classes;
@@ -124,6 +143,42 @@ const Classes = () => {
       ),
     },
   ];
+
+// extra code 
+
+const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const { name, value } = e.target;
+  setClassData((prevData) => ({ ...prevData, [name]: value }));
+};
+const handleSubmit = async (event: React.FormEvent) => {
+  event.preventDefault();
+  // if (!validateForm()) return;
+  try {
+    const response = await fetch(`${api_path}/classes/createClass`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        className: classData.className,
+noOfStudents: classData.noOfStudents,
+noOfSubjects: classData.noOfSubjects,
+section: classData.section,
+status: classData.status,
+       
+    }),
+    });
+    const data = await response.text();
+  if (response.ok) {
+    console.log(data);
+    console.log("Class Created Successfully");
+    alert("Class Created Successfully");
+    navigationPath(); // Redirect immediately
+  } else {
+    console.log(data);
+  }
+} catch (error) {
+  console.error('Error Creating User:', error);
+}
+};
   return (
     <div>
       {/* Page Wrapper */}
@@ -378,15 +433,20 @@ const Classes = () => {
                           type="text"
                           className="form-control"
                           placeholder="Enter Class Name"
-                          defaultValue="I"
+                          id="className"
+                              name="className"
+                              onChange={handleChange}  value={classData.className}
                         />
                       </div>
                       <div className="mb-3">
                         <label className="form-label">Section</label>
-                        <CommonSelect
-                          className="select"
-                          options={classSection}
-                          defaultValue={classSection[0]}
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter Class Name"
+                          id="section"
+                              name="section"
+                              onChange={handleChange}  value={classData.section}
                         />
                       </div>
                       <div className="mb-3">
@@ -394,8 +454,10 @@ const Classes = () => {
                         <input
                           type="text"
                           className="form-control"
-                          placeholder="Enter no of Students"
-                          defaultValue={30}
+                          placeholder="Enter Class Name"
+                          id="noOfStudents"
+                              name="noOfStudents"
+                              onChange={handleChange}  value={classData.noOfStudents}
                         />
                       </div>
                       <div className="mb-3">
@@ -403,8 +465,10 @@ const Classes = () => {
                         <input
                           type="text"
                           className="form-control"
-                          placeholder="Enter no of Subjects"
-                          // defaultValue={03}
+                          placeholder="Enter Class Name"
+                          id="noOfSubjects"
+                              name="noOfSubjects"
+                              onChange={handleChange}  value={classData.noOfSubjects}
                         />
                       </div>
                       <div className="d-flex align-items-center justify-content-between">
@@ -413,12 +477,14 @@ const Classes = () => {
                           <p>Change the Status by toggle </p>
                         </div>
                         <div className="form-check form-switch">
-                          <input
-                            className="form-check-input"
-                            type="checkbox"
-                            role="switch"
-                            id="switch-sm2"
-                          />
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter Class Name"
+                          id="status"
+                              name="status"
+                              onChange={handleChange}  value={classData.status}
+                        />
                         </div>
                       </div>
                     </div>

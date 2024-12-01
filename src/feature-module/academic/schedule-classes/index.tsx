@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef,useState } from "react";
 import Table from "../../../core/common/dataTable/index";
 import { scheduleClass } from "../../../core/data/json/schedule_class";
 import PredefinedDateRanges from "../../../core/common/datePicker";
@@ -9,11 +9,63 @@ import {
 } from "../../../core/common/selectoption/selectoption";
 import CommonSelect from "../../../core/common/commonSelect";
 import { TableData } from "../../../core/data/interface";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import { all_routes } from "../../router/all_routes";
 import TooltipOption from "../../../core/common/tooltipOption";
+import { api_path } from "../../../environment";
 
 const ScheduleClasses = () => {
+
+  const navigation = useNavigate();
+  const navigationPath = () => {
+    setTimeout(() => {
+      navigation(routes.sheduleClasses);
+    }, 1000);
+  };
+
+
+  const [scheduleData, setScheduleData] = useState({
+    endTime: "",
+    startTime: "",
+    status: "",
+    type: "",
+    });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setScheduleData((prevData) => ({ ...prevData, [name]: value }));
+  };
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    // if (!validateForm()) return;
+    try {
+      const response = await fetch(`${api_path}/schedules/createSchedule`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          endTime: scheduleData.endTime,
+startTime: scheduleData.startTime,
+status: scheduleData.status,
+type: scheduleData.type,
+
+         
+      }),
+      });
+      const data = await response.text();
+    if (response.ok) {
+      console.log(data);
+      console.log("Schedule Created Successfully");
+      alert("Schedule Created Successfully");
+      navigationPath(); // Redirect immediately
+    } else {
+      console.log(data);
+    }
+  } catch (error) {
+    console.error('Error Creating User:', error);
+  }
+};
+
+
   const routes = all_routes;
   const data = scheduleClass;
   const route = all_routes
@@ -298,40 +350,52 @@ const ScheduleClasses = () => {
                     <div className="col-md-12">
                       <div className="mb-3">
                         <label className="form-label">Type</label>
-                        <CommonSelect
-                          className="select"
-                          options={classselect}
-                          
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter Class Name"
+                          id="type"
+                              name="type"
+                              onChange={handleChange}  value={scheduleData.type}
                         />
                       </div>
                       <div className="mb-3">
                         <label className="form-label">Start Time </label>
-                        <CommonSelect
-                          className="select"
-                          options={startTime}
-                          
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter Class Name"
+                          id="startTime"
+                              name="startTime"
+                              onChange={handleChange}  value={scheduleData.startTime}
                         />
+
                       </div>
                       <div className="mb-3">
                         <label className="form-label">End Time </label>
-                        <CommonSelect
-                          className="select"
-                          options={startTime}
-                          
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter Class Name"
+                          id="endTime"
+                              name="endTime"
+                              onChange={handleChange}  value={scheduleData.endTime}
                         />
+
                       </div>
-                      <div className="modal-satus-toggle d-flex align-items-center justify-content-between">
-                        <div className="status-title">
-                          <h5>Status</h5>
-                          <p>Change the Status by toggle </p>
-                        </div>
-                        <div className="status-toggle modal-status">
-                          <input type="checkbox" id="user1" className="check" />
-                          <label htmlFor="user1" className="checktoggle">
-                            {" "}
-                          </label>
-                        </div>
+                      <div className="mb-3">
+                        <label className="form-label">Status</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter Class Name"
+                          id="status"
+                              name="status"
+                              onChange={handleChange}  value={scheduleData.status}
+                        />
+
                       </div>
+                     
                     </div>
                   </div>
                 </div>

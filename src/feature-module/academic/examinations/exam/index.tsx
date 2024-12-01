@@ -1,5 +1,5 @@
-import React, { useRef } from "react";
-import { Link } from "react-router-dom";
+import React, { useRef,useState } from "react";
+import { Link,useNavigate } from "react-router-dom";
 
 import Table from "../../../../core/common/dataTable/index";
 import { exam } from "../../../../core/data/json/exam";
@@ -15,9 +15,59 @@ import CommonSelect from "../../../../core/common/commonSelect";
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
 import { all_routes } from "../../../router/all_routes";
+import { api_path } from "../../../../environment";
 import TooltipOption from "../../../../core/common/tooltipOption";
 
 const Exam = () => {
+
+  const navigation = useNavigate();
+  const navigationPath = () => {
+    setTimeout(() => {
+      navigation(routes.exam);
+    }, 1000);
+  };
+
+  const [examData, setExamData] = useState({
+    endTime: "",
+    examDate: "",
+    examName: "",
+    startTime: "",
+    });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setExamData((prevData) => ({ ...prevData, [name]: value }));
+  };
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    // if (!validateForm()) return;
+    try {
+      const response = await fetch(`${api_path}/exams/createExam`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          endTime: examData.endTime,
+          examDate: examData.examDate,
+          examName: examData.examName,
+          startTime: examData.startTime,
+         
+      }),
+      });
+      const data = await response.text();
+    if (response.ok) {
+      console.log(data);
+      console.log("Exam Created Successfully");
+      alert("Exam Created Successfully");
+      navigationPath(); // Redirect immediately
+    } else {
+      console.log(data);
+    }
+  } catch (error) {
+    console.error('Error Creating User:', error);
+  }
+};
+
+
   const routes = all_routes;
 
   const data = exam;
@@ -287,21 +337,26 @@ const Exam = () => {
                     <div className="col-md-12">
                       <div className="mb-3">
                         <label className="form-label">Exam Name</label>
-                        <input type="text" className="form-control" />
+                        <input
+                          type="text"
+                          className="form-control"
+                          
+                          id="examName"
+                              name="examName"
+                              onChange={handleChange}  value={examData.examName}
+                        />
                       </div>
                       <div className="mb-3">
                         <label className="form-label">Exam Date</label>
                         <div className="date-pic">
-                          <DatePicker
-                            className="form-control datetimepicker"
-                            format={{
-                              format: "DD-MM-YYYY",
-                              type: "mask",
-                            }}
-                            getPopupContainer={getModalContainer}
-                            defaultValue={defaultValue}
-                            placeholder="16 May 2024"
-                          />
+                        <input
+                          type="text"
+                          className="form-control"
+                          
+                          id="examDate"
+                              name="examDate"
+                              onChange={handleChange}  value={examData.examDate}
+                        />
                           <span className="cal-icon">
                             <i className="ti ti-calendar" />
                           </span>
@@ -309,13 +364,24 @@ const Exam = () => {
                       </div>
                       <div className="mb-3">
                         <label className="form-label">Start Time</label>
-                        <CommonSelect className="select" options={startTime} />
+                        <input
+                          type="text"
+                          className="form-control"
+                          
+                          id="startTime"
+                              name="startTime"
+                              onChange={handleChange}  value={examData.startTime}
+                        />
                       </div>
                       <div className="mb-0">
                         <label className="form-label">End Time</label>
-                        <CommonSelect
-                          className="select"
-                          options={startTimeOne}
+                        <input
+                          type="text"
+                          className="form-control"
+                          
+                          id="endTime"
+                              name="endTime"
+                              onChange={handleChange}  value={examData.endTime}
                         />
                       </div>
                     </div>

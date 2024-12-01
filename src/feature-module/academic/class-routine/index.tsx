@@ -1,8 +1,9 @@
-import React, { useRef } from "react";
+import React, { useRef,useState } from "react";
 import { classRoutine } from "../../../core/data/json/class-routine";
 import Table from "../../../core/common/dataTable/index";
 import PredefinedDateRanges from "../../../core/common/datePicker";
 import CommonSelect from "../../../core/common/commonSelect";
+import { api_path } from "../../../environment";
 import {
   allClass,
   classSection,
@@ -12,11 +13,68 @@ import {
   weak,
 } from "../../../core/common/selectoption/selectoption";
 import { TimePicker } from "antd";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import { all_routes } from "../../router/all_routes";
 import TooltipOption from "../../../core/common/tooltipOption";
 
 const ClassRoutine = () => {
+
+  const navigation = useNavigate();
+  const navigationPath = () => {
+    setTimeout(() => {
+      navigation(routes.classRoutine);
+    }, 1000);
+  };
+
+  const [classRoutineData, setClassRoutineData] = useState({
+    teacher: "",
+class: "",
+section: "",
+day: "",
+startTime: "",
+endTime: "",
+classRoom: "",
+status: "",
+    });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setClassRoutineData((prevData) => ({ ...prevData, [name]: value }));
+  };
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    // if (!validateForm()) return;
+    try {
+      const response = await fetch(`${api_path}/classRoutines/createClassRoutine`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          teacher: classRoutineData.teacher,
+          className: classRoutineData.class,
+          section: classRoutineData.section,
+          day: classRoutineData.day,
+          startTime: classRoutineData.startTime,
+          endTime: classRoutineData.endTime,
+          classRoom: classRoutineData.classRoom,
+          status: classRoutineData.status,
+         
+      }),
+      });
+      const data = await response.text();
+    if (response.ok) {
+      console.log(data);
+      console.log("Class Routine Created Successfully");
+      alert("Class Routine Created Successfully");
+      navigationPath(); // Redirect immediately
+    } else {
+      console.log(data);
+    }
+  } catch (error) {
+    console.error('Error Creating User:', error);
+  }
+};
+
+
   const routes = all_routes;
 
   const data = classRoutine;
@@ -342,34 +400,46 @@ const ClassRoutine = () => {
                       <div className="mb-3">
                         <label className="form-label">Teacher</label>
 
-                        <CommonSelect
-                          className="select"
-                          options={teacher}
-                          defaultValue={teacher[0]}
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter Class Name"
+                          id="teacher"
+                              name="teacher"
+                              onChange={handleChange}  value={classRoutineData.teacher}
                         />
                       </div>
                       <div className="mb-3">
                         <label className="form-label">Class</label>
-                        <CommonSelect
-                          className="select"
-                          options={allClass}
-                          defaultValue={allClass[0]}
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter Class Name"
+                          id="class"
+                              name="class"
+                              onChange={handleChange}  value={classRoutineData.class}
                         />
                       </div>
                       <div className="mb-3">
                         <label className="form-label">Section</label>
-                        <CommonSelect
-                          className="select"
-                          options={classSection}
-                          defaultValue={classSection[0]}
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter Class Name"
+                          id="section"
+                              name="section"
+                              onChange={handleChange}  value={classRoutineData.section}
                         />
                       </div>
                       <div className="mb-3">
                         <label className="form-label">Day</label>
-                        <CommonSelect
-                          className="select"
-                          options={weak}
-                          defaultValue={weak[0]}
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter Class Name"
+                          id="day"
+                              name="day"
+                              onChange={handleChange}  value={classRoutineData.day}
                         />
                       </div>
                       <div className="row">
@@ -377,13 +447,14 @@ const ClassRoutine = () => {
                           <div className="mb-3">
                             <label className="form-label">Start Time</label>
                             <div className="date-pic">
-                              <TimePicker
-                                getPopupContainer={getModalContainer2}
-                                use12Hours
-                                placeholder="Choose"
-                                format="h:mm A"
-                                className="form-control timepicker"
-                              />
+                            <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter start time"
+                          id="startTime"
+                              name="startTime"
+                              onChange={handleChange}  value={classRoutineData.startTime}
+                        />
                               <span className="cal-icon">
                                 <i className="ti ti-clock" />
                               </span>
@@ -394,13 +465,14 @@ const ClassRoutine = () => {
                           <div className="mb-3">
                             <label className="form-label">End Time</label>
                             <div className="date-pic">
-                              <TimePicker
-                                getPopupContainer={getModalContainer}
-                                use12Hours
-                                placeholder="Choose"
-                                format="h:mm A"
-                                className="form-control timepicker"
-                              />
+                            <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter end time"
+                          id="endTime"
+                              name="endTime"
+                              onChange={handleChange}  value={classRoutineData.endTime}
+                        />
                               <span className="cal-icon">
                                 <i className="ti ti-clock" />
                               </span>
@@ -410,7 +482,14 @@ const ClassRoutine = () => {
                       </div>
                       <div className="mb-3">
                         <label className="form-label">Class Room</label>
-                        <CommonSelect className="select" options={count} />
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter start time"
+                          id="classRoom"
+                              name="classRoom"
+                              onChange={handleChange}  value={classRoutineData.classRoom}
+                        />
                       </div>
                       <div className="d-flex align-items-center justify-content-between">
                         <div className="status-title">
@@ -418,12 +497,14 @@ const ClassRoutine = () => {
                           <p>Change the Status by toggle </p>
                         </div>
                         <div className="form-check form-switch">
-                          <input
-                            className="form-check-input"
-                            type="checkbox"
-                            role="switch"
-                            id="switch-sm"
-                          />
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter status"
+                          id="status"
+                              name="status"
+                              onChange={handleChange}  value={classRoutineData.status}
+                        />
                         </div>
                       </div>
                     </div>

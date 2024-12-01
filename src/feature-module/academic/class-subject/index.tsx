@@ -15,6 +15,8 @@ import {
 import TooltipOption from "../../../core/common/tooltipOption";
 import { TableData } from "../../../core/data/interface";
 import { all_routes } from "../../router/all_routes";
+import { api_path } from "../../../environment";
+
 
 const ClassSubject = () => {
 
@@ -22,7 +24,7 @@ const ClassSubject = () => {
 
   const navigationPath = () => {
     setTimeout(() => {
-      navigation(routes.studentList);
+      navigation(routes.classSubject);
     }, 1000);
   };
 
@@ -34,6 +36,40 @@ const ClassSubject = () => {
   
    
     });
+
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setSubjectData((prevData) => ({ ...prevData, [name]: value }));
+  };
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    // if (!validateForm()) return;
+    try {
+      const response = await fetch(`${api_path}/subjects/createSubject`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          code: subjectData.code,
+name: subjectData.name,
+status: subjectData.status,
+type: subjectData.type,
+         
+      }),
+      });
+      const data = await response.text();
+    if (response.ok) {
+      console.log(data);
+      console.log("Subject Created Successfully");
+      alert("Subject Created Successfully");
+      navigationPath(); // Redirect immediately
+    } else {
+      console.log(data);
+    }
+  } catch (error) {
+    console.error('Error Creating User:', error);
+  }
+};
   const routes = all_routes;
 
   const data = classSubject;
@@ -322,17 +358,36 @@ const ClassSubject = () => {
                     <div className="col-md-12">
                       <div className="mb-3">
                         <label className="form-label">Name</label>
-                        <input type="text" className="form-control" value={subjectData.name}  />
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter Class Name"
+                          id="name"
+                              name="name"
+                              onChange={handleChange}  value={subjectData.name}
+                        />
                       </div>
                       <div className="mb-3">
                         <label className="form-label">Code</label>
-                        <input type="text" className="form-control"
-                            value={subjectData.code} />
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter Class Name"
+                          id="code"
+                              name="code"
+                              onChange={handleChange}  value={subjectData.code}
+                        />
                       </div>
                       <div className="mb-3">
                         <label className="form-label">Type</label>
-                        <input type="text" className="form-control"
-                            value={subjectData.type} />
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter Class Name"
+                          id="type"
+                              name="type"
+                              onChange={handleChange}  value={subjectData.type}
+                        />
                       </div>
                       <div className="d-flex align-items-center justify-content-between">
                         <div className="status-title">
@@ -340,8 +395,14 @@ const ClassSubject = () => {
                           <p>Change the Status by toggle </p>
                         </div>
                         <div className="form-check form-switch">
-                        <input type="text" className="form-control"
-                            value={subjectData.status} />
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter Class Name"
+                          id="status"
+                              name="status"
+                              onChange={handleChange}  value={subjectData.status}
+                        />
                         </div>
                       </div>
                     </div>

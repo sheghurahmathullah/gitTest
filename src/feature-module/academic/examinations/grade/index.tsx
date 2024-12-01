@@ -1,5 +1,5 @@
-import React, { useRef } from "react";
-import { Link } from "react-router-dom";
+import React, { useRef,useState } from "react";
+import { Link,useNavigate } from "react-router-dom";
 import Select from "react-select";
 import {
   activeList,
@@ -15,8 +15,64 @@ import { TableData } from "../../../../core/data/interface";
 import CommonSelect from "../../../../core/common/commonSelect";
 import PredefinedDateRanges from "../../../../core/common/datePicker";
 import { all_routes } from "../../../router/all_routes";
+import { api_path } from "../../../../environment";
 import TooltipOption from "../../../../core/common/tooltipOption";
 const Grade = () => {
+
+
+  const navigation = useNavigate();
+  const navigationPath = () => {
+    setTimeout(() => {
+      navigation(routes.grade);
+    }, 1000);
+  };
+
+  const [gradeData, setGradeData] = useState({
+    description: "",
+    grade: "",
+    gradePoints: "",
+    marksFrom: "",
+    marksUpto: "",
+    status: "",
+    });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setGradeData((prevData) => ({ ...prevData, [name]: value }));
+  };
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    // if (!validateForm()) return;
+    try {
+      const response = await fetch(`${api_path}/grades/createGrade`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          description: gradeData.description,
+grade: gradeData.grade,
+gradePoints: gradeData.gradePoints,
+marksFrom: gradeData.marksFrom,
+marksUpto: gradeData.marksUpto,
+status: gradeData.status,
+         
+      }),
+      });
+      const data = await response.text();
+    if (response.ok) {
+      console.log(data);
+      console.log(" Grade Created Successfully");
+      alert("Grade Created Successfully");
+      navigationPath(); // Redirect immediately
+    } else {
+      console.log(data);
+    }
+  } catch (error) {
+    console.error('Error Creating User:', error);
+  }
+};
+
+
+
   const routes = all_routes;
   const data = gradetable;
   const dropdownMenuRef = useRef<HTMLDivElement | null>(null);
@@ -312,11 +368,25 @@ const Grade = () => {
                     <div className="col-md-12">
                       <div className="mb-3">
                         <label className="form-label">Grade</label>
-                        <input type="text" className="form-control" />
+                        <input
+                          type="text"
+                          className="form-control"
+                          
+                          id="grade"
+                              name="grade"
+                              onChange={handleChange}  value={gradeData.grade}
+                        />
                       </div>
                       <div className="mb-3">
                         <label className="form-label">Marks From(%)</label>
-                        <CommonSelect className="select" options={marksFrom} />
+                        <input
+                          type="text"
+                          className="form-control"
+                          
+                          id="marksFrom"
+                              name="marksFrom"
+                              onChange={handleChange}  value={gradeData.marksFrom}
+                        />
                       </div>
                       <div className="mb-3">
                         <label className="form-label">Marks Upto(%)</label>
@@ -324,21 +394,35 @@ const Grade = () => {
                       </div>
                       <div className="mb-3">
                         <label className="form-label">Grade Points</label>
-                        <CommonSelect
-                          className="select"
-                          options={gradePoints}
+                        <input
+                          type="text"
+                          className="form-control"
+                          
+                          id="marksUpto"
+                              name="marksUpto"
+                              onChange={handleChange}  value={gradeData.marksUpto}
                         />
                       </div>
                       <div className="mb-3">
                         <label className="form-label">Status</label>
-                        <CommonSelect className="select" options={activeList} />
+                        <input
+                          type="text"
+                          className="form-control"
+                          
+                          id="status"
+                              name="status"
+                              onChange={handleChange}  value={gradeData.status}
+                        />
                       </div>
                       <div className="mb-0">
                         <label className="form-label">Description</label>
-                        <textarea
+                        <input
+                          type="text"
                           className="form-control"
-                          rows={4}
-                          defaultValue={""}
+                          
+                          id="description"
+                              name="description"
+                              onChange={handleChange}  value={gradeData.description}
                         />
                       </div>
                     </div>

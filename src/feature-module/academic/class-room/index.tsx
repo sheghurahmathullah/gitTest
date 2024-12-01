@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef,useState } from "react";
 import { classRoom } from "../../../core/data/json/class-room";
 import Table from "../../../core/common/dataTable/index";
 import PredefinedDateRanges from "../../../core/common/datePicker";
@@ -8,11 +8,58 @@ import {
 } from "../../../core/common/selectoption/selectoption";
 import CommonSelect from "../../../core/common/commonSelect";
 import { TableData } from "../../../core/data/interface";
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import TooltipOption from "../../../core/common/tooltipOption";
 import { all_routes } from "../../router/all_routes";
+import { api_path } from "../../../environment";
 
 const ClassRoom = () => {
+  const navigation = useNavigate();
+  const navigationPath = () => {
+    setTimeout(() => {
+      navigation(routes.classRoom);
+    }, 1000);
+  };
+
+  const [classRoomData, setClassRoomData] = useState({
+    capacity: "",
+roomNo: "",
+status: "",
+    });
+
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setClassRoomData((prevData) => ({ ...prevData, [name]: value }));
+  };
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    // if (!validateForm()) return;
+    try {
+      const response = await fetch(`${api_path}/classRooms/createClassRoom`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          capacity: classRoomData.capacity,
+roomNo: classRoomData.roomNo,
+status: classRoomData.status,
+         
+      }),
+      });
+      const data = await response.text();
+    if (response.ok) {
+      console.log(data);
+      console.log("Class Room Created Successfully");
+      alert("Class Room Created Successfully");
+      navigationPath(); // Redirect immediately
+    } else {
+      console.log(data);
+    }
+  } catch (error) {
+    console.error('Error Creating User:', error);
+  }
+};
+
   const routes = all_routes;
 
   const data = classRoom;
@@ -274,26 +321,39 @@ const ClassRoom = () => {
                     <div className="col-md-12">
                       <div className="mb-3">
                         <label className="form-label">Room No</label>
-                        <input type="text" className="form-control" />
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter Class Name"
+                          id="roomNo"
+                              name="roomNo"
+                              onChange={handleChange}  value={classRoomData.roomNo}
+                        />
+
                       </div>
                       <div className="mb-3">
                         <label className="form-label">Capacity</label>
-                        <input type="text" className="form-control" />
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter Class Name"
+                          id="capacity"
+                              name="capacity"
+                              onChange={handleChange}  value={classRoomData.capacity}
+                        />
                       </div>
-                      <div className="d-flex align-items-center justify-content-between">
-                        <div className="status-title">
-                          <h5>Status</h5>
-                          <p>Change the Status by toggle </p>
-                        </div>
-                        <div className="form-check form-switch">
-                          <input
-                            className="form-check-input"
-                            type="checkbox"
-                            role="switch"
-                            id="switch-sm"
-                          />
-                        </div>
+                      <div className="mb-3">
+                        <label className="form-label">Status</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter Class Name"
+                          id="status"
+                              name="status"
+                              onChange={handleChange}  value={classRoomData.status}
+                        />
                       </div>
+                      
                     </div>
                   </div>
                 </div>
