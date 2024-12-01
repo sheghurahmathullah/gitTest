@@ -1,8 +1,127 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, {useState} from "react";
+import { Link,useNavigate } from "react-router-dom";
 import ImageWithBasePath from "../../../core/common/imageWithBasePath";
+import { all_routes } from "../../router/all_routes";
+import { api_path } from "../../../environment";
+
 
 const LibraryModal = () => {
+  const routes = all_routes;
+  const navigation = useNavigate();
+  const navigationPath = () => {
+    setTimeout(() => {
+      navigation(routes.libraryMembers);
+    }, 1000);
+  };
+
+  const [memberData, setMemberData] = useState({
+    name: "",
+cardNo: "",
+email: "",
+dateOfJoin: "",
+phoneNumber: "",
+    });
+
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setMemberData((prevData) => ({ ...prevData, [name]: value }));
+  };
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    // if (!validateForm()) return;
+    try {
+      const response = await fetch(`${api_path}/members/createMember`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: memberData.name,
+          cardNo: memberData.cardNo,
+          email: memberData.email,
+          dateOfJoin: memberData.dateOfJoin,
+          phoneNumber: memberData.phoneNumber,
+      }),
+      });
+      const data = await response.text();
+    if (response.ok) {
+      console.log(data);
+      console.log("Library Member Created Successfully");
+      alert("Library Member Created Successfully");
+      navigationPath(); // Redirect immediately
+    } else {
+      console.log(data);
+    }
+  } catch (error) {
+    console.error('Error Creating User:', error);
+  }
+};
+
+
+
+// book 
+
+
+// const navigation = useNavigate();
+  const navigationPath1 = () => {
+    setTimeout(() => {
+      navigation(routes.libraryBooks);
+    }, 1000);
+  };
+
+  const [bookData, setBookData] = useState({
+    bookName: "",
+bookNo: "",
+rackNo: "",
+publisher: "",
+author: "",
+subject: "",
+qty: "",
+available: "",
+price: "",
+postDate: "",
+    });
+
+  const handleChange1 = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setBookData((prevData) => ({ ...prevData, [name]: value }));
+  };
+  const handleSubmit1 = async (event: React.FormEvent) => {
+    event.preventDefault();
+    // if (!validateForm()) return;
+    try {
+      const response = await fetch(`${api_path}/books/createBook`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          bookName: bookData.bookName,
+bookNo: bookData.bookNo,
+rackNo: bookData.rackNo,
+publisher: bookData.publisher,
+author: bookData.author,
+subject: bookData.subject,
+qty: bookData.qty,
+available: bookData.available,
+price: bookData.price,
+postDate: bookData.postDate,
+
+      }),
+      });
+      const data1 = await response.text();
+    if (response.ok) {
+      console.log(data1);
+      console.log("Book Created Successfully");
+      alert("Book Created Successfully");
+      navigationPath1(); // Redirect immediately
+    } else {
+      console.log(data1);
+    }
+  } catch (error) {
+    console.error('Error Creating User:', error);
+  }
+};
+
+
+
   return (
     <>
       <>
@@ -95,23 +214,53 @@ const LibraryModal = () => {
                   <div className="col-md-12">
                     <div className="mb-3">
                       <label className="form-label">Name</label>
-                      <input type="text" className="form-control" />
+                      <input
+                          type="text"
+                          className="form-control"
+                          id="name"
+                              name="name"
+                              onChange={handleChange}  value={memberData.name}
+                        />
                     </div>
                     <div className="mb-3">
                       <label className="form-label">Card No</label>
-                      <input type="text" className="form-control" />
+                      <input
+                          type="text"
+                          className="form-control"
+                          id="cardNo"
+                              name="cardNo"
+                              onChange={handleChange}  value={memberData.cardNo}
+                        />
                     </div>
                     <div className="mb-3">
                       <label className="form-label">Email</label>
-                      <input type="text" className="form-control" />
+                      <input
+                          type="text"
+                          className="form-control"
+                          id="email"
+                              name="email"
+                              onChange={handleChange}  value={memberData.email}
+                        />
                     </div>
                     <div className="mb-3">
                       <label className="form-label">Date of Join</label>
-                      <input type="text" className="form-control" />
+                      <input
+                          type="text"
+                          className="form-control"
+                          id="dateOfJoin"
+                              name="dateOfJoin"
+                              onChange={handleChange}  value={memberData.dateOfJoin}
+                        />
                     </div>
                     <div className="mb-0">
                       <label className="form-label">Phone Number</label>
-                      <input type="text" className="form-control" />
+                      <input
+                          type="text"
+                          className="form-control"
+                          id="phoneNumber"
+                              name="phoneNumber"
+                              onChange={handleChange}  value={memberData.phoneNumber}
+                        />
                     </div>
                   </div>
                 </div>
@@ -248,55 +397,115 @@ const LibraryModal = () => {
                     <div className="col-md-12">
                       <div className="mb-3">
                         <label className="form-label">Book Name</label>
-                        <input type="text" className="form-control" />
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="bookName"
+                              name="bookName"
+                              onChange={handleChange1}  value={bookData.bookName}
+                        />
                       </div>
                       <div className="row">
                         <div className="col-md-6">
                           <div className="mb-3">
                             <label className="form-label">Book No</label>
-                            <input type="text" className="form-control" />
+                            <input
+                            className="form-control"
+                          type="text"
+                          id="bookNo"
+                              name="bookNo"
+                              onChange={handleChange1}  value={bookData.bookNo}
+                        />
                           </div>
                         </div>
                         <div className="col-md-6">
                           <div className="mb-3">
                             <label className="form-label">Rack No</label>
-                            <input type="text" className="form-control" />
+                            <input
+                            className="form-control"
+                          type="text"
+                          id="rackNo"
+                              name="rackNo"
+                              onChange={handleChange}  value={bookData.rackNo}
+                        />
                           </div>
                         </div>
                       </div>
                       <div className="mb-3">
                         <label className="form-label">Publisher</label>
-                        <input type="text" className="form-control" />
+                        <input
+                        className="form-control"
+                          type="text"
+                          id="publisher"
+                              name="publisher"
+                              onChange={handleChange}  value={bookData.publisher}
+                        />
                       </div>
                       <div className="mb-3">
                         <label className="form-label">Author</label>
-                        <input type="text" className="form-control" />
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="author"
+                              name="author"
+                              onChange={handleChange}  value={bookData.author}
+                        />
                       </div>
                       <div className="mb-3">
                         <label className="form-label">Subject</label>
-                        <input type="text" className="form-control" />
+                         <input
+                         className="form-control"
+                          type="text"
+                          id="subject"
+                              name="subject"
+                              onChange={handleChange}  value={bookData.subject}
+                        />
                       </div>
                       <div className="row">
                         <div className="col-md-6">
                           <div className="mb-3">
                             <label className="form-label">Qty</label>
-                            <input type="text" className="form-control" />
+                             <input
+                             className="form-control"
+                          type="text"
+                          id="qty"
+                              name="qty"
+                              onChange={handleChange}  value={bookData.qty}
+                        />
                           </div>
                         </div>
                         <div className="col-md-6">
                           <div className="mb-3">
                             <label className="form-label">Available</label>
-                            <input type="text" className="form-control" />
+                           <input
+                           className="form-control"
+                          type="text"
+                          id="available"
+                              name="available"
+                              onChange={handleChange}  value={bookData.available}
+                        />
                           </div>
                         </div>
                       </div>
                       <div className="mb-3">
                         <label className="form-label">Price</label>
-                        <input type="text" className="form-control" />
+                       <input
+                          type="text"
+                          id="price"
+                          className="form-control"
+                              name="price"
+                              onChange={handleChange}  value={bookData.price}
+                        />
                       </div>
                       <div className="mb-0">
                         <label className="form-label">Post Date</label>
-                        <input type="text" className="form-control" />
+                       <input
+                          type="text"
+                          id="postDate"
+                          className="form-control"
+                              name="postDate"
+                              onChange={handleChange}  value={bookData.postDate}
+                        />
                       </div>
                     </div>
                   </div>

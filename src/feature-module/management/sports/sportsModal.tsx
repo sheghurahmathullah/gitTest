@@ -1,7 +1,58 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React,{useState} from "react";
+import { Link,useNavigate } from "react-router-dom";
+import { all_routes } from "../../router/all_routes";
+import { api_path } from "../../../environment";
 
 const SportsModal = () => {
+
+  const navigation = useNavigate();
+  const navigationPath = () => {
+    setTimeout(() => {
+      navigation(routes.classHomeWork);
+    }, 1000);
+  };
+
+  const [sportData, setSportData] = useState({
+    name: "",
+    coach: "",
+    startedYear: "",
+    });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setSportData((prevData) => ({ ...prevData, [name]: value }));
+  };
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    // if (!validateForm()) return;
+    try {
+      const response = await fetch(`${api_path}/sports/createSport`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: sportData.name,
+          coach: sportData.coach,
+          startedYear: sportData.startedYear,
+      }),
+      });
+      const data = await response.text();
+    if (response.ok) {
+      console.log(data);
+      console.log("Sport Created Successfully");
+      alert("Sport Created Successfully");
+      navigationPath(); // Redirect immediately
+    } else {
+      console.log(data);
+    }
+  } catch (error) {
+    console.error('Error Creating User:', error);
+  }
+};
+
+const routes = all_routes;
+
+
+
   return (
     <>
     <>
@@ -137,15 +188,33 @@ const SportsModal = () => {
                   <div className="col-md-12">
                     <div className="mb-3">
                       <label className="form-label">Name</label>
-                      <input type="text" className="form-control" />
+                      <input
+                          type="text"
+                          id="name"
+                          className="form-control"
+                              name="name"
+                              onChange={handleChange}  value={sportData.name}
+                        />
                     </div>
                     <div className="mb-3">
                       <label className="form-label">Coach</label>
-                      <input type="text" className="form-control" />
+                      <input
+                          type="text"
+                          className="form-control"
+                          id="coach"
+                              name="coach"
+                              onChange={handleChange}  value={sportData.coach}
+                        />
                     </div>
-                    <div className="mb-0">
+                    <div className="mb-3">
                       <label className="form-label">Started Year</label>
-                      <input type="text" className="form-control" />
+                      <input
+                          type="text"
+                          id="startedYear"
+                          className="form-control"
+                              name="startedYear"
+                              onChange={handleChange}  value={sportData.startedYear}
+                        />
                     </div>
                   </div>
                 </div>

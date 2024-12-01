@@ -1,6 +1,7 @@
-import React, { useRef } from "react";
+import React, { useRef,useState } from "react";
 import { all_routes } from "../../router/all_routes";
-import { Link } from "react-router-dom";
+import { api_path } from "../../../environment";
+import { Link,useNavigate } from "react-router-dom";
 import PredefinedDateRanges from "../../../core/common/datePicker";
 import CommonSelect from "../../../core/common/commonSelect";
 import {
@@ -17,6 +18,68 @@ import LibraryModal from "./libraryModal";
 import { bookList } from "../../../core/data/json/bookList";
 
 const Books = () => {
+
+  const navigation = useNavigate();
+  const navigationPath = () => {
+    setTimeout(() => {
+      navigation(routes.libraryBooks);
+    }, 1000);
+  };
+
+  const [bookData, setBookData] = useState({
+    bookName: "",
+bookNo: "",
+rackNo: "",
+publisher: "",
+author: "",
+subject: "",
+qty: "",
+available: "",
+price: "",
+postDate: "",
+    });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setBookData((prevData) => ({ ...prevData, [name]: value }));
+  };
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    // if (!validateForm()) return;
+    try {
+      const response = await fetch(`${api_path}/books/createBook`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          bookName: bookData.bookName,
+bookNo: bookData.bookNo,
+rackNo: bookData.rackNo,
+publisher: bookData.publisher,
+author: bookData.author,
+subject: bookData.subject,
+qty: bookData.qty,
+available: bookData.available,
+price: bookData.price,
+postDate: bookData.postDate,
+
+      }),
+      });
+      const data = await response.text();
+    if (response.ok) {
+      console.log(data);
+      console.log("Book Created Successfully");
+      alert("Book Created Successfully");
+      navigationPath(); // Redirect immediately
+    } else {
+      console.log(data);
+    }
+  } catch (error) {
+    console.error('Error Creating User:', error);
+  }
+};
+
+
+
   const routes = all_routes;
   const dropdownMenuRef = useRef<HTMLDivElement | null>(null);
   const data = bookList;
