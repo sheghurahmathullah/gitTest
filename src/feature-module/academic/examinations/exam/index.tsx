@@ -1,22 +1,22 @@
-import React, { useRef,useState } from "react";
-import { Link,useNavigate } from "react-router-dom";
+import React, { useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
+import { DatePicker } from "antd";
+import dayjs from "dayjs";
+import CommonSelect from "../../../../core/common/commonSelect";
 import Table from "../../../../core/common/dataTable/index";
-import { exam } from "../../../../core/data/json/exam";
+import PredefinedDateRanges from "../../../../core/common/datePicker";
 import {
   examOne,
   examtwo,
   startTime,
   startTimeOne,
 } from "../../../../core/common/selectoption/selectoption";
-import PredefinedDateRanges from "../../../../core/common/datePicker";
-import { TableData } from "../../../../core/data/interface";
-import CommonSelect from "../../../../core/common/commonSelect";
-import { DatePicker } from "antd";
-import dayjs from "dayjs";
-import { all_routes } from "../../../router/all_routes";
-import { api_path } from "../../../../environment";
 import TooltipOption from "../../../../core/common/tooltipOption";
+import { TableData } from "../../../../core/data/interface";
+import { exam } from "../../../../core/data/json/exam";
+import { api_path } from "../../../../environment";
+import { all_routes } from "../../../router/all_routes";
 
 const Exam = () => {
 
@@ -395,9 +395,9 @@ const Exam = () => {
                   >
                     Cancel
                   </Link>
-                  <Link  className="btn btn-primary"  to="#"  data-bs-dismiss="modal">
+                  <button  className="btn btn-primary"  onClick={handleSubmit} data-bs-dismiss="modal">
                     Add Exam
-                  </Link>
+                  </button>
                 </div>
               </form>
             </div>

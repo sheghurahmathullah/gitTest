@@ -1,4 +1,7 @@
 import React, { useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import CommonSelect from "../../../../core/common/commonSelect";
+import Table from "../../../../core/common/dataTable/index";
 import PredefinedDateRanges from "../../../../core/common/datePicker";
 import {
   classSection,
@@ -13,15 +16,11 @@ import {
   startTime,
   startTimeOne,
 } from "../../../../core/common/selectoption/selectoption";
-import Select from "react-select";
-import { Link,useNavigate } from "react-router-dom";
-import Table from "../../../../core/common/dataTable/index";
-import { examSchedule } from "../../../../core/data/json/exam_schedule";
-import { TableData } from "../../../../core/data/interface";
-import CommonSelect from "../../../../core/common/commonSelect";
-import { all_routes } from "../../../router/all_routes";
-import { api_path } from "../../../../environment";
 import TooltipOption from "../../../../core/common/tooltipOption";
+import { TableData } from "../../../../core/data/interface";
+import { examSchedule } from "../../../../core/data/json/exam_schedule";
+import { api_path } from "../../../../environment";
+import { all_routes } from "../../../router/all_routes";
 
 const ExamSchedule = () => {
   const navigation = useNavigate();
@@ -456,9 +455,9 @@ const ExamSchedule = () => {
                           type="text"
                           className="form-control"
                           
-                          id="class"
-                              name="class"
-                              onChange={handleChange}  value={examScheduleData.class}
+                          id="examDate"
+                              name="examDate"
+                              onChange={handleChange}  value={examScheduleData.examDate}
                         />
                         </div>
                       </div>
@@ -541,9 +540,9 @@ const ExamSchedule = () => {
                   >
                     Cancel
                   </Link>
-                  <Link to="#"  className="btn btn-primary" data-bs-dismiss="modal">
+                  <button onClick={handleSubmit}  className="btn btn-primary" data-bs-dismiss="modal">
                     Add Exam Schedule
-                  </Link>
+                  </button>
                 </div>
               </form>
             </div>

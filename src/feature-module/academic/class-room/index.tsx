@@ -1,17 +1,17 @@
-import React, { useRef,useState } from "react";
-import { classRoom } from "../../../core/data/json/class-room";
+import React, { useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import CommonSelect from "../../../core/common/commonSelect";
 import Table from "../../../core/common/dataTable/index";
 import PredefinedDateRanges from "../../../core/common/datePicker";
 import {
   capacitycount,
   count,
 } from "../../../core/common/selectoption/selectoption";
-import CommonSelect from "../../../core/common/commonSelect";
-import { TableData } from "../../../core/data/interface";
-import { Link,useNavigate } from "react-router-dom";
 import TooltipOption from "../../../core/common/tooltipOption";
-import { all_routes } from "../../router/all_routes";
+import { TableData } from "../../../core/data/interface";
+import { classRoom } from "../../../core/data/json/class-room";
 import { api_path } from "../../../environment";
+import { all_routes } from "../../router/all_routes";
 
 const ClassRoom = () => {
   const navigation = useNavigate();
@@ -365,9 +365,9 @@ status: classRoomData.status,
                   >
                     Cancel
                   </Link>
-                  <Link to="#" className="btn btn-primary" data-bs-dismiss="modal">
+                  <button onClick={handleSubmit} className="btn btn-primary" data-bs-dismiss="modal">
                     Add Class Room
-                  </Link>
+                  </button>
                 </div>
               </form>
             </div>

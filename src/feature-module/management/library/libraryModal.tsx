@@ -1,8 +1,8 @@
-import React, {useState} from "react";
-import { Link,useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import ImageWithBasePath from "../../../core/common/imageWithBasePath";
-import { all_routes } from "../../router/all_routes";
 import { api_path } from "../../../environment";
+import { all_routes } from "../../router/all_routes";
 
 
 const LibraryModal = () => {
@@ -273,13 +273,13 @@ postDate: bookData.postDate,
                 >
                   Cancel
                 </Link>
-                <Link
-                  to="#"
+                <button
+                  onClick={handleSubmit}
                   data-bs-dismiss="modal"
                   className="btn btn-primary"
                 >
                   Add Member
-                </Link>
+                </button>
               </div>
             </form>
           </div>
@@ -438,7 +438,7 @@ postDate: bookData.postDate,
                           type="text"
                           id="publisher"
                               name="publisher"
-                              onChange={handleChange}  value={bookData.publisher}
+                              onChange={handleChange1}  value={bookData.publisher}
                         />
                       </div>
                       <div className="mb-3">
@@ -448,7 +448,7 @@ postDate: bookData.postDate,
                           className="form-control"
                           id="author"
                               name="author"
-                              onChange={handleChange}  value={bookData.author}
+                              onChange={handleChange1}  value={bookData.author}
                         />
                       </div>
                       <div className="mb-3">
@@ -458,7 +458,7 @@ postDate: bookData.postDate,
                           type="text"
                           id="subject"
                               name="subject"
-                              onChange={handleChange}  value={bookData.subject}
+                              onChange={handleChange1}  value={bookData.subject}
                         />
                       </div>
                       <div className="row">
@@ -470,7 +470,7 @@ postDate: bookData.postDate,
                           type="text"
                           id="qty"
                               name="qty"
-                              onChange={handleChange}  value={bookData.qty}
+                              onChange={handleChange1}  value={bookData.qty}
                         />
                           </div>
                         </div>
@@ -482,7 +482,7 @@ postDate: bookData.postDate,
                           type="text"
                           id="available"
                               name="available"
-                              onChange={handleChange}  value={bookData.available}
+                              onChange={handleChange1}  value={bookData.available}
                         />
                           </div>
                         </div>
@@ -494,7 +494,7 @@ postDate: bookData.postDate,
                           id="price"
                           className="form-control"
                               name="price"
-                              onChange={handleChange}  value={bookData.price}
+                              onChange={handleChange1}  value={bookData.price}
                         />
                       </div>
                       <div className="mb-0">
@@ -504,7 +504,7 @@ postDate: bookData.postDate,
                           id="postDate"
                           className="form-control"
                               name="postDate"
-                              onChange={handleChange}  value={bookData.postDate}
+                              onChange={handleChange1}  value={bookData.postDate}
                         />
                       </div>
                     </div>
@@ -518,13 +518,13 @@ postDate: bookData.postDate,
                   >
                     Cancel
                   </Link>
-                  <Link
-                    to="#"
+                  <button
+                    onClick={handleSubmit1}
                     data-bs-dismiss="modal"
                     className="btn btn-primary"
                   >
                     Add Book
-                  </Link>
+                  </button>
                 </div>
               </form>
             </div>

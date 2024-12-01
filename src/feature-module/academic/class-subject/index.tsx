@@ -14,8 +14,8 @@ import {
 } from "../../../core/common/selectoption/selectoption";
 import TooltipOption from "../../../core/common/tooltipOption";
 import { TableData } from "../../../core/data/interface";
-import { all_routes } from "../../router/all_routes";
 import { api_path } from "../../../environment";
+import { all_routes } from "../../router/all_routes";
 
 
 const ClassSubject = () => {
