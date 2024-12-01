@@ -367,7 +367,7 @@ status: gradeData.status,
                   <div className="row">
                     <div className="col-md-12">
                       <div className="mb-3">
-                        <label className="form-label">Grade</label>
+                        <label className="form-label">Grades</label>
                         <input
                           type="text"
                           className="form-control"
