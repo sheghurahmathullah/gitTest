@@ -426,7 +426,7 @@ postDate: bookData.postDate,
                           type="text"
                           id="rackNo"
                               name="rackNo"
-                              onChange={handleChange}  value={bookData.rackNo}
+                              onChange={handleChange1}  value={bookData.rackNo}
                         />
                           </div>
                         </div>
