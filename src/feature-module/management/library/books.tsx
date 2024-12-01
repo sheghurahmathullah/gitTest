@@ -1,4 +1,4 @@
-import React, { useRef,useState } from "react";
+import React, { useRef,useState,useEffect } from "react";
 import { all_routes } from "../../router/all_routes";
 import { api_path } from "../../../environment";
 import { Link,useNavigate } from "react-router-dom";
@@ -18,6 +18,50 @@ import LibraryModal from "./libraryModal";
 import { bookList } from "../../../core/data/json/bookList";
 
 const Books = () => {
+
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`${api_path}/books/getAllBook`, {
+        method: "GET",
+      });
+      if (!response.ok) {
+        throw new Error("Failed to fetch students");
+      }
+      const result = await response.json();
+
+      // Transform API data to fit table structure
+      const transformedData = result.map((item: any) => ({
+        key: item.key || "",
+        id: item.id || "N/A",
+        bookName: item.bookName || "N/A",
+        rackNo: item.rackNo || "N/A",
+        bookNo: item.bookNo || "N/A",
+        publisher: item.publisher || "N/A",
+        author: item.author || "N/A",
+        subject: item.subject || "N/A",
+        qty: item.qty || "N/A",
+        available: item.available || "N/A",
+        price: item.price || "N/A",
+        postDate: item.postDate || "N/A",
+        imgSrc: item.uploadImage || "assets/img/default-student.jpg",
+      }));
+      setData(transformedData);
+    } catch (err:any) {
+      setError((err as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
 
   const navigation = useNavigate();
   const navigationPath = () => {
@@ -82,7 +126,7 @@ postDate: bookData.postDate,
 
   const routes = all_routes;
   const dropdownMenuRef = useRef<HTMLDivElement | null>(null);
-  const data = bookList;
+  const data1 = bookList;
   const handleApplyClick = () => {
     if (dropdownMenuRef.current) {
       dropdownMenuRef.current.classList.remove("show");
@@ -97,113 +141,78 @@ postDate: bookData.postDate,
           {text}
         </Link>
       ),
-      sorter: (a: TableData, b: TableData) => a.id.length - b.id.length,
+      sorter: (a: any, b: any) => a.id.localeCompare(b.id),
+
     },
     {
       title: "Book Name",
       dataIndex: "bookName",
       
-      sorter: (a: TableData, b: TableData) =>
-        a.bookName.length - b.bookName.length,
+      sorter: (a: any, b: any) => a.bookName.localeCompare(b.bookName),
+
     },
     {
       title: "Book No",
       dataIndex: "bookNo",
-      sorter: (a: TableData, b: TableData) =>
-        a.bookNo.length - b.bookNo.length,
+      sorter: (a: any, b: any) => a.bookNo.localeCompare(b.bookNo),
+
     },
     {
       title: "Publisher",
       dataIndex: "publisher",
-      sorter: (a: TableData, b: TableData) =>
-        a.publisher.length - b.publisher.length,
+      sorter: (a: any, b: any) => a.publisher.localeCompare(b.publisher),
+
     },
     {
       title: "Author",
       dataIndex: "author",
       
-      sorter: (a: TableData, b: TableData) => a.author.length - b.author.length,
+      sorter: (a: any, b: any) => a.author.localeCompare(b.author),
+
     },
     {
       title: "Subject",
       dataIndex: "subject",
       
-      sorter: (a: TableData, b: TableData) => a.subject.length - b.subject.length,
+      sorter: (a: any, b: any) => a.subject.localeCompare(b.subject),
+
     },
     {
       title: "Rack No",
       dataIndex: "rackNo",
       
-      sorter: (a: TableData, b: TableData) => a.rackNo.length - b.rackNo.length,
+      sorter: (a: any, b: any) => a.rackNo.localeCompare(b.rackNo),
+
     },
     {
       title: "Qty",
       dataIndex: "qty",
       
-      sorter: (a: TableData, b: TableData) => a.qty.length - b.qty.length,
+      sorter: (a: any, b: any) => a.qty.localeCompare(b.qty),
+
     },
     {
       title: "Available",
       dataIndex: "available",
       
-      sorter: (a: TableData, b: TableData) => a.available.length - b.available.length,
+      sorter: (a: any, b: any) => a.available.localeCompare(b.available),
+
     },
     {
       title: "Price",
       dataIndex: "price",
       
-      sorter: (a: TableData, b: TableData) => a.price.length - b.price.length,
+      sorter: (a: any, b: any) => a.price.localeCompare(b.price),
+
     },
     {
       title: "Post Date",
       dataIndex: "postDate",
       
-      sorter: (a: TableData, b: TableData) => a.postDate.length - b.postDate.length,
+      sorter: (a: any, b: any) => a.postDate.localeCompare(b.postDate),
+
     },
-    {
-      title: "Action",
-      dataIndex: "action",
-      render: () => (
-        <>
-          <div className="d-flex align-items-center">
-            <div className="dropdown">
-              <Link
-                to="#"
-                className="btn btn-white btn-icon btn-sm d-flex align-items-center justify-content-center rounded-circle p-0"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <i className="ti ti-dots-vertical fs-14" />
-              </Link>
-              <ul className="dropdown-menu dropdown-menu-right p-3">
-                <li>
-                  <Link
-                    className="dropdown-item rounded-1"
-                    to="#"
-                    data-bs-toggle="modal"
-                    data-bs-target="#edit_library_book"
-                  >
-                    <i className="ti ti-edit-circle me-2" />
-                    Edit
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="dropdown-item rounded-1"
-                    to="#"
-                    data-bs-toggle="modal"
-                    data-bs-target="#delete-modal"
-                  >
-                    <i className="ti ti-trash-x me-2" />
-                    Delete
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </>
-      ),
-    },
+  
   ];
   return (
     <>

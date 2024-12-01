@@ -1,4 +1,4 @@
-import React, { useRef,useState } from "react";
+import React, { useRef,useState,useEffect } from "react";
 import Table from "../../../core/common/dataTable/index";
 import { scheduleClass } from "../../../core/data/json/schedule_class";
 import PredefinedDateRanges from "../../../core/common/datePicker";
@@ -15,6 +15,44 @@ import TooltipOption from "../../../core/common/tooltipOption";
 import { api_path } from "../../../environment";
 
 const ScheduleClasses = () => {
+
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`${api_path}/schedules/getAllSchedule`, {
+        method: "GET",
+      });
+      if (!response.ok) {
+        throw new Error("Failed to fetch students");
+      }
+      const result = await response.json();
+
+      // Transform API data to fit table structure
+      const transformedData = result.map((item: any) => ({
+        key: item.key || "",
+        id: item.id || "N/A",
+        type: item.type || "N/A",
+        startTime: item.startTime || "N/A",
+        endTime: item.endTime || "N/A",
+        status: item.status || "N/A",
+        imgSrc: item.uploadImage || "assets/img/default-student.jpg",
+      }));
+      setData(transformedData);
+    } catch (err:any) {
+      setError((err as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
 
   const navigation = useNavigate();
   const navigationPath = () => {
@@ -67,7 +105,7 @@ type: scheduleData.type,
 
 
   const routes = all_routes;
-  const data = scheduleClass;
+  const data1 = scheduleClass;
   const route = all_routes
   const dropdownMenuRef = useRef<HTMLDivElement | null>(null);
   const handleApplyClick = () => {
@@ -86,45 +124,28 @@ type: scheduleData.type,
           </Link>
         </>
       ),
-      sorter: (a: TableData, b: TableData) => a.id.length - b.id.length,
+      sorter: (a: any, b: any) => a.id.localeCompare(b.id),
     },
 
     {
       title: "Type",
       dataIndex: "type",
-      sorter: (a: TableData, b: TableData) => a.type.length - b.type.length,
+      sorter: (a: any, b: any) => a.type.localeCompare(b.type),
     },
     {
       title: "Start Time",
       dataIndex: "startTime",
-      sorter: (a: TableData, b: TableData) => a.startTime.length - b.startTime.length,
+      sorter: (a: any, b: any) => a.startTime.localeCompare(b.startTime),
     },
     {
       title: "End Time",
       dataIndex: "endTime",
-      sorter: (a: TableData, b: TableData) => a.endTime.length - b.endTime.length,
+      sorter: (a: any, b: any) => a.endTime.localeCompare(b.endTime),
     },
     {
       title: "Status",
       dataIndex: "status",
-      render: (text: string) => (
-        <>
-          {text === "Active" ? (
-            <span
-              className="badge badge-soft-success d-inline-flex align-items-center"
-            >
-              <i className='ti ti-circle-filled fs-5 me-1'></i>{text}
-            </span>
-          ):
-          (
-            <span
-              className="badge badge-soft-danger d-inline-flex align-items-center"
-            >
-              <i className='ti ti-circle-filled fs-5 me-1'></i>{text}
-            </span>
-          )}
-        </>
-      ),
+      sorter: (a: any, b: any) => a.status.localeCompare(b.status),
     },
     {
       title: "Action",

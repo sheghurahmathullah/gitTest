@@ -1,8 +1,9 @@
-import React, { useRef,useState } from "react";
+import React, { useRef,useState,useEffect } from "react";
 import { all_routes } from "../../router/all_routes";
 import { Link,useNavigate } from "react-router-dom";
 import PredefinedDateRanges from "../../../core/common/datePicker";
 import CommonSelect from "../../../core/common/commonSelect";
+import { api_path } from "../../../environment";
 import {
   cardNo,
   members,
@@ -18,12 +19,48 @@ import ImageWithBasePath from "../../../core/common/imageWithBasePath";
 
 const LibraryMember = () => {
 
-  
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`${api_path}/members/getAllMember`, {
+        method: "GET",
+      });
+      if (!response.ok) {
+        throw new Error("Failed to fetch students");
+      }
+      const result = await response.json();
+
+      // Transform API data to fit table structure
+      const transformedData = result.map((item: any) => ({
+        key: item.key || "",
+        id: item.id || "N/A",
+        name: item.name || "N/A",
+        cardNo: item.cardNo || "N/A",
+        email: item.email || "N/A",
+        dateOfJoin: item.dateOfJoin || "N/A",
+        phoneNumber: item.phoneNumber || "N/A",
+        imgSrc: item.uploadImage || "assets/img/default-student.jpg",
+      }));
+      setData(transformedData);
+    } catch (err:any) {
+      setError((err as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
 
   const routes = all_routes;
   const dropdownMenuRef = useRef<HTMLDivElement | null>(null);
-  const data = librarymemberList;
+  const data1 = librarymemberList;
   const handleApplyClick = () => {
     if (dropdownMenuRef.current) {
       dropdownMenuRef.current.classList.remove("show");
@@ -61,77 +98,35 @@ const LibraryMember = () => {
           </div>
         </>
       ),
-      sorter: (a: TableData, b: TableData) =>
-        a.name.length - b.name.length,
+      sorter: (a: any, b: any) => a.name.localeCompare(b.name),
     },
     {
       title: "Card No",
       dataIndex: "cardNo",
-      sorter: (a: TableData, b: TableData) =>
-        a.cardNo.length - b.cardNo.length,
+      sorter: (a: any, b: any) => a.cardNo.localeCompare(b.cardNo),
+
     },
     {
       title: "Email",
       dataIndex: "email",
-      sorter: (a: TableData, b: TableData) =>
-        a.email.length - b.email.length,
+      sorter: (a: any, b: any) => a.email.localeCompare(b.email),
+
     },
     {
       title: "Date Of Join",
       dataIndex: "dateofJoin",
       
-      sorter: (a: TableData, b: TableData) => a.dateofJoin.length - b.dateofJoin.length,
+      sorter: (a: any, b: any) => a.dateofJoin.localeCompare(b.dateofJoin),
+
     },
     {
       title: "Mobile",
-      dataIndex: "mobile",
+      dataIndex: "phoneNumber",
       
-      sorter: (a: TableData, b: TableData) => a.mobile.length - b.mobile.length,
+      sorter: (a: any, b: any) => a.phoneNumber.localeCompare(b.phoneNumber),
+
     },
-    {
-      title: "Action",
-      dataIndex: "action",
-      render: () => (
-        <>
-          <div className="d-flex align-items-center">
-            <div className="dropdown">
-              <Link
-                to="#"
-                className="btn btn-white btn-icon btn-sm d-flex align-items-center justify-content-center rounded-circle p-0"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <i className="ti ti-dots-vertical fs-14" />
-              </Link>
-              <ul className="dropdown-menu dropdown-menu-right p-3">
-                <li>
-                  <Link
-                    className="dropdown-item rounded-1"
-                    to="#"
-                    data-bs-toggle="modal"
-                    data-bs-target="#edit_library_members"
-                  >
-                    <i className="ti ti-edit-circle me-2" />
-                    Edit
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="dropdown-item rounded-1"
-                    to="#"
-                    data-bs-toggle="modal"
-                    data-bs-target="#delete-modal"
-                  >
-                    <i className="ti ti-trash-x me-2" />
-                    Delete
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </>
-      ),
-    },
+  
   ];
   return (
     <>

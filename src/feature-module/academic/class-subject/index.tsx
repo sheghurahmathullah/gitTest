@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef,useEffect } from "react";
 import Table from "../../../core/common/dataTable/index";
 import { classSubject } from "../../../core/data/json/class-subject";
 
@@ -19,6 +19,44 @@ import { api_path } from "../../../environment";
 
 
 const ClassSubject = () => {
+
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`${api_path}/subjects/getAllSubject`, {
+        method: "GET",
+      });
+      if (!response.ok) {
+        throw new Error("Failed to fetch students");
+      }
+      const result = await response.json();
+
+      // Transform API data to fit table structure
+      const transformedData = result.map((item: any) => ({
+        key: item.key || "",
+        id: item.id || "N/A",
+        name: item.name || "N/A",
+        code: item.code || "N/A",
+        type: item.type || "N/A",
+        status: item.status || "N/A",
+        imgSrc: item.uploadImage || "assets/img/default-student.jpg",
+      }));
+      setData(transformedData);
+    } catch (err:any) {
+      setError((err as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
 
   const navigation = useNavigate();
 
@@ -72,7 +110,7 @@ type: subjectData.type,
 };
   const routes = all_routes;
 
-  const data = classSubject;
+  const data1 = classSubject;
   const dropdownMenuRef = useRef<HTMLDivElement | null>(null);
   const handleApplyClick = () => {
     if (dropdownMenuRef.current) {
@@ -90,89 +128,37 @@ type: subjectData.type,
           </Link>
         </>
       ),
-      sorter: (a: TableData, b: TableData) => a.id.length - b.id.length,
+      sorter: (a: any, b: any) => a.id.localeCompare(b.id),
+
     },
 
     {
       title: "Name",
       dataIndex: "name",
-      sorter: (a: TableData, b: TableData) => a.name.length - b.name.length,
+      sorter: (a: any, b: any) => a.name.localeCompare(b.name),
+
     },
     {
       title: "Code",
       dataIndex: "code",
-      sorter: (a: TableData, b: TableData) => a.code.length - b.code.length,
+      sorter: (a: any, b: any) => a.code.localeCompare(b.code),
+
     },
     {
       title: "Type",
       dataIndex: "type",
-      sorter: (a: TableData, b: TableData) => a.type.length - b.type.length,
+      sorter: (a: any, b: any) => a.type.localeCompare(b.type),
+
     },
     {
       title: "Status",
       dataIndex: "status",
-      render: (text: string) => (
-        <>
-          {text === "Active" ? (
-            <span className="badge badge-soft-success d-inline-flex align-items-center">
-              <i className="ti ti-circle-filled fs-5 me-1"></i>
-              {text}
-            </span>
-          ) : (
-            <span className="badge badge-soft-danger d-inline-flex align-items-center">
-              <i className="ti ti-circle-filled fs-5 me-1"></i>
-              {text}
-            </span>
-          )}
-        </>
-      ),
-      sorter: (a: TableData, b: TableData) => a.status.length - b.status.length,
+     
+      sorter: (a: any, b: any) => a.status.localeCompare(b.status),
+
     },
 
-    {
-      title: "Action",
-      dataIndex: "action",
-      render: () => (
-        <>
-          <div className="d-flex align-items-center">
-            <div className="dropdown">
-              <Link
-                to="#"
-                className="btn btn-white btn-icon btn-sm d-flex align-items-center justify-content-center rounded-circle p-0"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <i className="ti ti-dots-vertical fs-14" />
-              </Link>
-              <ul className="dropdown-menu dropdown-menu-right p-3">
-                <li>
-                  <Link
-                    className="dropdown-item rounded-1"
-                    to="#"
-                    data-bs-toggle="modal"
-                    data-bs-target="#edit_subject"
-                  >
-                    <i className="ti ti-edit-circle me-2" />
-                    Edit
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="dropdown-item rounded-1"
-                    to="#"
-                    data-bs-toggle="modal"
-                    data-bs-target="#delete-modal"
-                  >
-                    <i className="ti ti-trash-x me-2" />
-                    Delete
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </>
-      ),
-    },
+   
   ];
   return (
     <div>

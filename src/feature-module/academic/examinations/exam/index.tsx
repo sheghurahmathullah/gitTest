@@ -1,4 +1,4 @@
-import React, { useRef,useState } from "react";
+import React, { useRef,useState,useEffect } from "react";
 import { Link,useNavigate } from "react-router-dom";
 
 import Table from "../../../../core/common/dataTable/index";
@@ -19,6 +19,44 @@ import { api_path } from "../../../../environment";
 import TooltipOption from "../../../../core/common/tooltipOption";
 
 const Exam = () => {
+
+
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`${api_path}/exams/getAllExam`, {
+        method: "GET",
+      });
+      if (!response.ok) {
+        throw new Error("Failed to fetch students");
+      }
+      const result = await response.json();
+
+      // Transform API data to fit table structure
+      const transformedData = result.map((item: any) => ({
+        key: item.key || "",
+        id: item.id || "N/A",
+        examName: item.examName || "N/A",
+        examDate: item.examDate || "N/A",
+        startTime: item.startTime || "N/A",
+        endTime: item.endTime || "N/A",
+        imgSrc: item.uploadImage || "assets/img/default-student.jpg",
+      }));
+      setData(transformedData);
+    } catch (err:any) {
+      setError((err as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const navigation = useNavigate();
   const navigationPath = () => {
@@ -70,7 +108,7 @@ const Exam = () => {
 
   const routes = all_routes;
 
-  const data = exam;
+  const data1 = exam;
   const dropdownMenuRef = useRef<HTMLDivElement | null>(null);
   const today = new Date();
   const year = today.getFullYear();
@@ -99,31 +137,27 @@ const Exam = () => {
           </Link>
         </>
       ),
-      sorter: (a: any, b: any) => a.id.length - b.id.length,
+      sorter: (a: any, b: any) => a.id.localeCompare(b.id),
     },
     {
       title: "Exam Name",
       dataIndex: "examName",
-      sorter: (a: TableData, b: TableData) =>
-        a.examName.length - b.examName.length,
+      sorter: (a: any, b: any) => a.examName.localeCompare(b.examName),
     },
     {
       title: "Exam Date",
       dataIndex: "examDate",
-      sorter: (a: TableData, b: TableData) =>
-        a.examDate.length - b.examDate.length,
+      sorter: (a: any, b: any) => a.examDate.localeCompare(b.examDate),
     },
     {
       title: "Start Time",
       dataIndex: "startTime",
-      sorter: (a: TableData, b: TableData) =>
-        a.startTime.length - b.startTime.length,
+      sorter: (a: any, b: any) => a.startTime.localeCompare(b.startTime),
     },
     {
       title: "End Time",
       dataIndex: "endTime",
-      sorter: (a: TableData, b: TableData) =>
-        a.endTime.length - b.endTime.length,
+      sorter: (a: any, b: any) => a.endTime.localeCompare(b.endTime),
     },
     {
       title: "Action",

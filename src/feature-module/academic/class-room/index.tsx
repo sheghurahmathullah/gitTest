@@ -1,4 +1,4 @@
-import React, { useRef,useState } from "react";
+import React, { useRef,useState,useEffect } from "react";
 import { classRoom } from "../../../core/data/json/class-room";
 import Table from "../../../core/common/dataTable/index";
 import PredefinedDateRanges from "../../../core/common/datePicker";
@@ -14,6 +14,46 @@ import { all_routes } from "../../router/all_routes";
 import { api_path } from "../../../environment";
 
 const ClassRoom = () => {
+
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`${api_path}/assignments/getAllAssignment`, {
+        method: "GET",
+      });
+      if (!response.ok) {
+        throw new Error("Failed to fetch students");
+      }
+      const result = await response.json();
+
+      // Transform API data to fit table structure
+      const transformedData = result.map((item: any) => ({
+        key: item.key || "",
+        id: item.id || "N/A",
+        roomNo: item.roomNo || "N/A",
+        capacity: item.capacity || "N/A",
+        status: item.status || "N/A",
+        imgSrc: item.uploadImage || "assets/img/default-student.jpg",
+      }));
+      setData(transformedData);
+    } catch (err:any) {
+      setError((err as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+
+
+
   const navigation = useNavigate();
   const navigationPath = () => {
     setTimeout(() => {
@@ -62,7 +102,7 @@ status: classRoomData.status,
 
   const routes = all_routes;
 
-  const data = classRoom;
+  const data1 = classRoom;
   const columns = [
     {
       title: "ID",
@@ -74,74 +114,27 @@ status: classRoomData.status,
           </Link>
         </>
       ),
-      sorter: (a: TableData, b: TableData) => a.id.length - b.id.length,
+      sorter: (a: any, b: any) => a.id.localeCompare(b.id),
     },
 
     {
       title: "Room No",
       dataIndex: "roomNo",
-      sorter: (a: TableData, b: TableData) => a.roomNo.length - b.roomNo.length,
+      sorter: (a: any, b: any) => a.roomNo.localeCompare(b.roomNo),
     },
     {
       title: "Capacity",
       dataIndex: "capacity",
-      sorter: (a: TableData, b: TableData) =>
-        a.capacity.length - b.capacity.length,
+      sorter: (a: any, b: any) => a.capacity.localeCompare(b.capacity),
     },
     {
       title: "Status",
       dataIndex: "status",
-      render: () => (
-        <>
-          <span className="badge badge-soft-success d-inline-flex align-items-center">
-            <i className="ti ti-circle-filled fs-5 me-1"></i>Active
-          </span>
-        </>
-      ),
-      sorter: (a: any, b: any) => a.status.length - b.status.length,
+      
+      sorter: (a: any, b: any) => a.status.localeCompare(b.status),
+
     },
-    {
-      title: "Action",
-      dataIndex: "action",
-      render: () => (
-        <>
-          <div className="dropdown">
-            <Link
-              to="#"
-              className="btn btn-white btn-icon btn-sm d-flex align-items-center justify-content-center rounded-circle p-0"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              <i className="ti ti-dots-vertical fs-14" />
-            </Link>
-            <ul className="dropdown-menu dropdown-menu-right p-3">
-              <li>
-                <Link
-                  className="dropdown-item rounded-1"
-                  to="#"
-                  data-bs-toggle="modal"
-                  data-bs-target="#edit_class_room"
-                >
-                  <i className="ti ti-edit-circle me-2" />
-                  Edit
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="dropdown-item rounded-1"
-                  to="#"
-                  data-bs-toggle="modal"
-                  data-bs-target="#delete-modal"
-                >
-                  <i className="ti ti-trash-x me-2" />
-                  Delete
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </>
-      ),
-    },
+   
   ];
   const dropdownMenuRef = useRef<HTMLDivElement | null>(null);
   const handleApplyClick = () => {

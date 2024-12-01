@@ -1,4 +1,4 @@
-import React, { useRef,useState } from "react";
+import React, { useRef,useState,useEffect } from "react";
 import { classhomework } from "../../../core/data/json/class_home_work";
 import Table from "../../../core/common/dataTable/index";
 import {
@@ -19,6 +19,45 @@ import TooltipOption from "../../../core/common/tooltipOption";
 
 const ClassHomeWork = () => {
 
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`${api_path}/assignments/getAllAssignment`, {
+        method: "GET",
+      });
+      if (!response.ok) {
+        throw new Error("Failed to fetch students");
+      }
+      const result = await response.json();
+
+      // Transform API data to fit table structure
+      const transformedData = result.map((item: any) => ({
+        key: item.key || "",
+        id: item.id || "N/A",
+        className: item.className || "N/A",
+        section: item.section || "N/A",
+        subject: item.subject || "N/A",
+        homeworkDate: item.homeworkDate || "N/A",
+        submissionDate: item.submissionDate || "N/A",
+        imgSrc: item.uploadImage || "assets/img/default-student.jpg",
+      }));
+      setData(transformedData);
+    } catch (err:any) {
+      setError((err as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+
   const navigation = useNavigate();
   const navigationPath = () => {
     setTimeout(() => {
@@ -28,7 +67,7 @@ const ClassHomeWork = () => {
 
   const [assignmentData, setAssignmentData] = useState({
     attachments: "",
-    class: "",
+    className: "",
     homeworkDate: "",
     section: "",
     status: "",
@@ -44,12 +83,12 @@ const ClassHomeWork = () => {
     event.preventDefault();
     // if (!validateForm()) return;
     try {
-      const response = await fetch(`${api_path}/assignment/createAssignment`, {
+      const response = await fetch(`${api_path}/assignments/createAssignment`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           attachments: assignmentData.attachments,
-          className: assignmentData.class,
+          className: assignmentData.className,
           homeworkDate: assignmentData.homeworkDate,
           section: assignmentData.section,
           status: assignmentData.status,
@@ -74,7 +113,7 @@ const ClassHomeWork = () => {
 
   const routes = all_routes;
 
-  const data = classhomework;
+  const data1 = classhomework;
   const dropdownMenuRef = useRef<HTMLDivElement | null>(null);
   const handleApplyClick = () => {
     if (dropdownMenuRef.current) {
@@ -92,37 +131,33 @@ const ClassHomeWork = () => {
           </Link>
         </>
       ),
-      sorter: (a: TableData, b: TableData) => a.class.length - b.class.length,
+sorter: (a: any, b: any) => a.id.localeCompare(b.id),
     },
 
     {
       title: "Class",
-      dataIndex: "class",
-      sorter: (a: TableData, b: TableData) => a.class.length - b.class.length,
+      dataIndex: "className",
+sorter: (a: any, b: any) => a.className.localeCompare(b.className),
     },
     {
       title: "Section",
       dataIndex: "section",
-      sorter: (a: TableData, b: TableData) =>
-        a.section.length - b.section.length,
+      sorter: (a: any, b: any) => a.section.localeCompare(b.section),
     },
     {
       title: "Subject",
       dataIndex: "subject",
-      sorter: (a: TableData, b: TableData) =>
-        a.subject.length - b.subject.length,
+      sorter: (a: any, b: any) => a.subject.localeCompare(b.subject),
     },
     {
       title: "Assignment",
       dataIndex: "homeworkDate",
-      sorter: (a: TableData, b: TableData) =>
-        a.homeworkDate.length - b.homeworkDate.length,
+      sorter: (a: any, b: any) => a.homeworkDate.localeCompare(b.homeworkDate),
     },
     {
       title: "Submission Date",
       dataIndex: "submissionDate",
-      sorter: (a: TableData, b: TableData) =>
-        a.submissionDate.length - b.submissionDate.length,
+      sorter: (a: any, b: any) => a.submissionDate.localeCompare(b.submissionDate),
     },
     {
       title: "CreatedBy",
@@ -143,8 +178,7 @@ const ClassHomeWork = () => {
           </div>
         </div>
       ),
-      sorter: (a: TableData, b: TableData) =>
-        a.createdBy.length - b.createdBy.length,
+      sorter: (a: any, b: any) => a.RollNo.localeCompare(b.RollNo),
     },
 
     {
@@ -382,7 +416,7 @@ const ClassHomeWork = () => {
                           placeholder="Enter Class Name"
                           id="class"
                               name="class"
-                              onChange={handleChange}  value={assignmentData.class}
+                              onChange={handleChange}  value={assignmentData.className}
                         />
                       </div>
                       <div className="row">

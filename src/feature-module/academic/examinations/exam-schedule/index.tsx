@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState,useEffect } from "react";
 import PredefinedDateRanges from "../../../../core/common/datePicker";
 import {
   classSection,
@@ -24,6 +24,51 @@ import { api_path } from "../../../../environment";
 import TooltipOption from "../../../../core/common/tooltipOption";
 
 const ExamSchedule = () => {
+
+
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`${api_path}/examSchedule/getAllExamSchedule`, {
+        method: "GET",
+      });
+      if (!response.ok) {
+        throw new Error("Failed to fetch students");
+      }
+      const result = await response.json();
+
+      // Transform API data to fit table structure
+      const transformedData = result.map((item: any) => ({
+        key: item.key || "",
+        id: item.id || "N/A",
+        subject: item.subject || "N/A",
+        examDate: item.examDate || "N/A",
+        startTime: item.startTime || "N/A",
+        endTime: item.endTime || "N/A",
+        durationMin: item.durationMin || "N/A",
+        roomNo: item.roomNo || "N/A",
+        maxMarks: item.maxMarks || "N/A",
+        minMarks: item.minMarks || "N/A",
+        imgSrc: item.uploadImage || "assets/img/default-student.jpg",
+      }));
+      setData(transformedData);
+    } catch (err:any) {
+      setError((err as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+
+
   const navigation = useNavigate();
   const navigationPath = () => {
     setTimeout(() => {
@@ -88,7 +133,7 @@ const ExamSchedule = () => {
 
 
   const routes = all_routes;
-  const data = examSchedule;
+  const data1 = examSchedule;
   const dropdownMenuRef = useRef<HTMLDivElement | null>(null);
   const handleApplyClick = () => {
     if (dropdownMenuRef.current) {
@@ -107,94 +152,45 @@ const ExamSchedule = () => {
           </Link>
         </>
       ),
-      sorter: (a: TableData, b: TableData) =>
-        a.subject.length - b.subject.length,
+      sorter: (a: any, b: any) => a.subject.localeCompare(b.subject),
+
     },
     {
       title: "Exam Date",
       dataIndex: "examDate",
-      sorter: (a: TableData, b: TableData) =>
-        a.examDate.length - b.examDate.length,
+      sorter: (a: any, b: any) => a.examDate.localeCompare(b.examDate),
     },
     {
       title: "Start Time",
       dataIndex: "startTime",
-      sorter: (a: TableData, b: TableData) =>
-        a.startTime.length - b.startTime.length,
+      sorter: (a: any, b: any) => a.startTime.localeCompare(b.startTime),
     },
     {
       title: "End Time",
       dataIndex: "endTime",
-      sorter: (a: TableData, b: TableData) =>
-        a.endTime.length - b.endTime.length,
+      sorter: (a: any, b: any) => a.endTime.localeCompare(b.endTime),
     },
     {
       title: "Duration",
-      dataIndex: "duration",
-      sorter: (a: TableData, b: TableData) =>
-        a.duration.length - b.duration.length,
+      dataIndex: "durationMin",
+      sorter: (a: any, b: any) => a.durationMin.localeCompare(b.durationMin),
     },
     {
       title: "Room No",
       dataIndex: "roomNo",
-      sorter: (a: TableData, b: TableData) => a.roomNo.length - b.roomNo.length,
+      sorter: (a: any, b: any) => a.roomNo.localeCompare(b.roomNo),
     },
     {
       title: "Max Mark",
       dataIndex: "maxMarks",
-      sorter: (a: TableData, b: TableData) =>
-        a.maxMarks.length - b.maxMarks.length,
+      sorter: (a: any, b: any) => a.maxMarks.localeCompare(b.maxMarks),
     },
     {
       title: "Min Mark",
       dataIndex: "minMarks",
-      sorter: (a: TableData, b: TableData) =>
-        a.minMarks.length - b.minMarks.length,
+      sorter: (a: any, b: any) => a.minMarks.localeCompare(b.minMarks),
     },
-    {
-      title: "Action",
-      dataIndex: "action",
-      render: () => (
-        <>
-          <div className="d-flex align-items-center">
-            <div className="dropdown">
-              <Link
-                to="#"
-                className="btn btn-white btn-icon btn-sm d-flex align-items-center justify-content-center rounded-circle p-0"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <i className="ti ti-dots-vertical fs-14" />
-              </Link>
-              <ul className="dropdown-menu dropdown-menu-right p-3">
-                <li>
-                  <Link
-                    className="dropdown-item rounded-1"
-                    to="#"
-                    data-bs-toggle="modal"
-                    data-bs-target="#edit_exam_schedule"
-                  >
-                    <i className="ti ti-edit-circle me-2" />
-                    Edit
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="dropdown-item rounded-1"
-                    to="#"
-                    data-bs-toggle="modal"
-                    data-bs-target="#delete-modal"
-                  >
-                    <i className="ti ti-trash-x me-2" />
-                    Delete
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </>
-      ),
-    },
+    
   ];
   const addNewContent = () => {
     setNewContents([...newContents, newContents.length]);

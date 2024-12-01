@@ -1,4 +1,4 @@
-import React, { useRef,useState } from "react";
+import React, { useRef,useState,useEffect } from "react";
 import { Link,useNavigate } from "react-router-dom";
 import Select from "react-select";
 import {
@@ -20,6 +20,44 @@ import TooltipOption from "../../../../core/common/tooltipOption";
 const Grade = () => {
 
 
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`${api_path}/grades/getAllGrade`, {
+        method: "GET",
+      });
+      if (!response.ok) {
+        throw new Error("Failed to fetch students");
+      }
+      const result = await response.json();
+
+      // Transform API data to fit table structure
+      const transformedData = result.map((item: any) => ({
+        key: item.key || "",
+        id: item.id || "N/A",
+        grade: item.grade || "N/A",
+        percentage: item.percentage || "N/A",
+        gradePoints: item.gradePoints || "N/A",
+        status: item.status || "N/A",
+        imgSrc: item.uploadImage || "assets/img/default-student.jpg",
+      }));
+      setData(transformedData);
+    } catch (err:any) {
+      setError((err as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+
   const navigation = useNavigate();
   const navigationPath = () => {
     setTimeout(() => {
@@ -34,6 +72,7 @@ const Grade = () => {
     marksFrom: "",
     marksUpto: "",
     status: "",
+    percentage:"",
     });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,6 +93,7 @@ gradePoints: gradeData.gradePoints,
 marksFrom: gradeData.marksFrom,
 marksUpto: gradeData.marksUpto,
 status: gradeData.status,
+percentage: gradeData.percentage,
          
       }),
       });
@@ -74,7 +114,7 @@ status: gradeData.status,
 
 
   const routes = all_routes;
-  const data = gradetable;
+  const data1 = gradetable;
   const dropdownMenuRef = useRef<HTMLDivElement | null>(null);
   const handleApplyClick = () => {
     if (dropdownMenuRef.current) {
@@ -92,81 +132,33 @@ status: gradeData.status,
           </Link>
         </>
       ),
-      sorter: (a: TableData, b: TableData) => a.id.length - b.id.length,
+      sorter: (a: any, b: any) => a.id.localeCompare(b.id),
     },
     {
       title: "Grade",
       dataIndex: "grade",
-      sorter: (a: TableData, b: TableData) => a.grade.length - b.grade.length,
+      sorter: (a: any, b: any) => a.grade.localeCompare(b.grade),
     },
     {
       title: "Percentage",
       dataIndex: "percentage",
-      sorter: (a: TableData, b: TableData) =>
-        a.percentage.length - b.percentage.length,
+      sorter: (a: any, b: any) => a.percentage.localeCompare(b.percentage),
+
     },
     {
       title: "Grade Points",
       dataIndex: "gradePoints",
-      sorter: (a: TableData, b: TableData) =>
-        a.gradePoints.length - b.gradePoints.length,
+      sorter: (a: any, b: any) => a.gradePoints.localeCompare(b.gradePoints),
+
     },
     {
       title: "Status",
       dataIndex: "status",
-      render: () => (
-        <>
-          <span className="badge badge-soft-success d-inline-flex align-items-center">
-            <i className="ti ti-circle-filled fs-5 me-1"></i>Active
-          </span>
-        </>
-      ),
-      sorter: (a: TableData, b: TableData) => a.status.length - b.status.length,
+ 
+      sorter: (a: any, b: any) => a.status.localeCompare(b.status),
+
     },
-    {
-      title: "Action",
-      dataIndex: "action",
-      render: () => (
-        <>
-          <div className="d-flex align-items-center">
-            <div className="dropdown">
-              <Link
-                to="#"
-                className="btn btn-white btn-icon btn-sm d-flex align-items-center justify-content-center rounded-circle p-0"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <i className="ti ti-dots-vertical fs-14" />
-              </Link>
-              <ul className="dropdown-menu dropdown-menu-right p-3">
-                <li>
-                  <Link
-                    className="dropdown-item rounded-1"
-                    to="#"
-                    data-bs-toggle="modal"
-                    data-bs-target="#edit_grade"
-                  >
-                    <i className="ti ti-edit-circle me-2" />
-                    Edit
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="dropdown-item rounded-1"
-                    to="#"
-                    data-bs-toggle="modal"
-                    data-bs-target="#delete-modal"
-                  >
-                    <i className="ti ti-trash-x me-2" />
-                    Delete
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </>
-      ),
-    },
+   
   ];
   return (
     <div>
@@ -390,10 +382,6 @@ status: gradeData.status,
                       </div>
                       <div className="mb-3">
                         <label className="form-label">Marks Upto(%)</label>
-                        <CommonSelect className="select" options={marksUpto} />
-                      </div>
-                      <div className="mb-3">
-                        <label className="form-label">Grade Points</label>
                         <input
                           type="text"
                           className="form-control"
@@ -401,6 +389,28 @@ status: gradeData.status,
                           id="marksUpto"
                               name="marksUpto"
                               onChange={handleChange}  value={gradeData.marksUpto}
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <label className="form-label">Grade Points</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          
+                          id="gradePoints"
+                              name="gradePoints"
+                              onChange={handleChange}  value={gradeData.gradePoints}
+                        />
+                      </div>
+                      <div className="mb-3">
+                        <label className="form-label">Percentage</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          
+                          id="percentage"
+                              name="percentage"
+                              onChange={handleChange}  value={gradeData.percentage}
                         />
                       </div>
                       <div className="mb-3">

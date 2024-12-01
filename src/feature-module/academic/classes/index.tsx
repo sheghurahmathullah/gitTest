@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState,useEffect} from "react";
 import { classes } from "../../../core/data/json/classes";
 import Table from "../../../core/common/dataTable/index";
 import PredefinedDateRanges from "../../../core/common/datePicker";
@@ -16,6 +16,46 @@ import TooltipOption from "../../../core/common/tooltipOption";
 
 
 const Classes = () => {
+
+
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`${api_path}/classes/getAllClass`, {
+        method: "GET",
+      });
+      if (!response.ok) {
+        throw new Error("Failed to fetch students");
+      }
+      const result = await response.json();
+
+      // Transform API data to fit table structure
+      const transformedData = result.map((item: any) => ({
+        key: item.key || "",
+        id: item.id || "N/A",
+        className: item.className || "N/A",
+        section: item.section || "N/A",
+        noOfStudents: item.noOfStudents || "N/A",
+        noOfSubjects: item.noOfSubjects || "N/A",
+        status: item.status || "N/A",
+        imgSrc: item.uploadImage || "assets/img/default-student.jpg",
+      }));
+      setData(transformedData);
+    } catch (err:any) {
+      setError((err as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
 
   const navigation = useNavigate();
   const navigationPath = () => {
@@ -35,7 +75,7 @@ status: "",
 
   const routes = all_routes;
 
-  const data = classes;
+  const data1 = classes;
   const dropdownMenuRef = useRef<HTMLDivElement | null>(null);
   const handleApplyClick = () => {
     if (dropdownMenuRef.current) {
@@ -58,89 +98,30 @@ status: "",
 
     {
       title: "Class",
-      dataIndex: "class",
-      sorter: (a: TableData, b: TableData) => a.class.length - b.class.length,
+      dataIndex: "className",
+      sorter: (a: any, b: any) => a.className.localeCompare(b.className),
+
     },
     {
       title: "Section",
       dataIndex: "section",
-      sorter: (a: TableData, b: TableData) =>
-        a.section.length - b.section.length,
+      sorter: (a: any, b: any) => a.section.localeCompare(b.section),
+
     },
     {
       title: "No of Student",
       dataIndex: "noOfStudents",
-      sorter: (a: TableData, b: TableData) =>
-        a.noOfStudents.length - b.noOfStudents.length,
+      sorter: (a: any, b: any) => a.noOfStudents.localeCompare(b.noOfStudents),
     },
     {
       title: "No of Subjects",
       dataIndex: "noOfSubjects",
-      sorter: (a: TableData, b: TableData) =>
-        a.noOfSubjects.length - b.noOfSubjects.length,
+      sorter: (a: any, b: any) => a.noOfSubjects.localeCompare(b.noOfSubjects),
     },
     {
       title: "Status",
       dataIndex: "status",
-      render: (text: string) => (
-        <>
-          {text === "Active" ? (
-            <span className="badge badge-soft-success d-inline-flex align-items-center">
-              <i className="ti ti-circle-filled fs-5 me-1"></i>
-              {text}
-            </span>
-          ) : (
-            <span className="badge badge-soft-danger d-inline-flex align-items-center">
-              <i className="ti ti-circle-filled fs-5 me-1"></i>
-              {text}
-            </span>
-          )}
-        </>
-      ),
-    },
-    {
-      title: "Action",
-      dataIndex: "action",
-      render: () => (
-        <>
-          <div className="d-flex align-items-center">
-            <div className="dropdown">
-              <Link
-                to="#"
-                className="btn btn-white btn-icon btn-sm d-flex align-items-center justify-content-center rounded-circle p-0"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <i className="ti ti-dots-vertical fs-14" />
-              </Link>
-              <ul className="dropdown-menu dropdown-menu-right p-3">
-                <li>
-                  <Link
-                    className="dropdown-item rounded-1"
-                    to="#"
-                    data-bs-toggle="modal"
-                    data-bs-target="#edit_class"
-                  >
-                    <i className="ti ti-edit-circle me-2" />
-                    Edit
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="dropdown-item rounded-1"
-                    to="#"
-                    data-bs-toggle="modal"
-                    data-bs-target="#delete-modal"
-                  >
-                    <i className="ti ti-trash-x me-2" />
-                    Delete
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </>
-      ),
+      sorter: (a: any, b: any) => a.status.localeCompare(b.status),
     },
   ];
 

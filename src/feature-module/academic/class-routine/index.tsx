@@ -1,4 +1,4 @@
-import React, { useRef,useState } from "react";
+import React, { useRef,useState,useEffect } from "react";
 import { classRoutine } from "../../../core/data/json/class-routine";
 import Table from "../../../core/common/dataTable/index";
 import PredefinedDateRanges from "../../../core/common/datePicker";
@@ -18,6 +18,46 @@ import { all_routes } from "../../router/all_routes";
 import TooltipOption from "../../../core/common/tooltipOption";
 
 const ClassRoutine = () => {
+
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`${api_path}/classRoutines/getAllClassRoutine`, {
+        method: "GET",
+      });
+      if (!response.ok) {
+        throw new Error("Failed to fetch students");
+      }
+      const result = await response.json();
+
+      // Transform API data to fit table structure
+      const transformedData = result.map((item: any) => ({
+        key: item.key || "",
+        id: item.id || "N/A",
+        class: item.class || "N/A",
+        section: item.section || "N/A",
+        teacher: item.teacher || "N/A",
+        day: item.day || "N/A",
+        startTime: item.startTime || "N/A",
+        endTime: item.endTime || "N/A",
+        classRoom: item.classRoom || "N/A",
+        imgSrc: item.uploadImage || "assets/img/default-student.jpg",
+      }));
+      setData(transformedData);
+    } catch (err:any) {
+      setError((err as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   const navigation = useNavigate();
   const navigationPath = () => {
@@ -77,7 +117,7 @@ status: "",
 
   const routes = all_routes;
 
-  const data = classRoutine;
+  const data1 = classRoutine;
   const getModalContainer = () => {
     const modalElement = document.getElementById("modal-datepicker");
     return modalElement ? modalElement : document.body; // Fallback to document.body if modalElement is null
@@ -112,91 +152,53 @@ status: "",
           </Link>
         </>
       ),
-      sorter: (a: any, b: any) => a.id.length - b.id.length,
+      sorter: (a: any, b: any) => a.id.localeCompare(b.id),
+
     },
 
     {
       title: "Class",
       dataIndex: "class",
-      sorter: (a: any, b: any) => a.class.length - b.class.length,
+      sorter: (a: any, b: any) => a.class.localeCompare(b.class),
+
     },
     {
       title: "Section",
       dataIndex: "section",
-      sorter: (a: any, b: any) => a.section.length - b.section.length,
+      sorter: (a: any, b: any) => a.section.localeCompare(b.section),
+
     },
     {
       title: "Teacher",
       dataIndex: "teacher",
-      sorter: (a: any, b: any) => a.teacher.length - b.teacher.length,
-    },
-    {
-      title: "Subject",
-      dataIndex: "subject",
-      sorter: (a: any, b: any) => a.subject.length - b.subject.length,
+      sorter: (a: any, b: any) => a.teacher.localeCompare(b.teacher),
+
     },
     {
       title: "Day",
       dataIndex: "day",
-      sorter: (a: any, b: any) => a.day.length - b.day.length,
+      sorter: (a: any, b: any) => a.day.localeCompare(b.day),
+
     },
     {
       title: "Start Time",
       dataIndex: "startTime",
-      sorter: (a: any, b: any) => a.startTime.length - b.startTime.length,
+      sorter: (a: any, b: any) => a.startTime.localeCompare(b.startTime),
+
     },
     {
       title: "End Time",
       dataIndex: "endTime",
-      sorter: (a: any, b: any) => a.endTime.length - b.endTime.length,
+      sorter: (a: any, b: any) => a.endTime.localeCompare(b.endTime),
+
     },
     {
       title: "Class Room",
       dataIndex: "classRoom",
-      sorter: (a: any, b: any) => a.classRoom.length - b.classRoom.length,
+      sorter: (a: any, b: any) => a.classRoom.localeCompare(b.classRoom),
+
     },
-    {
-      title: "Action",
-      dataIndex: "action",
-      render: () => (
-        <>
-          <div className="dropdown">
-            <Link
-              to="#"
-              className="btn btn-white btn-icon btn-sm d-flex align-items-center justify-content-center rounded-circle p-0"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              <i className="ti ti-dots-vertical fs-14" />
-            </Link>
-            <ul className="dropdown-menu dropdown-menu-right p-3">
-              <li>
-                <Link
-                  className="dropdown-item rounded-1"
-                  to="#"
-                  data-bs-toggle="modal"
-                  data-bs-target="#edit_class_routine"
-                >
-                  <i className="ti ti-edit-circle me-2" />
-                  Edit
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="dropdown-item rounded-1"
-                  to="#"
-                  data-bs-toggle="modal"
-                  data-bs-target="#delete-modal"
-                >
-                  <i className="ti ti-trash-x me-2" />
-                  Delete
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </>
-      ),
-    },
+   
   ];
   return (
     <div>
