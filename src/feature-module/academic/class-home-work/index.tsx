@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 import React, { useRef,useState,useEffect } from "react";
 import { classhomework } from "../../../core/data/json/class_home_work";
+=======
+import React, { useRef, useState } from "react";
+>>>>>>> f4116030764f6dbc078b7c13d7a533486e37f24f
 import Table from "../../../core/common/dataTable/index";
 import {
   classSection,
@@ -7,15 +11,16 @@ import {
   language,
   weak,
 } from "../../../core/common/selectoption/selectoption";
+import { classhomework } from "../../../core/data/json/class_home_work";
 
-import { TableData } from "../../../core/data/interface";
+import { Link, useNavigate } from "react-router-dom";
 import CommonSelect from "../../../core/common/commonSelect";
 import PredefinedDateRanges from "../../../core/common/datePicker";
-import { Link,useNavigate } from "react-router-dom";
 import ImageWithBasePath from "../../../core/common/imageWithBasePath";
-import { all_routes } from "../../router/all_routes";
-import { api_path } from "../../../environment";
 import TooltipOption from "../../../core/common/tooltipOption";
+import { TableData } from "../../../core/data/interface";
+import { api_path } from "../../../environment";
+import { all_routes } from "../../router/all_routes";
 
 const ClassHomeWork = () => {
 
@@ -517,13 +522,13 @@ sorter: (a: any, b: any) => a.className.localeCompare(b.className),
                   >
                     Cancel
                   </Link>
-                  <Link
-                    to="#"
+                  <button
+                    onClick={handleSubmit}
                     className="btn btn-primary"
                     data-bs-dismiss="modal"
                   >
                     Add Homework
-                  </Link>
+                  </button>
                 </div>
               </form>
             </div>

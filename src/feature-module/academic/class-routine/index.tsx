@@ -1,9 +1,14 @@
+<<<<<<< HEAD
 import React, { useRef,useState,useEffect } from "react";
 import { classRoutine } from "../../../core/data/json/class-routine";
+=======
+import { TimePicker } from "antd";
+import React, { useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import CommonSelect from "../../../core/common/commonSelect";
+>>>>>>> f4116030764f6dbc078b7c13d7a533486e37f24f
 import Table from "../../../core/common/dataTable/index";
 import PredefinedDateRanges from "../../../core/common/datePicker";
-import CommonSelect from "../../../core/common/commonSelect";
-import { api_path } from "../../../environment";
 import {
   allClass,
   classSection,
@@ -12,10 +17,10 @@ import {
   teacher,
   weak,
 } from "../../../core/common/selectoption/selectoption";
-import { TimePicker } from "antd";
-import { Link,useNavigate } from "react-router-dom";
-import { all_routes } from "../../router/all_routes";
 import TooltipOption from "../../../core/common/tooltipOption";
+import { classRoutine } from "../../../core/data/json/class-routine";
+import { api_path } from "../../../environment";
+import { all_routes } from "../../router/all_routes";
 
 const ClassRoutine = () => {
 
@@ -520,9 +525,9 @@ status: "",
                   >
                     Cancel
                   </Link>
-                  <Link to="#" className="btn btn-primary" data-bs-dismiss="modal">
+                  <button onClick={handleSubmit} className="btn btn-primary" data-bs-dismiss="modal">
                     Add Class Routine
-                  </Link>
+                  </button>
                 </div>
               </form>
             </div>

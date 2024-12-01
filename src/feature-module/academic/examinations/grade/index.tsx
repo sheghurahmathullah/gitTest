@@ -1,6 +1,14 @@
+<<<<<<< HEAD
 import React, { useRef,useState,useEffect } from "react";
 import { Link,useNavigate } from "react-router-dom";
 import Select from "react-select";
+=======
+import React, { useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import CommonSelect from "../../../../core/common/commonSelect";
+import Table from "../../../../core/common/dataTable/index";
+import PredefinedDateRanges from "../../../../core/common/datePicker";
+>>>>>>> f4116030764f6dbc078b7c13d7a533486e37f24f
 import {
   activeList,
   gradeOne,
@@ -9,14 +17,11 @@ import {
   marksFrom,
   marksUpto,
 } from "../../../../core/common/selectoption/selectoption";
-import Table from "../../../../core/common/dataTable/index";
-import { gradetable } from "../../../../core/data/json/grade";
-import { TableData } from "../../../../core/data/interface";
-import CommonSelect from "../../../../core/common/commonSelect";
-import PredefinedDateRanges from "../../../../core/common/datePicker";
-import { all_routes } from "../../../router/all_routes";
-import { api_path } from "../../../../environment";
 import TooltipOption from "../../../../core/common/tooltipOption";
+import { TableData } from "../../../../core/data/interface";
+import { gradetable } from "../../../../core/data/json/grade";
+import { api_path } from "../../../../environment";
+import { all_routes } from "../../../router/all_routes";
 const Grade = () => {
 
 
@@ -446,13 +451,13 @@ percentage: gradeData.percentage,
                   >
                     Cancel
                   </Link>
-                  <Link
-                    to="#"
+                  <button
+                    onClick={handleSubmit}
                     className="btn btn-primary"
                     data-bs-dismiss="modal"
                   >
                     Add Grade
-                  </Link>
+                  </button>
                 </div>
               </form>
             </div>

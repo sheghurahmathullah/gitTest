@@ -1,18 +1,23 @@
+<<<<<<< HEAD
 import React, { useRef, useState,useEffect} from "react";
 import { classes } from "../../../core/data/json/classes";
+=======
+import React, { useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import CommonSelect from "../../../core/common/commonSelect";
+>>>>>>> f4116030764f6dbc078b7c13d7a533486e37f24f
 import Table from "../../../core/common/dataTable/index";
 import PredefinedDateRanges from "../../../core/common/datePicker";
-import { api_path } from "../../../environment";
-import { all_routes } from "../../router/all_routes";
 import {
   activeList,
   classSection,
   classSylabus,
 } from "../../../core/common/selectoption/selectoption";
-import CommonSelect from "../../../core/common/commonSelect";
-import { TableData } from "../../../core/data/interface";
-import { Link, useNavigate } from "react-router-dom";
 import TooltipOption from "../../../core/common/tooltipOption";
+import { TableData } from "../../../core/data/interface";
+import { classes } from "../../../core/data/json/classes";
+import { api_path } from "../../../environment";
+import { all_routes } from "../../router/all_routes";
 
 
 const Classes = () => {
@@ -65,7 +70,7 @@ const Classes = () => {
   };
 
   const [classData, setClassData] = useState({
-    className: "",
+className: "",
 noOfStudents: "",
 noOfSubjects: "",
 section: "",
@@ -135,7 +140,7 @@ const handleSubmit = async (event: React.FormEvent) => {
   event.preventDefault();
   // if (!validateForm()) return;
   try {
-    const response = await fetch(`${api_path}/classes/createClass`, {
+    const response = await fetch(`${api_path}/class/createClass`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -406,9 +411,9 @@ status: classData.status,
                   >
                     Cancel
                   </Link>
-                  <Link to="#" className="btn btn-primary" data-bs-dismiss="modal">
+                  <button onClick={handleSubmit} className="btn btn-primary" data-bs-dismiss="modal">
                     Add Class
-                  </Link>
+                  </button>
                 </div>
               </form>
             </div>

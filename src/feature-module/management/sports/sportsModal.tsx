@@ -1,7 +1,13 @@
+<<<<<<< HEAD
 import React,{useState,useEffect} from "react";
 import { Link,useNavigate } from "react-router-dom";
 import { all_routes } from "../../router/all_routes";
+=======
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+>>>>>>> f4116030764f6dbc078b7c13d7a533486e37f24f
 import { api_path } from "../../../environment";
+import { all_routes } from "../../router/all_routes";
 
 const SportsModal = () => {
 
@@ -229,13 +235,13 @@ const routes = all_routes;
                 >
                   Cancel
                 </Link>
-                <Link
-                  to="#"
+                <button
+                  onClick={handleSubmit}
                   data-bs-dismiss="modal"
                   className="btn btn-primary"
                 >
                   Add Sport
-                </Link>
+                </button>
               </div>
             </form>
           </div>
