@@ -356,23 +356,47 @@ status: classData.status,
                     <div className="col-md-12">
                       <div className="mb-3">
                         <label className="form-label">Class Name</label>
-                        <input type="text" className="form-control" />
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter Class Name"
+                          id="className"
+                              name="className"
+                              onChange={handleChange}  value={classData.className}
+                        />
                       </div>
                       <div className="mb-3">
                         <label className="form-label">Section</label>
-                        <CommonSelect
-                          className="select"
-                          options={classSection}
-                          defaultValue={classSection[0]}
+                        <input
+                          type="text"
+                          className="form-control"
+                         
+                          id="section"
+                              name="section"
+                              onChange={handleChange}  value={classData.section}
                         />
                       </div>
                       <div className="mb-3">
                         <label className="form-label">No of Students</label>
-                        <input type="text" className="form-control" />
+                        <input
+                          type="text"
+                          className="form-control"
+                    
+                          id="noOfStudents"
+                              name="noOfStudents"
+                              onChange={handleChange}  value={classData.noOfStudents}
+                        />
                       </div>
                       <div className="mb-3">
                         <label className="form-label">No of Subjects</label>
-                        <input type="text" className="form-control" />
+                        <input
+                          type="text"
+                          className="form-control"
+                       
+                          id="noOfSubjects"
+                              name="noOfSubjects"
+                              onChange={handleChange}  value={classData.noOfSubjects}
+                        />
                       </div>
                       <div className="d-flex align-items-center justify-content-between">
                         <div className="status-title">
@@ -380,12 +404,14 @@ status: classData.status,
                           <p>Change the Status by toggle </p>
                         </div>
                         <div className="form-check form-switch">
-                          <input
-                            className="form-check-input"
-                            type="checkbox"
-                            role="switch"
-                            id="switch-sm"
-                          />
+                        <input
+                          type="text"
+                          className="form-control"
+                          
+                          id="status"
+                              name="status"
+                              onChange={handleChange}  value={classData.status}
+                        />
                         </div>
                       </div>
                     </div>
