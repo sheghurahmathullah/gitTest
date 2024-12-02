@@ -24,7 +24,7 @@ const Classes = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${api_path}/classes/getAllClass`, {
+      const response = await fetch(`${api_path}/class/getAllClass`, {
         method: "GET",
       });
       if (!response.ok) {
@@ -35,7 +35,7 @@ const Classes = () => {
       // Transform API data to fit table structure
       const transformedData = result.map((item: any) => ({
         key: item.key || "",
-        id: item.id || "N/A",
+        id: item.key || "N/A",
         className: item.className || "N/A",
         section: item.section || "N/A",
         noOfStudents: item.noOfStudents || "N/A",

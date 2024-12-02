@@ -21,7 +21,7 @@ const ClassRoom = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${api_path}/assignments/getAllAssignment`, {
+      const response = await fetch(`${api_path}/classRooms/getAllClassRoom`, {
         method: "GET",
       });
       if (!response.ok) {

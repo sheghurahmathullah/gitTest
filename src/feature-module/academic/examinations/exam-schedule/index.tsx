@@ -30,7 +30,7 @@ const ExamSchedule = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${api_path}/examSchedule/getAllExamSchedule`, {
+      const response = await fetch(`${api_path}/examSchedules/getAllExamSchedule`, {
         method: "GET",
       });
       if (!response.ok) {

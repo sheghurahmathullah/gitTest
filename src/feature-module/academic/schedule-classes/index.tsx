@@ -34,7 +34,7 @@ const ScheduleClasses = () => {
       // Transform API data to fit table structure
       const transformedData = result.map((item: any) => ({
         key: item.key || "",
-        id: item.id || "N/A",
+        id: item.key || "N/A",
         type: item.type || "N/A",
         startTime: item.startTime || "N/A",
         endTime: item.endTime || "N/A",
@@ -117,13 +117,6 @@ type: scheduleData.type,
     {
       title: "ID",
       dataIndex: "id",
-      render: (text: string, record: any, index: number) => (
-        <>
-          <Link to="#" className="link-primary">
-            {record.id}
-          </Link>
-        </>
-      ),
       sorter: (a: any, b: any) => a.id.localeCompare(b.id),
     },
 
@@ -146,50 +139,6 @@ type: scheduleData.type,
       title: "Status",
       dataIndex: "status",
       sorter: (a: any, b: any) => a.status.localeCompare(b.status),
-    },
-    {
-      title: "Action",
-      dataIndex: "action",
-      render: () => (
-        <>
-          <div className="d-flex align-items-center">
-            <div className="dropdown">
-              <Link
-                to="#"
-                className="btn btn-white btn-icon btn-sm d-flex align-items-center justify-content-center rounded-circle p-0"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <i className="ti ti-dots-vertical fs-14" />
-              </Link>
-              <ul className="dropdown-menu dropdown-menu-right p-3">
-                <li>
-                  <Link
-                    className="dropdown-item rounded-1"
-                    to="#"
-                    data-bs-toggle="modal"
-                    data-bs-target="#edit_Schedule"
-                  >
-                    <i className="ti ti-edit-circle me-2" />
-                    Edit
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="dropdown-item rounded-1"
-                    to="#"
-                    data-bs-toggle="modal"
-                    data-bs-target="#delete-modal"
-                  >
-                    <i className="ti ti-trash-x me-2" />
-                    Delete
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </>
-      ),
     },
   ];
   return (
@@ -218,15 +167,15 @@ type: scheduleData.type,
             <div className="d-flex my-xl-auto right-content align-items-center flex-wrap">
             <TooltipOption />
               <div className="mb-2">
-                <Link
-                  to="#"
+                <button
+                  
                   className="btn btn-primary"
                   data-bs-toggle="modal"
                   data-bs-target="#add_Schedule"
                 >
                   <i className="ti ti-square-rounded-plus-filled me-2" />
                   Add Schedule
-                </Link>
+                </button>
               </div>
             </div>
           </div>
