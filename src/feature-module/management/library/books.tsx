@@ -1,25 +1,23 @@
-import React, { useRef,useState,useEffect } from "react";
-import { all_routes } from "../../router/all_routes";
-import { api_path } from "../../../environment";
-import { Link,useNavigate } from "react-router-dom";
-import PredefinedDateRanges from "../../../core/common/datePicker";
+import React, { useEffect, useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import CommonSelect from "../../../core/common/commonSelect";
+import Table from "../../../core/common/dataTable/index";
+import PredefinedDateRanges from "../../../core/common/datePicker";
 import {
   allSubject,
   cardNo,
 
   moreFilterBook,
-
 } from "../../../core/common/selectoption/selectoption";
-import { TableData } from "../../../core/data/interface";
-import Table from "../../../core/common/dataTable/index";
 import TooltipOption from "../../../core/common/tooltipOption";
-import LibraryModal from "./libraryModal";
 import { bookList } from "../../../core/data/json/bookList";
+import { api_path } from "../../../environment";
+import { all_routes } from "../../router/all_routes";
+import LibraryModal from "./libraryModal";
 
 const Books = () => {
 
-  const [data, setData] = useState([]);
+  const [Data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -33,7 +31,6 @@ const Books = () => {
         throw new Error("Failed to fetch students");
       }
       const result = await response.json();
-
       // Transform API data to fit table structure
       const transformedData = result.map((item: any) => ({
         key: item.key || "",
@@ -50,6 +47,7 @@ const Books = () => {
         postDate: item.postDate || "N/A",
         imgSrc: item.uploadImage || "assets/img/default-student.jpg",
       }));
+      
       setData(transformedData);
     } catch (err:any) {
       setError((err as Error).message);
@@ -57,10 +55,18 @@ const Books = () => {
       setLoading(false);
     }
   };
+  
+
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    console.log("Table data updated:", Data);
+  }, [Data]);
+  
+  
+  useEffect(() => {
+    fetchData(); // Called once on mount
+  }, []); // Empty dependency array to avoid repeated calls
+  
 
 
   const navigation = useNavigate();
@@ -108,14 +114,14 @@ postDate: bookData.postDate,
 
       }),
       });
-      const data = await response.text();
+      const data1 = await response.text();
     if (response.ok) {
-      console.log(data);
+      console.log(data1);
       console.log("Book Created Successfully");
       alert("Book Created Successfully");
       navigationPath(); // Redirect immediately
     } else {
-      console.log(data);
+      console.log(data1);
     }
   } catch (error) {
     console.error('Error Creating User:', error);
@@ -126,7 +132,7 @@ postDate: bookData.postDate,
 
   const routes = all_routes;
   const dropdownMenuRef = useRef<HTMLDivElement | null>(null);
-  const data1 = bookList;
+  const data12 = bookList;
   const handleApplyClick = () => {
     if (dropdownMenuRef.current) {
       dropdownMenuRef.current.classList.remove("show");
@@ -364,7 +370,7 @@ postDate: bookData.postDate,
             </div>
             <div className="card-body p-0 py-3">
               {/* Student List */}
-              <Table dataSource={data} columns={columns} Selection={true} />
+            <Table dataSource={Data} columns={columns} Selection={true} />
               {/* /Student List */}
             </div>
           </div>

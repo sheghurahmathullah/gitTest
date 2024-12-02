@@ -1,11 +1,7 @@
-<<<<<<< HEAD
-import React, { useRef, useState,useEffect } from "react";
-=======
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import CommonSelect from "../../../../core/common/commonSelect";
 import Table from "../../../../core/common/dataTable/index";
->>>>>>> f4116030764f6dbc078b7c13d7a533486e37f24f
 import PredefinedDateRanges from "../../../../core/common/datePicker";
 import {
   classSection,
@@ -21,11 +17,9 @@ import {
   startTimeOne,
 } from "../../../../core/common/selectoption/selectoption";
 import TooltipOption from "../../../../core/common/tooltipOption";
-import { TableData } from "../../../../core/data/interface";
 import { examSchedule } from "../../../../core/data/json/exam_schedule";
 import { api_path } from "../../../../environment";
 import { all_routes } from "../../../router/all_routes";
-
 const ExamSchedule = () => {
 
 

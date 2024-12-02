@@ -1,11 +1,6 @@
-<<<<<<< HEAD
-import React, { useRef, useState,useEffect} from "react";
-import { classes } from "../../../core/data/json/classes";
-=======
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import CommonSelect from "../../../core/common/commonSelect";
->>>>>>> f4116030764f6dbc078b7c13d7a533486e37f24f
 import Table from "../../../core/common/dataTable/index";
 import PredefinedDateRanges from "../../../core/common/datePicker";
 import {
@@ -14,7 +9,6 @@ import {
   classSylabus,
 } from "../../../core/common/selectoption/selectoption";
 import TooltipOption from "../../../core/common/tooltipOption";
-import { TableData } from "../../../core/data/interface";
 import { classes } from "../../../core/data/json/classes";
 import { api_path } from "../../../environment";
 import { all_routes } from "../../router/all_routes";

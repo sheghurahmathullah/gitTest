@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-import React, {useState,useEffect} from "react";
-import { Link,useNavigate } from "react-router-dom";
-=======
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
->>>>>>> f4116030764f6dbc078b7c13d7a533486e37f24f
 import ImageWithBasePath from "../../../core/common/imageWithBasePath";
 import { api_path } from "../../../environment";
 import { all_routes } from "../../router/all_routes";

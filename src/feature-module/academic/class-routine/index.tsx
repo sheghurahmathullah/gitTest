@@ -1,12 +1,7 @@
-<<<<<<< HEAD
-import React, { useRef,useState,useEffect } from "react";
-import { classRoutine } from "../../../core/data/json/class-routine";
-=======
 import { TimePicker } from "antd";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import CommonSelect from "../../../core/common/commonSelect";
->>>>>>> f4116030764f6dbc078b7c13d7a533486e37f24f
 import Table from "../../../core/common/dataTable/index";
 import PredefinedDateRanges from "../../../core/common/datePicker";
 import {

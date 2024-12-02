@@ -1,10 +1,7 @@
-<<<<<<< HEAD
-import React, { useRef,useState,useEffect } from "react";
-=======
-import React, { useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
+import { Link } from "react-feather";
+import { useNavigate } from "react-router";
 import CommonSelect from "../../../core/common/commonSelect";
->>>>>>> f4116030764f6dbc078b7c13d7a533486e37f24f
 import Table from "../../../core/common/dataTable/index";
 import PredefinedDateRanges from "../../../core/common/datePicker";
 import {
@@ -13,7 +10,6 @@ import {
   startTime,
 } from "../../../core/common/selectoption/selectoption";
 import TooltipOption from "../../../core/common/tooltipOption";
-import { TableData } from "../../../core/data/interface";
 import { scheduleClass } from "../../../core/data/json/schedule_class";
 import { api_path } from "../../../environment";
 import { all_routes } from "../../router/all_routes";
