@@ -129,7 +129,7 @@ const ParentModal = () => {
                               onChange={handleChange} value={parentData.email} />
                     </div>
                     <div className="mb-0">
-                      <label className="form-label">Child Name</label>
+                      <label className="form-label">Student Roll No</label>
                      
                       <input type="text" className="form-control" id="childName"
                               name="childName"
