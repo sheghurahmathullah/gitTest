@@ -897,3 +897,45 @@ body.mini-sidebar{
     height: auto;
     width: auto;
 }
+
+// Add this to handle student dashboard layout
+body {
+  &.student-dashboard {
+    .main-wrapper {
+      padding-left: 0;
+    }
+    
+    .header {
+      left: 0;
+      width: 100%;
+    }
+    
+    .page-wrapper {
+      margin-left: 0;
+    }
+  }
+}
+
+.dashboard-layout {
+  .main-wrapper {
+    padding-left: 0 !important;
+    transition: all 0.3s ease;
+  }
+  
+  .header {
+    left: 0 !important;
+    width: 100% !important;
+    transition: all 0.3s ease;
+  }
+  
+  .page-wrapper {
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+    transition: all 0.3s ease;
+  }
+
+  // Reset any sidebar-related spacing
+  .content {
+    padding: 1.875rem !important;
+  }
+}

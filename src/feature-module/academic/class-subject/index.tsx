@@ -1,10 +1,7 @@
-import { useRef,useEffect } from "react";
-import Table from "../../../core/common/dataTable/index";
-import { classSubject } from "../../../core/data/json/class-subject";
-
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import CommonSelect from "../../../core/common/commonSelect";
+import Table from "../../../core/common/dataTable/index";
 import PredefinedDateRanges from "../../../core/common/datePicker";
 import {
   count,
@@ -13,7 +10,7 @@ import {
   typetheory,
 } from "../../../core/common/selectoption/selectoption";
 import TooltipOption from "../../../core/common/tooltipOption";
-import { TableData } from "../../../core/data/interface";
+import { classSubject } from "../../../core/data/json/class-subject";
 import { api_path } from "../../../environment";
 import { all_routes } from "../../router/all_routes";
 

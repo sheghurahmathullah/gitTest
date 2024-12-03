@@ -1,10 +1,9 @@
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Outlet, useLocation } from "react-router";
 import Header from "../core/common/header";
 import Sidebar from "../core/common/sidebar";
 import ThemeSettings from "../core/common/theme-settings";
-import Loader from "../core/common/loader";
-import { useEffect, useState } from "react";
 import { all_routes } from "./router/all_routes";
 const Feature = () => {
   const routes = all_routes;
@@ -76,6 +75,9 @@ const Feature = () => {
          ? "expand-menu"
          : ""
      }
+      ${['/student-dashboard', '/parent-dashboard', '/teacher-dashboard','/edit-student','/edit-teacher'].some(path => 
+        location.pathname.includes(path)
+      ) ? 'dashboard-layout' : ''}
       ${dataLayout === "default_layout" ? "default-layout" : ""}
       ${dataLayout === "boxed_layout" ? "layout-box-mode" : ""}
 
@@ -113,17 +115,20 @@ const Feature = () => {
       ${dataColor === "orange_data_color" ? "orange-data-color" : ""}
       ${dataColor === "green_data_color" ? "green-data-color" : ""}
       ${dataColor === "red_data_color" ? "red-data-color" : ""}
+      ${location.pathname.includes('/student-dashboard') ? 'student-dashboard' : ''}
       `}
     >
       {showLoader ? (
         <>
           <Preloader />
           <div
-            className={`main-wrapper 
+            className={`main  -wrapper 
         ${mobileSidebar ? "slide-nav" : ""}`}
           >
             <Header />
-            <Sidebar />
+            {!['student-dashboard', 'parent-dashboard', 'teacher-dashboard','edit-student','edit-teacher'].some(path => 
+              location.pathname.includes(path)
+            ) && <Sidebar />}
             <Outlet />
             {!location.pathname.includes("layout") && <ThemeSettings />}
           </div>
@@ -135,7 +140,9 @@ const Feature = () => {
         ${mobileSidebar ? "slide-nav" : ""}`}
           >
             <Header />
-            <Sidebar />
+            {!['student-dashboard', 'parent-dashboard', 'teacher-dashboard','edit-student','edit-teacher'].some(path => 
+              location.pathname.includes(path)
+            ) && <Sidebar />}
             <Outlet />
             {!location.pathname.includes("layout") && <ThemeSettings />}
           </div>

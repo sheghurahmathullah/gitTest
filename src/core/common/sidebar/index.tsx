@@ -13,10 +13,64 @@ import ImageWithBasePath from "../imageWithBasePath";
 import usePreviousRoute from "./usePreviousRoute";
 
 const Sidebar = () => {
-  const Location = useLocation();
-
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const previousLocation = usePreviousRoute();
   const [subOpen, setSubopen] = useState<any>("");
   const [subsidebar, setSubsidebar] = useState("");
+  
+  // Check if current route is any of the dashboard routes that should hide sidebar
+  const isDashboardRoute = [
+    '/student-dashboard',
+    '/parent-dashboard',
+    '/teacher-dashboard'
+  ].some(path => location.pathname.includes(path));
+
+  useEffect(() => {
+    const layoutPages = [
+      "/layout-dark",
+      "/layout-rtl",
+      "/layout-mini",
+      "/layout-box",
+      "/layout-default",
+    ];
+
+    const isCurrentLayoutPage = layoutPages.some((path) =>
+      location.pathname.includes(path)
+    );
+    const isPreviousLayoutPage =
+      previousLocation &&
+      layoutPages.some((path) => previousLocation.pathname.includes(path));
+
+    if (isPreviousLayoutPage && !isCurrentLayoutPage) {
+      dispatch(resetAllMode());
+    }
+  }, [location, previousLocation, dispatch]);
+
+  useEffect(() => {
+    setSubopen(localStorage.getItem("menuOpened"));
+    // Select all 'submenu' elements
+    const submenus = document.querySelectorAll(".submenu");
+    // Loop through each 'submenu'
+    submenus.forEach((submenu) => {
+      // Find all 'li' elements within the 'submenu'
+      const listItems = submenu.querySelectorAll("li");
+      submenu.classList.remove("active");
+      // Check if any 'li' has the 'active' class
+      listItems.forEach((item) => {
+        if (item.classList.contains("active")) {
+          // Add 'active' class to the 'submenu'
+          submenu.classList.add("active");
+          return;
+        }
+      });
+    });
+  }, [location.pathname]);
+
+  // Early return if on any dashboard route
+  if (isDashboardRoute) {
+    return null;
+  }
 
   const toggleSidebar = (title: any) => {
     localStorage.setItem("menuOpened", title);
@@ -62,50 +116,6 @@ const Sidebar = () => {
         return "";
     }
   };
-  const location = useLocation();
-  const dispatch = useDispatch();
-  const previousLocation = usePreviousRoute();
-
-  useEffect(() => {
-    const layoutPages = [
-      "/layout-dark",
-      "/layout-rtl",
-      "/layout-mini",
-      "/layout-box",
-      "/layout-default",
-    ];
-
-    const isCurrentLayoutPage = layoutPages.some((path) =>
-      location.pathname.includes(path)
-    );
-    const isPreviousLayoutPage =
-      previousLocation &&
-      layoutPages.some((path) => previousLocation.pathname.includes(path));
-
-    if (isPreviousLayoutPage && !isCurrentLayoutPage) {
-      dispatch(resetAllMode());
-    }
-  }, [location, previousLocation, dispatch]);
-
-  useEffect(() => {
-    setSubopen(localStorage.getItem("menuOpened"));
-    // Select all 'submenu' elements
-    const submenus = document.querySelectorAll(".submenu");
-    // Loop through each 'submenu'
-    submenus.forEach((submenu) => {
-      // Find all 'li' elements within the 'submenu'
-      const listItems = submenu.querySelectorAll("li");
-      submenu.classList.remove("active");
-      // Check if any 'li' has the 'active' class
-      listItems.forEach((item) => {
-        if (item.classList.contains("active")) {
-          // Add 'active' class to the 'submenu'
-          submenu.classList.add("active");
-          return;
-        }
-      });
-    });
-  }, [Location.pathname]);
 
   const onMouseEnter = () => {
     dispatch(setExpandMenu(true));
@@ -177,28 +187,28 @@ const Sidebar = () => {
                               className={`${
                                 subOpen === title?.label ? "subdrop" : ""
                               } ${
-                                title?.links?.includes(Location.pathname)
+                                title?.links?.includes(location.pathname)
                                   ? "active"
                                   : ""
                               } ${
                                 title?.submenuItems
                                   ?.map((link: any) => link?.link)
-                                  .includes(Location.pathname) ||
-                                title?.link === Location.pathname
+                                  .includes(location.pathname) ||
+                                title?.link === location.pathname
                                   ? "active"
-                                  : "" || title?.subLink1 === Location.pathname
+                                  : "" || title?.subLink1 === location.pathname
                                   ? "active"
-                                  : "" || title?.subLink2 === Location.pathname
+                                  : "" || title?.subLink2 === location.pathname
                                   ? "active"
-                                  : "" || title?.subLink3 === Location.pathname
+                                  : "" || title?.subLink3 === location.pathname
                                   ? "active"
-                                  : "" || title?.subLink4 === Location.pathname
+                                  : "" || title?.subLink4 === location.pathname
                                   ? "active"
-                                  : "" || title?.subLink5 === Location.pathname
+                                  : "" || title?.subLink5 === location.pathname
                                   ? "active"
-                                  : "" || title?.subLink6 === Location.pathname
+                                  : "" || title?.subLink6 === location.pathname
                                   ? "active"
-                                  : "" || title?.subLink7 === Location.pathname
+                                  : "" || title?.subLink7 === location.pathname
                                   ? "active"
                                   : ""
                               }`}
@@ -236,32 +246,32 @@ const Sidebar = () => {
                                         className={`${
                                           item?.submenuItems
                                             ?.map((link: any) => link?.link)
-                                            .includes(Location.pathname) ||
-                                          item?.link === Location.pathname
+                                            .includes(location.pathname) ||
+                                          item?.link === location.pathname
                                             ? "active"
                                             : "" ||
                                               item?.subLink1 ===
-                                                Location.pathname
+                                                location.pathname
                                             ? "active"
                                             : "" ||
                                               item?.subLink2 ===
-                                                Location.pathname
+                                                location.pathname
                                             ? "active"
                                             : "" ||
                                               item?.subLink3 ===
-                                                Location.pathname
+                                                location.pathname
                                             ? "active"
                                             : "" ||
                                               item?.subLink4 ===
-                                                Location.pathname
+                                                location.pathname
                                             ? "active"
                                             : "" ||
                                               item?.subLink5 ===
-                                                Location.pathname
+                                                location.pathname
                                             ? "active"
                                             : "" ||
                                               item?.subLink6 ===
-                                                Location.pathname
+                                                location.pathname
                                             ? "active"
                                             : ""
                                         } ${
@@ -304,10 +314,10 @@ const Sidebar = () => {
                                                         (link: any) => link.link
                                                       )
                                                       .includes(
-                                                        Location.pathname
+                                                        location.pathname
                                                       ) ||
                                                     items?.link ===
-                                                      Location.pathname
+                                                      location.pathname
                                                       ? "active"
                                                       : ""
                                                   }`}

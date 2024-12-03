@@ -1,17 +1,17 @@
-import { Link, useLocation } from "react-router-dom";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  setDataLayout,
-  setDataTheme,
-} from "../../data/redux/themeSettingSlice";
-import ImageWithBasePath from "../imageWithBasePath";
+import { Link, useLocation } from "react-router-dom";
+import { all_routes } from "../../../feature-module/router/all_routes";
 import {
   setExpandMenu,
   setMobileSidebar,
   toggleMiniSidebar,
 } from "../../data/redux/sidebarSlice";
-import { useState } from "react";
-import { all_routes } from "../../../feature-module/router/all_routes";
+import {
+  setDataLayout,
+  setDataTheme,
+} from "../../data/redux/themeSettingSlice";
+import ImageWithBasePath from "../imageWithBasePath";
 const Header = () => {
   const routes = all_routes;
   const dispatch = useDispatch();
@@ -85,15 +85,15 @@ const Header = () => {
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
         >
-          <Link to={routes.adminDashboard} className="logo logo-normal">
+          <div  className="logo logo-normal">
            <img src="https://learn.org/cimages/lead-clients/sacred-heart-university/logo-330.jpg" alt="" />
-          </Link>
-          <Link to={routes.adminDashboard} className="logo-small">
+          </div>
+          <div  className="logo-small">
           <img src="https://learn.org/cimages/lead-clients/sacred-heart-university/logo-330.jpg" alt="" />
-          </Link>
-          <Link to={routes.adminDashboard} className="dark-logo">
+          </div>
+          <div  className="dark-logo">
           <img src="https://sso.sacredheart.edu/images/final-logo.png" alt="" />
-          </Link>
+          </div>
           <Link id="toggle_btn" to="#" onClick={handleToggleMiniSidebar}>
             <i className="ti ti-menu-deep" />
           </Link>
