@@ -35,7 +35,7 @@ const ClassSubject = () => {
       // Transform API data to fit table structure
       const transformedData = result.map((item: any) => ({
         key: item.key || "",
-        id: item.id || "N/A",
+        id: item.key  || "N/A",
         name: item.name || "N/A",
         code: item.code || "N/A",
         type: item.type || "N/A",
