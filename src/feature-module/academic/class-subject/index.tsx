@@ -64,7 +64,7 @@ const ClassSubject = () => {
   };
 
   const [subjectData, setSubjectData] = useState({
-    name : "",
+    Subjectname : "",
     code:"",
     type:"",
     status:"",
@@ -86,7 +86,7 @@ const ClassSubject = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           code: subjectData.code,
-name: subjectData.name,
+name: subjectData.Subjectname,
 status: subjectData.status,
 type: subjectData.type,
          
@@ -345,9 +345,9 @@ type: subjectData.type,
                           type="text"
                           className="form-control"
                           placeholder="Enter Class Name"
-                          id="name"
-                              name="name"
-                              onChange={handleChange}  value={subjectData.name}
+                          id="Subjectname"
+                              name="Subjectname"
+                              onChange={handleChange}  value={subjectData.Subjectname}
                         />
                       </div>
                       <div className="mb-3">
@@ -399,9 +399,9 @@ type: subjectData.type,
                   >
                     Cancel
                   </Link>
-                  <Link to="#" data-bs-dismiss="modal" className="btn btn-primary">
+                  <button onClick={handleSubmit} data-bs-dismiss="modal" className="btn btn-primary">
                     Add Subject
-                  </Link>
+                  </button>
                 </div>
               </form>
             </div>

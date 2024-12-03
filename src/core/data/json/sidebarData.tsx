@@ -39,7 +39,7 @@ export const SidebarData = [
           // },
           {
             label: "Calendar",
-            link: routes.calendar,
+            link: "https://calendar.google.com/",
             showSubRoute: false,
           },
           // {
@@ -49,7 +49,7 @@ export const SidebarData = [
           // },
           {
             label: "To Do",
-            link: routes.todo,
+            link: "https://tasks.google.com/",
             showSubRoute: false,
           },
           // {
@@ -59,7 +59,7 @@ export const SidebarData = [
           // },
           {
             label: "File Manager",
-            link: routes.fileManager,
+            link: "https://classroom.google.com",
             showSubRoute: false,
           },
         ],

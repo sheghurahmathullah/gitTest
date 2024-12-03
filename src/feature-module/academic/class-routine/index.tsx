@@ -37,8 +37,8 @@ const ClassRoutine = () => {
       // Transform API data to fit table structure
       const transformedData = result.map((item: any) => ({
         key: item.key || "",
-        id: item.id || "N/A",
-        class: item.class || "N/A",
+        id: item.key || "N/A",
+        class: item.className || "N/A",
         section: item.section || "N/A",
         teacher: item.teacher || "N/A",
         day: item.day || "N/A",

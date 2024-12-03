@@ -36,7 +36,7 @@ const Grade = () => {
       // Transform API data to fit table structure
       const transformedData = result.map((item: any) => ({
         key: item.key || "",
-        id: item.id || "N/A",
+        id: item.key || "N/A",
         grade: item.grade || "N/A",
         percentage: item.percentage || "N/A",
         gradePoints: item.gradePoints || "N/A",

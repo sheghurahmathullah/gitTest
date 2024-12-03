@@ -32,7 +32,7 @@ const ClassRoom = () => {
       // Transform API data to fit table structure
       const transformedData = result.map((item: any) => ({
         key: item.key || "",
-        id: item.id || "N/A",
+        id:item.key|| "N/A",
         roomNo: item.roomNo || "N/A",
         capacity: item.capacity || "N/A",
         status: item.status || "N/A",
